@@ -33,19 +33,21 @@ With the StudySphere app, students can:
 
 ## ✨ Key Features
 
-| Feature                    | Description                                                                    | Status        |
-| -------------------------- | ------------------------------------------------------------------------------ | ------------- |
-| 🔒 **Offline-First Core** | Access lessons, notes, quizzes, and timetables offline with seamless sync.     | ✅ Active     |
-| 📊 **Personal Dashboards** | Track academics, attendance, goals, applications, and scores with visuals.     | ✅ Active     |
-|  Hub **Content Hub** | Explore courses, exam prep, scholarships, and internships.                     | ✅ Active     |
-| 🔔 **Push Notifications** | Get native mobile reminders for deadlines, study streaks, and updates.          | ✅ Active     |
-| 🛠️ **Career Tools** | Build resumes, map skills, take mock tests, and prepare for interviews.        | ✅ Active     |
-| 💬 **Community & Mentorship** | Real-time chat and Q&A with user presence and typing indicators.               | ✅ Active     |
-| 🔄 **LMS Integrations** | Connect to platforms like Moodle, Google Classroom, and college ERP systems.   | ✅ Active     |
-| 👨‍👩‍👧 **Parental/Guardian View** | Provide consent-based academic summaries for parents and guardians.            | ✅ Active     |
-| ♿ **Advanced Accessibility** | Full support for native screen readers (VoiceOver/TalkBack) and offline TTS.   | ✅ Active     |
-| OCR **Auto-Timetable Scan** | Use the phone's camera to extract schedules from images via OCR.               | 🚧 In Progress |
-| 🌐 **Multilingual Content** | Access learning materials and UI in multiple languages.                        | 🚧 In Progress |
+| Feature                       | Description                                                                  |
+| ----------------------------- | ---------------------------------------------------------------------------- |
+| 🔒 **Offline-First Core**     | Access lessons, notes, quizzes, and timetables offline with seamless sync.   |
+| 📊 **Personal Dashboards**    | Track academics, attendance, goals, applications, and scores with visuals.   |
+| 📚 **Content Hub**            | Explore courses, exam prep, scholarships, and internships.                   |
+| 🔔 **Push Notifications**     | Get native mobile reminders for deadlines, study streaks, and updates.       |
+| 🛠️ **Career Tools**          | Build resumes, map skills, take mock tests, and prepare for interviews.      |
+| 💬 **Community & Mentorship** | Real-time chat and Q\&A with user presence and typing indicators.            |
+| 🔄 **LMS Integrations**       | Connect to platforms like Moodle, Google Classroom, and college ERP systems. |
+| 👨‍👩‍👧 **Parental View**    | Provide consent-based academic summaries for parents and guardians.          |
+| ♿ **Advanced Accessibility**  | Full support for native screen readers (VoiceOver/TalkBack) and offline TTS. |
+| 📷 **Auto-Timetable Scan**    | Use the phone's camera to extract schedules from images via OCR.             |
+| 🌐 **Multilingual Content**   | Access learning materials and UI in multiple languages.                      |
+
+
 
 ## 🛠️ Tech Stack: Web-Powered, Native-Compiled
 
