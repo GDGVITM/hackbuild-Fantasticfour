@@ -1,0 +1,12 @@
+fastapi==0.100.0
+uvicorn[standard]==0.22.0
+requests==2.28.1
+google-auth==2.16.0
+google-auth-oauthlib==0.4.6
+google-api-python-client==2.61.0
+python-dotenv==0.20.0
+aiofiles==23.2.1
+python-multipart==0.0.6
+pydantic==1.10.7
+faiss-cpu==1.7.4
+sentence-transformers==2.2.2
