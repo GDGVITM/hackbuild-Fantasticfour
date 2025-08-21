@@ -17,6 +17,9 @@ export default function LandingPage() {
               <Link href="/resume-builder" className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">
                 Resume Builder
               </Link>
+              <Link href="/interview-resources" className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">
+                Interview Resources
+              </Link>
               <Link href="/test-resume" className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium">
                 Test Demo
               </Link>
@@ -45,11 +48,11 @@ export default function LandingPage() {
               Create Professional Resumes with AI
             </h1>
             <p className="text-lg text-gray-600 mb-8">
-              Build stunning resumes using our AI-powered platform. Fill out forms, edit JSON data, and export professional markdown resumes instantly.
+              Build stunning resumes using our AI-powered platform and prepare for interviews with our comprehensive resource collection covering all engineering branches - from DSA sheets to core engineering concepts.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 max-w-5xl">
             <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
               <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mx-auto mb-4">
                 <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -79,6 +82,16 @@ export default function LandingPage() {
               <h3 className="text-lg font-semibold text-gray-900 mb-2">Export Ready</h3>
               <p className="text-gray-600 text-sm">Download as markdown or JSON for any platform or service</p>
             </div>
+
+            <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+              <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center mx-auto mb-4">
+                <svg className="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                </svg>
+              </div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Interview Prep</h3>
+              <p className="text-gray-600 text-sm">Access curated resources for all engineering branches and coding interviews</p>
+            </div>
           </div>
 
           <div className="flex gap-4 items-center flex-col sm:flex-row">
@@ -89,6 +102,12 @@ export default function LandingPage() {
               🚀 Start Building Resume
             </Link>
             <Link
+              className="rounded-full border border-solid border-orange-600 text-orange-600 transition-colors flex items-center justify-center hover:bg-orange-50 font-medium text-sm sm:text-base h-12 px-6 sm:px-8"
+              href="/interview-resources"
+            >
+              📚 Interview Resources
+            </Link>
+            <Link
               className="rounded-full border border-solid border-blue-600 text-blue-600 transition-colors flex items-center justify-center hover:bg-blue-50 font-medium text-sm sm:text-base h-12 px-6 sm:px-8"
               href="/test-resume"
             >
@@ -97,8 +116,9 @@ export default function LandingPage() {
           </div>
 
           <div className="text-sm text-gray-500 max-w-md">
-            <p>✨ <strong>New:</strong> Mobile-optimized interface with sectioned navigation</p>
+            <p>✨ <strong>New:</strong> Comprehensive interview resources for all engineering branches</p>
             <p>🤖 Powered by Google Gemini AI for intelligent content generation</p>
+            <p>📚 DSA sheets, core engineering concepts, and aptitude resources</p>
           </div>
         </main>
         
@@ -115,6 +135,19 @@ export default function LandingPage() {
               height={16}
             />
             Resume Builder
+          </Link>
+          <Link
+            className="flex items-center gap-2 hover:underline hover:underline-offset-4"
+            href="/interview-resources"
+          >
+            <Image
+              aria-hidden
+              src="/book.svg"
+              alt="Resources icon"
+              width={16}
+              height={16}
+            />
+            Interview Resources
           </Link>
           <Link
             className="flex items-center gap-2 hover:underline hover:underline-offset-4"
