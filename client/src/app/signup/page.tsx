@@ -1,10 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import auth from '../../lib/auth';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+const YEARS = ['1st Year', '2nd Year', '3rd Year', '4th Year', '5th Year', 'Other'];
 
 export default function SignupPage() {
   const router = useRouter();
@@ -19,6 +21,10 @@ export default function SignupPage() {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    auth.initAuthQueue();
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormData({
@@ -43,23 +49,28 @@ export default function SignupPage() {
 
     setLoading(true);
 
-    try {
-        const response = await fetch(`${API_BASE_URL}/auth/register`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            email: formData.email,
-            password: formData.password,
-            username: formData.name, // Using name as username
-            name: formData.name,
-            college: formData.college,
-            branch: formData.branch,
-            year: formData.year,
-          }),
-        });
+    const payload = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email: formData.email,
+        password: formData.password,
+        username: formData.name,
+        name: formData.name,
+        college: formData.college,
+        branch: formData.branch,
+        year: formData.year,
+      }),
+    };
 
+    try {
+        if (!navigator.onLine) {
+          await auth.queuePendingAction({ url: `${API_BASE_URL}/auth/register`, options: payload });
+          setError('You are offline — signup queued and will be attempted when online.');
+          return;
+        }
+
+        const response = await fetch(`${API_BASE_URL}/auth/register`, payload);
         const data = await response.json();
 
         if (!response.ok || data.error) {
@@ -67,9 +78,8 @@ export default function SignupPage() {
           return;
         }
 
-        // Store token and username in localStorage
-        localStorage.setItem('token', data.token);
-        localStorage.setItem('username', data.username);
+        // Store token and username in storage
+        await auth.storeTokenAndUsername(data.token, data.username || formData.email);
 
         // Redirect to dashboard
         router.push('/dashboard');
@@ -134,12 +144,7 @@ export default function SignupPage() {
               <div>
                 <label htmlFor="year" className="block text-sm font-medium text-gray-700">Current Year</label>
                 <select id="year" name="year" required value={formData.year} onChange={handleChange} className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-[#006d77] focus:border-[#006d77] sm:text-sm rounded-md">
-                    <option value="">Select Year</option>
-                    <option value="1st Year">1st Year</option>
-                    <option value="2nd Year">2nd Year</option>
-                    <option value="3rd Year">3rd Year</option>
-                    <option value="4th Year">4th Year</option>
-                    <option value="Postgraduate">Postgraduate</option>
+                    {YEARS.map((y) => (<option key={y} value={y}>{y}</option>))}
                 </select>
               </div>
             </div>
@@ -174,17 +179,7 @@ export default function SignupPage() {
             {/* --- Submit Button using "Caribbean Current" --- */}
             <div>
               <button type="submit" disabled={loading} className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-[#006d77] hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#006d77] disabled:opacity-50 transition-all">
-                {loading ? (
-                  <>
-                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                    <span>Creating account...</span>
-                  </>
-                ) : (
-                  'Create account'
-                )}
+                {loading ? 'Processing...' : 'Create account'}
               </button>
             </div>
           </form>

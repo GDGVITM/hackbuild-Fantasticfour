@@ -1,8 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import auth from '../../lib/auth';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
@@ -14,6 +15,16 @@ export default function LoginPage() {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    auth.initAuthQueue();
+
+    // If token exists, redirect to dashboard
+    (async () => {
+      const token = await auth.getStoredToken();
+      if (token) router.push('/dashboard');
+    })();
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -27,18 +38,23 @@ export default function LoginPage() {
     setLoading(true);
     setError('');
 
-    try {
-      const response = await fetch(`${API_BASE_URL}/auth/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: formData.email,
-          password: formData.password,
-        }),
-      });
+    const payload = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: formData.email, password: formData.password }),
+    };
 
+    try {
+      if (!navigator.onLine) {
+        // queue the login attempt for later
+        await auth.queuePendingAction({ url: `${API_BASE_URL}/auth/login`, options: payload });
+        // store email locally to complete sign-in later
+        await auth.storageSet('pending_login_email', formData.email);
+        setError('You are offline — login queued and will be attempted when online.');
+        return;
+      }
+
+      const response = await fetch(`${API_BASE_URL}/auth/login`, payload);
       const data = await response.json();
 
       if (!response.ok || data.error) {
@@ -46,9 +62,8 @@ export default function LoginPage() {
         return;
       }
 
-      // Store token and username in localStorage
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('username', data.username);
+      // Store token and username in storage
+      await auth.storeTokenAndUsername(data.token, data.username || formData.email);
 
       // Redirect to dashboard
       router.push('/dashboard');

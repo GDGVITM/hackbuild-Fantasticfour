@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import auth from '../../lib/auth';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 
 // --- Icon Components (for clarity and reusability) ---
@@ -13,6 +14,14 @@ const LogoutIcon = () => <svg className="w-6 h-6" fill="none" stroke="currentCol
 
 export default function DashboardPage() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [username, setUsername] = useState('Alex');
+
+  useEffect(() => {
+    (async () => {
+      const u = await auth.getStoredUsername();
+      if (u) setUsername(u);
+    })();
+  }, []);
 
   return (
     <div className="min-h-screen flex bg-[#edf6f9]">
@@ -39,12 +48,13 @@ export default function DashboardPage() {
             <button onClick={() => setSidebarOpen(true)} className="md:hidden text-[#006d77]">
                 <OverviewIcon />
             </button>
-          <h1 className="text-xl md:text-2xl font-bold text-gray-800">Welcome, Alex!</h1>
+          <h1 className="text-xl md:text-2xl font-bold text-gray-800">Welcome, {username}!</h1>
           <div className="flex items-center">
             {/* User Profile */}
-            <div className="w-10 h-10 rounded-full bg-[#e29578] flex items-center justify-center text-white font-bold">
-              A
-            </div>
+            <Link href="/dashboard/profile" className="flex items-center space-x-3">
+              <div className="w-10 h-10 rounded-full bg-[#e29578] flex items-center justify-center text-white font-bold">{username?.[0]?.toUpperCase() || 'U'}</div>
+              <span className="hidden md:block font-medium text-gray-700">{username}</span>
+            </Link>
           </div>
         </header>
 
