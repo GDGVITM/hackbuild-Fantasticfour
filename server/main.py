@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 from routes.authRoute import router as auth_router
 from routes.liveblocksRoute import router as liveblocks_router
 from routes.atsRoute import router as ats_router 
+from routes.genaiRoute import router as genai_router
 
 
 load_dotenv()
@@ -24,6 +25,7 @@ app.add_middleware(
 app.include_router(auth_router, prefix="/auth")
 app.include_router(liveblocks_router, prefix="/liveblocks")
 app.include_router(ats_router, prefix="/ats")
+app.include_router(genai_router, prefix="/genai")
 
 if __name__ == "__main__":
     import uvicorn
