@@ -27,6 +27,7 @@ export default function LandingPage() {
               <div className="ml-10 flex items-baseline space-x-4">
                 <Link href="/login" className={`${secondaryButtonClasses} w-auto`}>Login</Link>
                 <Link href="/signup" className={`${primaryButtonClasses} w-auto`}>Sign Up</Link>
+                <Link href="/route-map" className={`${primaryButtonClasses} w-auto`}>Route Map</Link>
               </div>
             </div>
             
@@ -52,6 +53,7 @@ export default function LandingPage() {
               <div className="flex flex-col space-y-3 mt-2">
                 <Link href="/login" className={`${secondaryButtonClasses} text-center w-full`}>Login</Link>
                 <Link href="/signup" className={`${primaryButtonClasses} text-center w-full`}>Sign Up</Link>
+                <Link href="/route-map" className={`${primaryButtonClasses} text-center w-full`}>Route Map</Link>
               </div>
             </div>
           )}

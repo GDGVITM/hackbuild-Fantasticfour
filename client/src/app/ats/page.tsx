@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import { useState } from "react";
+import React, { useState } from "react";
 import { Upload, FileText, Target, CheckCircle, AlertCircle, Zap } from "lucide-react";
 
 export default function ATSPage() {
@@ -31,7 +32,7 @@ export default function ATSPage() {
     }
   };
 
-  const handleDrag = (e) => {
+  const handleDrag = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     e.stopPropagation();
     if (e.type === "dragenter" || e.type === "dragover") {
@@ -41,26 +42,27 @@ export default function ATSPage() {
     }
   };
 
-  const handleDrop = (e) => {
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     e.stopPropagation();
     setDragActive(false);
     
-    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-      const file = e.dataTransfer.files[0];
+    const files = e.dataTransfer?.files;
+    if (files && files.length > 0) {
+      const file = files[0];
       if (file.type === "application/pdf") {
         setResume(file);
       }
     }
   };
 
-  const getScoreColor = (score) => {
+  const getScoreColor = (score: number) => {
     if (score >= 80) return "text-[#006D77]";
     if (score >= 60) return "text-[#E29578]";
     return "text-red-500";
   };
 
-  const getScoreBg = (score) => {
+  const getScoreBg = (score: number) => {
     if (score >= 80) return "bg-[#006D77]";
     if (score >= 60) return "bg-[#E29578]";
     return "bg-red-500";
