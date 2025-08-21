@@ -1,26 +1,44 @@
-from passlib.context import CryptContext
-from jose import jwt,JWTError
+import hashlib
+import hmac
 import os
+from jose import JWTError, jwt
+from datetime import datetime, timedelta
 from dotenv import load_dotenv
+
 load_dotenv()
-pwd_context=CryptContext(schemes=['bcrypt'],deprecated='auto')
 
-def hashed_pass(password:str)->str:
-    return pwd_context.hash(password)
+SECRET_KEY = os.getenv("SECRET_KEY", "your-secret-key-here")
+ALGORITHM = "HS256"
+ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
-def verify_hash_pass(plain_pass:str,hashed_pass:str)->bool:
-    return pwd_context.verify(plain_pass,hashed_pass)
+def hashed_pass(password: str) -> str:
+    """Hash password using SHA256 with salt"""
+    salt = os.urandom(32)  # Generate a random salt
+    pwdhash = hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), salt, 100000)
+    return salt.hex() + pwdhash.hex()
 
-ALGORITHM='HS256'
-
-def jwt_encode(data:str)->str:
-    payload={'sub':str(data)}
-    token=jwt.encode(payload,os.getenv("SECRET_KEY"),algorithm=ALGORITHM)
-    return token
-
-def jwt_decode(token:str):
+def verify_hash_pass(password: str, hashed: str) -> bool:
+    """Verify password against hash"""
     try:
-        payload=jwt.decode(token,os.getenv("SECRET_KEY"),algorithms=[ALGORITHM])
-        return payload['sub']
+        salt = bytes.fromhex(hashed[:64])  # First 64 chars are salt
+        stored_hash = hashed[64:]  # Rest is the hash
+        pwdhash = hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), salt, 100000)
+        return hmac.compare_digest(stored_hash, pwdhash.hex())
+    except:
+        return False
+
+def jwt_encode(data: dict) -> str:
+    """Create JWT token"""
+    to_encode = data.copy()
+    expire = datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    to_encode.update({"exp": expire})
+    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+    return encoded_jwt
+
+def jwt_decode(token: str) -> dict:
+    """Decode JWT token"""
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        return payload
     except JWTError:
-        print("error")
+        return {}

@@ -4,6 +4,8 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+
 export default function SignupPage() {
   const router = useRouter();
   const [formData, setFormData] = useState({
@@ -27,9 +29,9 @@ export default function SignupPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError(''); // Reset error message on new submission
+    setError('');
 
-    // --- Form Validation ---
+    // Form Validation
     if (formData.password !== formData.confirmPassword) {
       setError('Passwords do not match.');
       return;
@@ -42,15 +44,38 @@ export default function SignupPage() {
     setLoading(true);
 
     try {
-        // --- Simulate API call to register the user ---
-        await new Promise(resolve => setTimeout(resolve, 1500));
+        const response = await fetch(`${API_BASE_URL}/auth/register`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: formData.email,
+            password: formData.password,
+            username: formData.name, // Using name as username
+            name: formData.name,
+            college: formData.college,
+            branch: formData.branch,
+            year: formData.year,
+          }),
+        });
 
-        // On successful registration, redirect to the dashboard
+        const data = await response.json();
+
+        if (!response.ok || data.error) {
+          setError('Failed to create account. Email might already be in use.');
+          return;
+        }
+
+        // Store token and username in localStorage
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('username', data.username);
+
+        // Redirect to dashboard
         router.push('/dashboard');
 
     } catch (err) {
-        // Handle potential API errors (e.g., email already exists)
-        setError('Failed to create account. Please try again.');
+        setError('Failed to create account. Please check your connection and try again.');
     } finally {
         setLoading(false);
     }
@@ -151,7 +176,7 @@ export default function SignupPage() {
               <button type="submit" disabled={loading} className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-[#006d77] hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#006d77] disabled:opacity-50 transition-all">
                 {loading ? (
                   <>
-                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="http://www.w3.org/2000/svg">
+                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                       <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                       <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                     </svg>

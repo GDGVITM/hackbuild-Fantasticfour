@@ -4,6 +4,8 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+
 export default function LoginPage() {
   const router = useRouter();
   const [formData, setFormData] = useState({
@@ -23,18 +25,36 @@ export default function LoginPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setError(''); // Clear previous errors
+    setError('');
 
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      const response = await fetch(`${API_BASE_URL}/auth/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password,
+        }),
+      });
 
-      // In a real app, you would check credentials here.
-      // For this demo, we'll just redirect.
+      const data = await response.json();
+
+      if (!response.ok || data.error) {
+        setError('Invalid email or password. Please try again.');
+        return;
+      }
+
+      // Store token and username in localStorage
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('username', data.username);
+
+      // Redirect to dashboard
       router.push('/dashboard');
 
     } catch (err) {
-      setError('Failed to sign in. Please try again.');
+      setError('Failed to sign in. Please check your connection and try again.');
     } finally {
       setLoading(false);
     }
