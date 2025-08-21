@@ -5,7 +5,7 @@ const config: CapacitorConfig = {
   appName: 'Sphere',
   webDir: 'out',
   server: {
-    url: 'http://192.168.0.105:3000', // Use your machine's local IP
+    url: 'https://fantasticfour.onrender.com', // Use your machine's local IP
     cleartext: true,
   },
 };
