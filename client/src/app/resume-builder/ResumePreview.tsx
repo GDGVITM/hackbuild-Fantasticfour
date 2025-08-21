@@ -6,20 +6,21 @@ interface ResumePreviewProps {
 
 export default function ResumePreview({ resumeData }: ResumePreviewProps) {
   return (
-    <div className="bg-white shadow-xl border border-gray-300 mx-auto w-full max-w-4xl" 
+    <div className="bg-white shadow-xl border border-gray-300 mx-auto" 
          style={{ 
+           width: '210mm',
            minHeight: '297mm'
          }}>
       <div className="p-4 sm:p-8 lg:p-12 h-full text-gray-900" style={{ fontSize: '11pt', lineHeight: '1.5' }}>
         {/* Header */}
         <div className="text-center mb-6 sm:mb-8 pb-4 sm:pb-6 border-b-2 border-blue-500">
           <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3">{resumeData.personalInfo.fullName}</h1>
-          <div className="flex flex-col sm:flex-row flex-wrap justify-center gap-2 sm:gap-6 text-sm text-gray-700 mb-2">
+          <div className="flex flex-wrap justify-center gap-2 sm:gap-4 text-sm text-gray-700 mb-2">
             <span>📧 {resumeData.personalInfo.email}</span>
             <span>📱 {resumeData.personalInfo.phone}</span>
             <span>📍 {resumeData.personalInfo.location}</span>
           </div>
-          <div className="flex flex-col sm:flex-row flex-wrap justify-center gap-2 sm:gap-6 text-sm text-blue-600">
+          <div className="flex flex-wrap justify-center gap-2 sm:gap-4 text-sm text-blue-600">
             <span>🔗 {resumeData.personalInfo.linkedin}</span>
             <span>💻 {resumeData.personalInfo.github}</span>
             <span>🌐 {resumeData.personalInfo.website}</span>
@@ -45,17 +46,17 @@ export default function ResumePreview({ resumeData }: ResumePreviewProps) {
             <div className="space-y-4">
               {resumeData.experience.map((exp) => (
                 <div key={exp.id}>
-                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-2">
-                    <div className="mb-2 sm:mb-0">
+                  <div className="flex justify-between items-start mb-2">
+                    <div className="flex-1 min-w-0 pr-4">
                       <h3 className="font-semibold text-gray-900">{exp.title}</h3>
                       <p className="text-blue-600 font-medium">{exp.company}</p>
                     </div>
-                    <div className="text-sm text-gray-500 sm:text-right">
+                    <div className="text-sm text-gray-500 text-right flex-shrink-0">
                       <p>{exp.location}</p>
                       <p>{exp.startDate} - {exp.current ? 'Present' : exp.endDate}</p>
                     </div>
                   </div>
-                  <ul className="list-disc list-inside text-gray-700 space-y-1 ml-2 sm:ml-4">
+                  <ul className="list-disc list-inside text-gray-700 space-y-1 ml-4">
                     {exp.description.map((desc, index) => (
                       <li key={index}>{desc}</li>
                     ))}
@@ -74,12 +75,17 @@ export default function ResumePreview({ resumeData }: ResumePreviewProps) {
             </h2>
             {resumeData.education.map((edu) => (
               <div key={edu.id} className="mb-3">
-                <h3 className="font-semibold text-gray-900">{edu.degree}</h3>
-                <p className="text-green-600 font-medium">{edu.institution}</p>
-                <div className="text-sm text-gray-600">
-                  <span>{edu.location} | Graduated: {edu.graduationDate}</span>
-                  {edu.gpa && <span> | GPA: {edu.gpa}</span>}
-                  {edu.honors && <span> | {edu.honors}</span>}
+                <div className="flex justify-between items-start">
+                  <div className="flex-1 min-w-0 pr-4">
+                    <h3 className="font-semibold text-gray-900">{edu.degree}</h3>
+                    <p className="text-green-600 font-medium">{edu.institution}</p>
+                  </div>
+                  <div className="text-sm text-gray-600 text-right flex-shrink-0">
+                    <div>{edu.location}</div>
+                    <div>Graduated: {edu.graduationDate}</div>
+                    {edu.gpa && <div>GPA: {edu.gpa}</div>}
+                    {edu.honors && <div>{edu.honors}</div>}
+                  </div>
                 </div>
               </div>
             ))}
@@ -122,18 +128,20 @@ export default function ResumePreview({ resumeData }: ResumePreviewProps) {
             <div className="space-y-3">
               {resumeData.projects.map((project) => (
                 <div key={project.id}>
-                  <h3 className="font-semibold text-gray-900">{project.name}</h3>
+                  <div className="flex justify-between items-start mb-1">
+                    <h3 className="font-semibold text-gray-900 flex-1 min-w-0 pr-4">{project.name}</h3>
+                    {(project.link || project.github) && (
+                      <div className="text-sm text-blue-600 flex-shrink-0">
+                        {project.link && <span className="mr-2">🔗 Link</span>}
+                        {project.github && <span>💻 GitHub</span>}
+                      </div>
+                    )}
+                  </div>
                   <p className="text-gray-700 mb-1">{project.description}</p>
                   <div className="text-sm text-gray-600">
                     <span className="font-medium">Technologies: </span>
                     <span>{project.technologies.join(', ')}</span>
                   </div>
-                  {(project.link || project.github) && (
-                    <div className="text-sm text-blue-600">
-                      {project.link && <span>🔗 {project.link} </span>}
-                      {project.github && <span>💻 {project.github}</span>}
-                    </div>
-                  )}
                 </div>
               ))}
             </div>
