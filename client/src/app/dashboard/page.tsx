@@ -32,8 +32,8 @@ export default function DashboardPage() {
         </div>
         <nav className="mt-6">
           <Link href="/community" className="flex items-center px-6 py-3 text-base font-semibold bg-white/10"><OverviewIcon /><span className="ml-4">Overview</span></Link>
-          <Link href="#" className="flex items-center px-6 py-3 text-base hover:bg-white/10"><CoursesIcon /><span className="ml-4">My Courses</span></Link>
-          <Link href="#" className="flex items-center px-6 py-3 text-base hover:bg-white/10"><CareerIcon /><span className="ml-4">Career Prep</span></Link>
+          <Link href="/quiz-creator" className="flex items-center px-6 py-3 text-base hover:bg-white/10"><CoursesIcon /><span className="ml-4">Quiz Creator</span></Link>
+          <Link href="/home" className="flex items-center px-6 py-3 text-base hover:bg-white/10"><CareerIcon /><span className="ml-4">All Features</span></Link>
           <Link href="#" className="flex items-center px-6 py-3 text-base hover:bg-white/10"><SettingsIcon /><span className="ml-4">Settings</span></Link>
         </nav>
         <div className="absolute bottom-0 w-full">
