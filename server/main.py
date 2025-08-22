@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 from routes.authRoute import router as auth_router
 from routes.liveblocksRoute import router as liveblocks_router
 # from routes.atsRoute import router as ats_router 
+from routes.extract import router as extract_router
 from routes.genaiRoute import router as genai_router
 from routes.quizRoute import router as quiz_router
 from routes.userSubjectRoute import router as user_subject_router
@@ -29,6 +30,7 @@ app.add_middleware(
 app.include_router(auth_router, prefix="/auth")
 app.include_router(liveblocks_router, prefix="/liveblocks")
 # app.include_router(ats_router, prefix="/ats")
+app.include_router(extract_router, prefix="/pdf")
 app.include_router(genai_router, prefix="/genai")
 app.include_router(quiz_router, prefix="/quiz")
 app.include_router(user_subject_router, prefix="/user-subject")
