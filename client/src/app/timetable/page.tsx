@@ -163,19 +163,11 @@ export default function TimetablePage() {
     setTouchStart(e.targetTouches[0].clientX);
   };
 
-<<<<<<< HEAD
 const onTouchMove = (e: TouchEvent) => {
   if (e.touches.length > 0) {
     setTouchEnd(e.touches[0].clientX);
   }
 };
-
-=======
-  const onTouchMove = (e: TouchEvent) => {
-    // Use the first touch's clientX; fall back to null if not available
-    setTouchEnd(e.touches[0]?.clientX ?? null);
-  };
->>>>>>> 6e149ee46ad4987f65343ad5c4ec4e6c843979c3
 
   const onTouchEnd = () => {
     if (!touchStart || !touchEnd) return;
