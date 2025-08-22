@@ -7,7 +7,7 @@ const MAX_CALLS_PER_MINUTE = 14;
 const MINUTE_IN_MS = 60 * 1000;
 
 // Initialize the API with your API key
-const API_KEY = process.env.GEMINI_API_KEY;
+const API_KEY = process.env.NEXT_PUBLIC_GEMINI_API_KEY;
 
 if (!API_KEY) {
   throw new Error("Missing Gemini API key. Please add NEXT_PUBLIC_GEMINI_API_KEY to your .env.local file");

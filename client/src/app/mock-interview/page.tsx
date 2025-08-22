@@ -1,10 +1,54 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
-import { Send, Bot, User, Loader2, MessageSquare, Home } from 'lucide-react';
+import { Send, Bot, User, Loader2, MessageSquare, Home, Mic } from 'lucide-react';
 import { getMockInterviewResponse } from '@/utlis/mock-interview/get-mock-interview-response';
 import { mockInterviewResponse } from '@/utlis/mock-interview/type';
+import TeacherModel from './TeacherModel';
+
+// Add types for SpeechRecognition
+interface SpeechRecognitionEvent extends Event {
+  results: SpeechRecognitionResultList;
+}
+
+interface SpeechRecognitionResultList {
+  [index: number]: SpeechRecognitionResult;
+  length: number;
+}
+
+interface SpeechRecognitionResult {
+  [index: number]: SpeechRecognitionAlternative;
+  isFinal: boolean;
+  length: number;
+}
+
+interface SpeechRecognitionAlternative {
+  transcript: string;
+  confidence: number;
+}
+
+interface SpeechRecognitionErrorEvent extends Event {
+  error: string;
+}
+
+interface CustomWindow extends Window {
+  SpeechRecognition: new () => SpeechRecognition;
+  webkitSpeechRecognition: new () => SpeechRecognition;
+}
+
+declare const window: CustomWindow;
+
+interface SpeechRecognition extends EventTarget {
+  continuous: boolean;
+  interimResults: boolean;
+  lang: string;
+  onend: (() => void) | null;
+  onerror: ((event: SpeechRecognitionErrorEvent) => void) | null;
+  onresult: ((event: SpeechRecognitionEvent) => void) | null;
+  start: () => void;
+  stop: () => void;
+}
 
 interface Message {
   id: string;
@@ -42,25 +86,28 @@ export default function MockInterviewPage() {
     }
   );
   const [interviewType, setInterviewType] = useState('Software engineering interview for a tech company position.');
+  const [isListening, setIsListening] = useState(false);
+  const [speechSupported, setSpeechSupported] = useState(false);
+  const recognitionRef = useRef<SpeechRecognition | null>(null);
 
-  const handleSendMessage = async () => {
-    if (!inputText.trim() || isLoading) return;
+  const handleSendMessage = useCallback(async (messageOverride?: string) => {
+    const messageToSend = (messageOverride || inputText || '').trim();
+    if (!messageToSend || isLoading) return;
 
     const userMessage: Message = {
       id: Date.now().toString(),
       type: 'user',
-      content: inputText,
+      content: messageToSend,
       timestamp: new Date()
     };
 
     setMessages(prev => [...prev, userMessage]);
-    const currentInput = inputText;
     setInputText('');
     setIsLoading(true);
 
     try {
       const aiResponse = await getMockInterviewResponse(
-        currentInput,
+        messageToSend,
         previousResponse,
         "", // custom instructions
         interviewType,
@@ -99,6 +146,48 @@ export default function MockInterviewPage() {
     } finally {
       setIsLoading(false);
     }
+  }, [inputText, isLoading, previousResponse, interviewType, maxScore]);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined' && ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window)) {
+        setSpeechSupported(true);
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        const recognition = new SpeechRecognition();
+        recognition.continuous = false;
+        recognition.interimResults = false;
+        recognition.lang = 'en-US';
+
+        recognition.onresult = (event: SpeechRecognitionEvent) => {
+            const transcript = event.results[0][0].transcript;
+            setInputText(transcript);
+            handleSendMessage(transcript);
+        };
+
+        recognition.onerror = (event: SpeechRecognitionErrorEvent) => {
+            console.error("Speech recognition error:", event.error);
+            setIsListening(false);
+        };
+
+        recognition.onend = () => {
+            setIsListening(false);
+        };
+        
+        recognitionRef.current = recognition;
+    }
+  }, [handleSendMessage]);
+
+  const startListening = () => {
+    if (recognitionRef.current && !isLoading) {
+        setIsListening(true);
+        recognitionRef.current.start();
+    }
+  };
+
+  const stopListening = () => {
+      if (recognitionRef.current) {
+          recognitionRef.current.stop();
+          setIsListening(false);
+      }
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -251,8 +340,21 @@ export default function MockInterviewPage() {
                     rows={2}
                     disabled={isLoading}
                   />
+                  {speechSupported && (
+                    <button
+                      onClick={isListening ? stopListening : startListening}
+                      disabled={isLoading}
+                      className={`p-2 rounded-lg flex items-center justify-center flex-shrink-0 transition-colors ${
+                        isListening 
+                          ? 'bg-red-500 text-white animate-pulse' 
+                          : 'bg-[#83c5be] text-white hover:bg-[#006d77]'
+                      } disabled:opacity-50`}
+                    >
+                      <Mic className="w-4 h-4" />
+                    </button>
+                  )}
                   <button
-                    onClick={handleSendMessage}
+                    onClick={() => handleSendMessage()}
                     disabled={!inputText.trim() || isLoading}
                     className="bg-[#006d77] text-white p-2 rounded-lg hover:opacity-90 transition-colors flex items-center justify-center disabled:opacity-50 flex-shrink-0"
                   >
@@ -265,26 +367,9 @@ export default function MockInterviewPage() {
 
           {/* Sidebar */}
           <div className="space-y-4 lg:space-y-6 order-1 lg:order-2">
-            {/* Interview Type Selector */}
-            <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-4 lg:p-6">
-              <h3 className="font-semibold mb-3 lg:mb-4 text-[#006d77] text-sm lg:text-base">Interview Type</h3>
-              <select
-                value={interviewType}
-                onChange={(e) => setInterviewType(e.target.value)}
-                className="w-full p-2 lg:p-3 border border-gray-300 rounded-lg text-xs lg:text-sm bg-white text-gray-900 focus:ring-2 focus:ring-[#006d77] focus:border-transparent"
-                disabled={isLoading}
-              >
-                <option value="Software engineering interview for a tech company position.">Software Engineering</option>
-                <option value="Data science interview for a tech company position.">Data Science</option>
-                <option value="Product manager interview for a tech company position.">Product Management</option>
-                <option value="Frontend developer interview for a tech company position.">Frontend Development</option>
-                <option value="Backend developer interview for a tech company position.">Backend Development</option>
-                <option value="DevOps engineer interview for a tech company position.">DevOps Engineering</option>
-                <option value="UI/UX designer interview for a design company position.">UI/UX Design</option>
-                <option value="Business analyst interview for a consulting company position.">Business Analysis</option>
-                <option value="Marketing manager interview for a marketing company position.">Marketing</option>
-                <option value="General behavioral interview for any company position.">General/Behavioral</option>
-              </select>
+            {/* Teacher Model Panel */}
+            <div className="h-64 md:h-80 lg:h-auto lg:aspect-[4/3] bg-gray-800 rounded-xl shadow-lg border border-gray-200 overflow-hidden">
+              <TeacherModel topHalf={false} />
             </div>
 
             {/* Score & Stats Combined */}
