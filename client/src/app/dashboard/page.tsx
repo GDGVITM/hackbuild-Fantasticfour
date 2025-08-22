@@ -214,7 +214,8 @@ export default function DashboardPage() {
       {/* --- Main Content --- */}
       <div className="flex-1 flex flex-col min-w-0 relative z-10">
         {/* --- Premium Top Bar --- */}
-        <header className="flex items-center justify-between h-16 sm:h-20 lg:h-24 bg-white/80 backdrop-blur-xl shadow-sm px-4 sm:px-6 border-b border-gray-100/50">
+        {/* <header className="flex items-center justify-between h-14 sm:h-16 lg:h-20 bg-white/80 backdrop-blur-xl shadow-sm px-4 sm:px-6 border-b border-gray-100/50"> */}
+        <header className="flex flex-wrap items-center justify-between min-h-16 sm:min-h-20 lg:min-h-24 bg-white/80 backdrop-blur-xl shadow-sm px-4 sm:px-6 border-b border-gray-100/50">
           <div className="flex items-center space-x-2 sm:space-x-6 flex-1 min-w-0">
             <button
               onClick={() => setSidebarOpen(true)}
@@ -225,14 +226,14 @@ export default function DashboardPage() {
             
             <div className="flex-1 min-w-0">
               <div className="flex items-center space-x-1 sm:space-x-2">
-                <h1 className="text-lg sm:text-2xl lg:text-3xl font-bold bg-gradient-to-r from-[#006d77] to-[#83c5be] bg-clip-text text-transparent">
-                  Good afternoon, Alex! 
+                <h1 className="text-base sm:text-xl lg:text-2xl truncate font-bold bg-gradient-to-r from-[#006d77] to-[#83c5be] bg-clip-text text-transparent">
+                  Hi, Alex! 
                 </h1>
                 <span className="text-lg sm:text-2xl">🌟</span>
               </div>
               <div className="text-xs sm:text-sm text-gray-600 mt-1 flex flex-wrap items-center gap-1 sm:gap-4">
-                <span className="hidden sm:inline">Ready to conquer your goals today?</span>
-                <span className="sm:hidden">Ready to learn?</span>
+                <span className="flex items-center text-[10px] sm:text-xs bg-[#83c5be]/10 hidden sm:inline">Ready to conquer your goals today?</span>
+                {/* <span className="sm:hidden">Ready to learn?</span> */}
                 {mounted && (
                   <>
                     <span className="flex items-center text-xs bg-[#83c5be]/10 px-2 py-1 rounded-full">
@@ -251,12 +252,12 @@ export default function DashboardPage() {
 
           <div className="flex items-center space-x-2 sm:space-x-4">
             {/* Search Bar - Hidden on mobile, shown as icon */}
-            <div className="hidden lg:flex items-center bg-gray-50/80 backdrop-blur-sm rounded-2xl px-4 py-2 border border-gray-200/50 hover:bg-white/80 transition-all duration-200 min-w-[300px]">
+            <div className="hidden lg:flex items-center bg-gray-50/80 backdrop-blur-sm rounded-2xl px-4 py-2 border border-gray-200/50 hover:bg-white/80 transition-all duration-200 min-w-[200px] sm:min-w-[300px]">
               <SearchIcon />
               <input 
                 type="text" 
                 placeholder="Search courses, assignments..." 
-                className="ml-3 bg-transparent outline-none text-sm text-gray-600 placeholder-gray-400 flex-1"
+                className="ml-3 bg-transparent outline-none text-xs sm:text-sm text-gray-600 placeholder-gray-400 flex-1"
               />
               <kbd className="hidden sm:inline-flex items-center px-2 py-1 text-xs font-mono bg-gray-200/50 text-gray-500 rounded">
                 ⌘K
@@ -272,10 +273,10 @@ export default function DashboardPage() {
             <div className="relative">
               <button className="p-2 sm:p-3 rounded-xl sm:rounded-2xl text-gray-500 hover:text-[#006d77] hover:bg-[#edf6f9] transition-all duration-200 relative">
                 <BellIcon />
-                <div className="absolute -top-1 -right-1 w-4 h-4 sm:w-5 sm:h-5 bg-[#e29578] rounded-full flex items-center justify-center shadow-lg">
+                <div className="absolute -top-1 -right-1 w-3.5 h-3.5 sm:w-5 sm:h-5 bg-[#e29578] rounded-full flex items-center justify-center shadow-lg">
                   <span className="text-xs text-white font-bold">3</span>
                 </div>
-                <div className="absolute -top-1 -right-1 w-4 h-4 sm:w-5 sm:h-5 bg-[#e29578] rounded-full animate-ping opacity-25"></div>
+                <div className="absolute -top-1 -right-1 w-3.5 h-3.5 sm:w-5 sm:h-5 bg-[#e29578] rounded-full animate-ping opacity-25"></div>
               </button>
             </div>
 

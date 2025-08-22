@@ -330,7 +330,7 @@ export default function ParentDashboard() {
               <h1 className="text-xl font-semibold" style={{ color: '#006d77' }}>Parent Dashboard</h1>
             </div>
             <div className="flex items-center space-x-4">
-              <Link href="/" className="flex items-center space-x-2 px-4 py-2 rounded-xl transition-all duration-300 hover:scale-105 hover:shadow-lg group" 
+              {/* <Link href="/" className="flex items-center space-x-2 px-4 py-2 rounded-xl transition-all duration-300 hover:scale-105 hover:shadow-lg group" 
                     style={{ 
                       color: '#006d77',
                       backgroundColor: 'rgba(131, 197, 190, 0.1)',
@@ -338,7 +338,7 @@ export default function ParentDashboard() {
                     }}>
                 <Home className="w-4 h-4 transition-transform group-hover:scale-110" />
                 <span>Home</span>
-              </Link>
+              </Link> */}
               <button className="relative p-3 rounded-xl transition-all duration-300 hover:scale-110 hover:shadow-lg"
                       style={{ 
                         backgroundColor: 'rgba(131, 197, 190, 0.2)',
@@ -410,39 +410,50 @@ export default function ParentDashboard() {
         </div>
 
         {/* Enhanced Navigation Tabs */}
-        <div className="rounded-3xl shadow-xl border mb-8 backdrop-blur-lg overflow-hidden"
-             style={{ 
-               backgroundColor: 'rgba(255, 255, 255, 0.95)',
-               borderColor: 'rgba(131, 197, 190, 0.3)'
-             }}>
-          <div className="flex overflow-x-auto">
-            {[
-              { key: 'overview', label: '📊 Overview', icon: BarChart3 },
-              { key: 'subjects', label: '📚 Subjects', icon: BookOpen },
-              { key: 'activities', label: '🎯 Activities', icon: Activity },
-              { key: 'progress', label: '📈 Progress', icon: TrendingUp }
-            ].map((tab) => (
-              <button
-                key={tab.key}
-                onClick={() => setActiveTab(tab.key as 'overview' | 'subjects' | 'activities' | 'progress')}
-                className={`flex-1 py-6 px-8 text-center font-semibold transition-all duration-300 whitespace-nowrap relative group ${
-                  activeTab === tab.key ? 'tab-active' : ''
-                }`}
-                style={{
-                  backgroundColor: activeTab === tab.key ? '#006d77' : 'transparent',
-                  color: activeTab === tab.key ? 'white' : '#006d77',
-                  borderBottom: activeTab === tab.key ? '3px solid #83c5be' : '3px solid transparent'
-                }}
-              >
-                <tab.icon className="w-5 h-5 inline mr-3 transition-transform group-hover:scale-110" />
-                {tab.label}
-                {activeTab === tab.key && (
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-10"></div>
-                )}
-              </button>
-            ))}
-          </div>
-        </div>
+        <div
+  className="rounded-3xl shadow-xl border mb-8 backdrop-blur-lg overflow-hidden"
+  style={{
+    backgroundColor: "rgba(255, 255, 255, 0.95)",
+    borderColor: "rgba(131, 197, 190, 0.3)",
+  }}
+>
+  {/* Mobile-first: vertical tabs */}
+  <div className="flex flex-col sm:flex-row">
+    {[
+      { key: "overview", label: "📊 Overview", icon: BarChart3 },
+      { key: "subjects", label: "📚 Subjects", icon: BookOpen },
+      { key: "activities", label: "🎯 Activities", icon: Activity },
+      { key: "progress", label: "📈 Progress", icon: TrendingUp },
+    ].map((tab) => (
+      <button
+        key={tab.key}
+        onClick={() =>
+          setActiveTab(
+            tab.key as "overview" | "subjects" | "activities" | "progress"
+          )
+        }
+        className={`flex items-center py-3 px-4 sm:py-4 sm:px-6 text-sm sm:text-base font-semibold transition-all duration-300 relative group ${
+          activeTab === tab.key ? "tab-active" : ""
+        }`}
+        style={{
+          backgroundColor: activeTab === tab.key ? "#006d77" : "transparent",
+          color: activeTab === tab.key ? "white" : "#006d77",
+          borderLeft:
+            activeTab === tab.key
+              ? "3px solid #83c5be"
+              : "3px solid transparent",
+        }}
+      >
+        <tab.icon className="w-4 h-4 sm:w-5 sm:h-5 mr-3 transition-transform group-hover:scale-110" />
+        {tab.label}
+        {activeTab === tab.key && (
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-10"></div>
+        )}
+      </button>
+    ))}
+  </div>
+</div>
+
 
         {/* Enhanced Tab Content */}
         {activeTab === 'overview' && (

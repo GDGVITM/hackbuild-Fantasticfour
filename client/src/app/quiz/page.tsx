@@ -1,4 +1,3 @@
-
 'use client';
 import { useState, useEffect, useCallback } from 'react';
 import { dummyAssessmentData, dummyAssessmentState, AssessmentData } from './dummydata';
@@ -21,26 +20,28 @@ import {
   Sparkles
 } from 'lucide-react'
 
+
 // Simple QuestionRenderer component
 const QuestionRenderer = ({ children }: { children: string }) => {
   return (
-    <div className="prose prose-sm max-w-none prose-invert text-slate-200">
+    <div className="prose prose-sm max-w-none text-gray-800">
       <div 
-        className="text-slate-200 leading-relaxed"
+        className="text-gray-800 leading-relaxed"
         dangerouslySetInnerHTML={{ 
           __html: children
-            .replace(/\*\*(.*?)\*\*/g, '<strong class="text-blue-300 font-semibold">$1</strong>')
-            .replace(/`(.*?)`/g, '<code class="bg-slate-700/50 text-blue-300 px-1 py-0.5 rounded text-sm">$1</code>')
-            .replace(/### (.*?)(\n|$)/g, '<h3 class="text-xl font-bold text-white mb-2 mt-4">$1</h3>')
-            .replace(/## (.*?)(\n|$)/g, '<h2 class="text-2xl font-bold text-white mb-3 mt-4">$1</h2>')
-            .replace(/# (.*?)(\n|$)/g, '<h1 class="text-3xl font-bold text-white mb-4 mt-4">$1</h1>')
-            .replace(/> (.*?)(\n|$)/g, '<blockquote class="border-l-4 border-blue-400 pl-4 italic text-slate-300 my-2">$1</blockquote>')
+            .replace(/\*\*(.*?)\*\*/g, '<strong class="text-teal-700 font-semibold">$1</strong>')
+            .replace(/`(.*?)`/g, '<code class="bg-teal-100 text-teal-800 px-1 py-0.5 rounded text-sm">$1</code>')
+            .replace(/### (.*?)(\n|$)/g, '<h3 class="text-xl font-bold text-teal-800 mb-2 mt-4">$1</h3>')
+            .replace(/## (.*?)(\n|$)/g, '<h2 class="text-2xl font-bold text-teal-800 mb-3 mt-4">$1</h2>')
+            .replace(/# (.*?)(\n|$)/g, '<h1 class="text-3xl font-bold text-teal-800 mb-4 mt-4">$1</h1>')
+            .replace(/> (.*?)(\n|$)/g, '<blockquote class="border-l-4 border-teal-400 pl-4 italic text-gray-700 my-2">$1</blockquote>')
             .replace(/\n/g, '<br/>') 
         }} 
       />
     </div>
   );
 };
+
 
 export default function AssessmentPage() {
   const [assessmentData, setAssessmentData] = useState<AssessmentData | null>(null);
@@ -52,6 +53,7 @@ export default function AssessmentPage() {
   const [isTestCompleted, setIsTestCompleted] = useState(false);
   const [score, setScore] = useState(0);
   const [showResults, setShowResults] = useState(false);
+
 
   // Load assessment data from localStorage or use dummy data in demo mode
   useEffect(() => {
@@ -124,6 +126,7 @@ export default function AssessmentPage() {
     }
   }, []);
 
+
   // Listen for hash changes to handle demo mode
   useEffect(() => {
     const handleHashChange = () => {
@@ -164,26 +167,32 @@ export default function AssessmentPage() {
       }
     };
 
+
     window.addEventListener('hashchange', handleHashChange);
     return () => {
       window.removeEventListener('hashchange', handleHashChange);
     };
   }, []);
 
+
   const calculateScore = useCallback(() => {
     if (!assessmentData) return;
     
     let totalScore = 0
 
+
     assessmentData.questions.forEach((question, index) => {
       const userAnswer = userAnswers[index] || []
       const correctAnswer = question.answers
 
+
       if (userAnswer.length === 0) return // No answer given
+
 
       // Simple scoring: 1 point only if all correct answers are selected and no wrong answers
       const userAnswerSorted = [...userAnswer].sort()
       const correctAnswerSorted = [...correctAnswer].sort()
+
 
       // Check if arrays are exactly equal
       if (userAnswerSorted.length === correctAnswerSorted.length &&
@@ -192,8 +201,10 @@ export default function AssessmentPage() {
       }
     })
 
+
     setScore(totalScore)
   }, [assessmentData, userAnswers])
+
 
   // Helper function to calculate score immediately (without setState delay)
   const calculateFinalScore = useCallback(() => {
@@ -201,15 +212,19 @@ export default function AssessmentPage() {
     
     let totalScore = 0
 
+
     assessmentData.questions.forEach((question, index) => {
       const userAnswer = userAnswers[index] || []
       const correctAnswer = question.answers
 
+
       if (userAnswer.length === 0) return // No answer given
+
 
       // Simple scoring: 1 point only if all correct answers are selected and no wrong answers
       const userAnswerSorted = [...userAnswer].sort()
       const correctAnswerSorted = [...correctAnswer].sort()
+
 
       // Check if arrays are exactly equal
       if (userAnswerSorted.length === correctAnswerSorted.length &&
@@ -218,8 +233,10 @@ export default function AssessmentPage() {
       }
     })
 
+
     return totalScore
   }, [assessmentData, userAnswers])
+
 
   // Helper function to advance current index in roadmap
   const advanceCurrentIndex = useCallback(() => {
@@ -242,9 +259,11 @@ export default function AssessmentPage() {
     }
   }, [])
 
+
   // Timer logic
   useEffect(() => {
     if (!isTestStarted || isTestCompleted || !assessmentData) return
+
 
     const timer = setInterval(() => {
       setTimeRemaining((prev) => {
@@ -268,8 +287,10 @@ export default function AssessmentPage() {
       })
     }, 1000)
 
+
     return () => clearInterval(timer)
   }, [isTestStarted, isTestCompleted, calculateScore, assessmentData, calculateFinalScore, advanceCurrentIndex])
+
 
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60)
@@ -277,11 +298,13 @@ export default function AssessmentPage() {
     return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`
   }
 
+
   const handleOptionSelect = (optionIndex: number) => {
     if (!assessmentData) return;
     
     const newUserAnswers = [...userAnswers]
     const currentAnswers = newUserAnswers[currentQuestionIndex] || []
+
 
     if (currentAnswers.includes(optionIndex)) {
       // Remove option if already selected
@@ -291,8 +314,10 @@ export default function AssessmentPage() {
       newUserAnswers[currentQuestionIndex] = [...currentAnswers, optionIndex].sort()
     }
 
+
     setUserAnswers(newUserAnswers)
   }
+
 
   const handleNextQuestion = () => {
     if (!assessmentData) return;
@@ -302,11 +327,13 @@ export default function AssessmentPage() {
     }
   }
 
+
   const handlePreviousQuestion = () => {
     if (currentQuestionIndex > 0) {
       setCurrentQuestionIndex(currentQuestionIndex - 1)
     }
   }
+
 
   const handleSubmitTest = () => {
     setIsTestCompleted(true)
@@ -323,6 +350,7 @@ export default function AssessmentPage() {
     }
   }
 
+
   const handleStartTest = () => {
     if (!assessmentData) return;
     
@@ -332,6 +360,7 @@ export default function AssessmentPage() {
     setTimeRemaining(900) // 15 minutes
   }
 
+
   const getProgress = () => {
     if (!assessmentData) return 0;
     
@@ -339,36 +368,39 @@ export default function AssessmentPage() {
     return (answeredQuestions / assessmentData.questions.length) * 100
   }
 
+
   const currentQuestion = assessmentData?.questions[currentQuestionIndex]
+
 
   // Early returns for loading and empty states
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 flex items-center justify-center px-3">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-teal-50 to-orange-50 flex items-center justify-center px-3">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-400 mx-auto mb-3"></div>
-          <p className="text-slate-300 text-sm">Loading assessment...</p>
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-teal-600 mx-auto mb-3"></div>
+          <p className="text-teal-700 text-sm">Loading assessment...</p>
         </div>
       </div>
     );
   }
 
+
   if (!assessmentData) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 flex items-center justify-center p-3">
-        <Card className="w-full bg-slate-800/50 backdrop-blur-sm border-slate-600/40 shadow-lg">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-teal-50 to-orange-50 flex items-center justify-center p-3">
+        <Card className="w-full bg-white/80 backdrop-blur-sm border-teal-200 shadow-lg">
           <CardContent className="p-6 text-center">
             <div className="text-4xl mb-3">📝</div>
-            <h2 className="text-xl font-bold text-white mb-3">
+            <h2 className="text-xl font-bold text-teal-800 mb-3">
               No Assessment Available
             </h2>
-            <p className="text-slate-300 text-sm mb-4">
+            <p className="text-teal-700 text-sm mb-4">
               No assessment data found. Please complete a course first or check your roadmap for available assessments.
             </p>
             <div className="space-y-2">
               <Button 
                 onClick={() => window.location.href = '/roadmap#demo=true'}
-                className="w-full bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white backdrop-blur-sm py-3"
+                className="w-full bg-gradient-to-r from-teal-600 to-teal-700 hover:from-teal-700 hover:to-teal-800 text-white backdrop-blur-sm py-3"
               >
                 <BookOpen className="w-4 h-4 mr-2" />
                 Go to Roadmap
@@ -376,7 +408,7 @@ export default function AssessmentPage() {
               <Button 
                 onClick={() => window.location.href = '/quiz#demo=true'}
                 variant="outline"
-                className="w-full border-slate-600 text-slate-300 hover:bg-slate-700/50 backdrop-blur-sm py-3"
+                className="w-full border-orange-300 text-orange-700 hover:bg-orange-50 backdrop-blur-sm py-3"
               >
                 <Sparkles className="w-4 h-4 mr-2" />
                 Try Demo Assessment
@@ -388,6 +420,7 @@ export default function AssessmentPage() {
     );
   }
 
+
   // Results component
   const ResultsDisplay = () => {
     if (!assessmentData) return null;
@@ -396,10 +429,11 @@ export default function AssessmentPage() {
     const percentage = Math.round((score / maxPossibleScore) * 100)
     
     const getGradeColor = () => {
-      if (percentage >= 80) return 'text-emerald-400'
-      if (percentage >= 60) return 'text-yellow-400'
-      return 'text-red-400'
+      if (percentage >= 80) return 'text-teal-600'
+      if (percentage >= 60) return 'text-orange-600'
+      return 'text-red-600'
     }
+
 
     const getGradeText = () => {
       if (percentage >= 80) return 'Excellent!'
@@ -407,16 +441,17 @@ export default function AssessmentPage() {
       return 'Keep Learning!'
     }
 
+
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 p-3">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-teal-50 to-orange-50 p-3">
         <div className="max-w-2xl mx-auto">
-          <Card className="mb-4 bg-slate-800/50 backdrop-blur-sm border-slate-600/40 shadow-lg">
+          <Card className="mb-4 bg-white/80 backdrop-blur-sm border-teal-200 shadow-lg">
             <CardHeader className="text-center pb-4">
               <div className="flex justify-center mb-3">
-                <Trophy className="w-12 h-12 text-yellow-400" />
+                <Trophy className="w-12 h-12 text-orange-500" />
               </div>
-              <CardTitle className="text-2xl mb-2 text-white">Assessment Complete!</CardTitle>
-              <CardDescription className="text-base text-slate-300">Here are your results</CardDescription>
+              <CardTitle className="text-2xl mb-2 text-teal-800">Assessment Complete!</CardTitle>
+              <CardDescription className="text-base text-teal-700">Here are your results</CardDescription>
             </CardHeader>
             <CardContent className="px-4 pb-4">
               <div className="text-center mb-4">
@@ -426,15 +461,17 @@ export default function AssessmentPage() {
                 <div className={`text-lg font-semibold ${getGradeColor()}`}>
                   {getGradeText()}
                 </div>
-                <div className="text-slate-300 mt-2 text-sm">
+                <div className="text-teal-700 mt-2 text-sm">
                   You scored {score} out of {maxPossibleScore} questions correctly
                 </div>
               </div>
 
-              <Separator className="my-4 bg-slate-600/40" />
+
+              <Separator className="my-4 bg-teal-200" />
+
 
               <div className="space-y-3">
-                <h3 className="text-lg font-semibold mb-3 text-white">Question Review</h3>
+                <h3 className="text-lg font-semibold mb-3 text-teal-800">Question Review</h3>
                 {assessmentData.questions.map((question, index) => {
                   const userAnswer = userAnswers[index] || []
                   const correctAnswer = question.answers
@@ -444,23 +481,23 @@ export default function AssessmentPage() {
                   return (
                     <Card key={index} className={`border-l-4 backdrop-blur-sm ${
                       isCorrect 
-                        ? 'border-l-emerald-400 bg-emerald-500/10 border-emerald-400/30' 
-                        : 'border-l-red-400 bg-red-500/10 border-red-400/30'
+                        ? 'border-l-teal-500 bg-teal-50 border-teal-200' 
+                        : 'border-l-orange-500 bg-orange-50 border-orange-200'
                     }`}>
                       <CardContent className="p-3">
                         <div className="flex items-start gap-2">
                           <div className="flex-shrink-0 mt-1">
                             {isCorrect ? (
-                              <CheckCircle className="w-4 h-4 text-emerald-400" />
+                              <CheckCircle className="w-4 h-4 text-teal-600" />
                             ) : (
-                              <XCircle className="w-4 h-4 text-red-400" />
+                              <XCircle className="w-4 h-4 text-orange-600" />
                             )}
                           </div>
                           <div className="flex-1">
-                            <div className="font-medium mb-2 text-white text-sm">
+                            <div className="font-medium mb-2 text-teal-800 text-sm">
                               Question {index + 1}
                             </div>
-                            <div className="text-slate-200 text-sm mb-3">
+                            <div className="text-gray-800 text-sm mb-3">
                               <QuestionRenderer>{question.question}</QuestionRenderer>
                             </div>
                             <div className="space-y-2">
@@ -470,14 +507,14 @@ export default function AssessmentPage() {
                                 
                                 return (
                                   <div key={optionIndex} className={`p-2 rounded border backdrop-blur-sm text-xs ${
-                                    isCorrectOption ? 'bg-emerald-500/20 border-emerald-400/40' :
-                                    isSelected ? 'bg-red-500/20 border-red-400/40' :
-                                    'bg-slate-700/50 border-slate-600/40'
+                                    isCorrectOption ? 'bg-teal-100 border-teal-300' :
+                                    isSelected ? 'bg-orange-100 border-orange-300' :
+                                    'bg-gray-50 border-gray-200'
                                   }`}>
                                     <div className="flex items-center gap-2">
-                                      {isCorrectOption && <CheckCircle className="w-3 h-3 text-emerald-400" />}
-                                      {isSelected && !isCorrectOption && <XCircle className="w-3 h-3 text-red-400" />}
-                                      <span className={`${isCorrectOption ? 'font-medium text-white' : 'text-slate-200'}`}>
+                                      {isCorrectOption && <CheckCircle className="w-3 h-3 text-teal-600" />}
+                                      {isSelected && !isCorrectOption && <XCircle className="w-3 h-3 text-orange-600" />}
+                                      <span className={`${isCorrectOption ? 'font-medium text-teal-800' : 'text-gray-800'}`}>
                                         {option}
                                       </span>
                                     </div>
@@ -493,10 +530,11 @@ export default function AssessmentPage() {
                 })}
               </div>
 
+
               <div className="text-center mt-6">
                 <Button 
                   onClick={() => window.location.href = '/roadmap#demo=true'}
-                  className="w-full bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white backdrop-blur-sm py-3"
+                  className="w-full bg-gradient-to-r from-teal-600 to-teal-700 hover:from-teal-700 hover:to-teal-800 text-white backdrop-blur-sm py-3"
                 >
                   Back to Roadmap
                 </Button>
@@ -508,73 +546,78 @@ export default function AssessmentPage() {
     )
   }
 
+
   // Show results if test is completed
   if (showResults) {
     return <ResultsDisplay />
   }
 
+
   // Pre-test screen
   if (!isTestStarted) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 flex items-center justify-center p-3">
-        <Card className="w-full bg-slate-800/50 backdrop-blur-sm border-slate-600/40 shadow-lg">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-teal-50 to-orange-50 flex items-center justify-center p-3">
+        <Card className="w-full bg-white/80 backdrop-blur-sm border-teal-200 shadow-lg">
           <CardHeader className="text-center pb-4">
             <div className="flex justify-center mb-3">
-              <Brain className="w-12 h-12 text-blue-400" />
+              <Brain className="w-12 h-12 text-teal-600" />
             </div>
-            <CardTitle className="text-2xl mb-2 text-white">Ready for Assessment?</CardTitle>
-            <CardDescription className="text-base text-slate-300">
+            <CardTitle className="text-2xl mb-2 text-teal-800">Ready for Assessment?</CardTitle>
+            <CardDescription className="text-base text-teal-700">
               Test your knowledge with {assessmentData.questions.length} questions
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4 px-4 pb-4">
             <div className="grid grid-cols-1 gap-3">
-              <div className="text-center p-3 bg-blue-500/20 backdrop-blur-sm rounded-lg border border-blue-400/30">
-                <Clock className="w-6 h-6 mx-auto mb-2 text-blue-400" />
-                <div className="font-medium text-white text-sm">Duration</div>
-                <div className="text-slate-300 text-xs">15 minutes</div>
+              <div className="text-center p-3 bg-teal-100 backdrop-blur-sm rounded-lg border border-teal-200">
+                <Clock className="w-6 h-6 mx-auto mb-2 text-teal-600" />
+                <div className="font-medium text-teal-800 text-sm">Duration</div>
+                <div className="text-teal-700 text-xs">15 minutes</div>
               </div>
-              <div className="text-center p-3 bg-emerald-500/20 backdrop-blur-sm rounded-lg border border-emerald-400/30">
-                <Brain className="w-6 h-6 mx-auto mb-2 text-emerald-400" />
-                <div className="font-medium text-white text-sm">Questions</div>
-                <div className="text-slate-300 text-xs">{assessmentData.questions.length} total</div>
+              <div className="text-center p-3 bg-orange-100 backdrop-blur-sm rounded-lg border border-orange-200">
+                <Brain className="w-6 h-6 mx-auto mb-2 text-orange-600" />
+                <div className="font-medium text-orange-800 text-sm">Questions</div>
+                <div className="text-orange-700 text-xs">{assessmentData.questions.length} total</div>
               </div>
-              <div className="text-center p-3 bg-purple-500/20 backdrop-blur-sm rounded-lg border border-purple-400/30">
-                <Trophy className="w-6 h-6 mx-auto mb-2 text-purple-400" />
-                <div className="font-medium text-white text-sm">Passing Score</div>
-                <div className="text-slate-300 text-xs">60%</div>
+              <div className="text-center p-3 bg-blue-100 backdrop-blur-sm rounded-lg border border-blue-200">
+                <Trophy className="w-6 h-6 mx-auto mb-2 text-blue-600" />
+                <div className="font-medium text-blue-800 text-sm">Passing Score</div>
+                <div className="text-blue-700 text-xs">60%</div>
               </div>
             </div>
 
-            <Separator className="bg-slate-600/40" />
+
+            <Separator className="bg-teal-200" />
+
 
             <div className="space-y-2">
-              <h3 className="font-semibold text-base text-white">Instructions:</h3>
-              <ul className="space-y-1 text-slate-300 text-sm">
+              <h3 className="font-semibold text-base text-teal-800">Instructions:</h3>
+              <ul className="space-y-1 text-teal-700 text-sm">
                 <li className="flex items-start gap-2">
-                  <CheckCircle className="w-4 h-4 text-emerald-400 mt-0.5 flex-shrink-0" />
+                  <CheckCircle className="w-4 h-4 text-teal-600 mt-0.5 flex-shrink-0" />
                   Read each question carefully
                 </li>
                 <li className="flex items-start gap-2">
-                  <CheckCircle className="w-4 h-4 text-emerald-400 mt-0.5 flex-shrink-0" />
+                  <CheckCircle className="w-4 h-4 text-teal-600 mt-0.5 flex-shrink-0" />
                   Some questions may have multiple correct answers
                 </li>
                 <li className="flex items-start gap-2">
-                  <CheckCircle className="w-4 h-4 text-emerald-400 mt-0.5 flex-shrink-0" />
+                  <CheckCircle className="w-4 h-4 text-teal-600 mt-0.5 flex-shrink-0" />
                   You can navigate between questions
                 </li>
                 <li className="flex items-start gap-2">
-                  <CheckCircle className="w-4 h-4 text-emerald-400 mt-0.5 flex-shrink-0" />
+                  <CheckCircle className="w-4 h-4 text-teal-600 mt-0.5 flex-shrink-0" />
                   Submit when you&apos;re ready or when time runs out
                 </li>
               </ul>
             </div>
 
+
             <div className="text-center pt-2">
               <Button 
                 onClick={handleStartTest}
                 size="lg"
-                className="w-full bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white backdrop-blur-sm shadow-lg py-3"
+                className="w-full bg-gradient-to-r from-teal-600 to-teal-700 hover:from-teal-700 hover:to-teal-800 text-white backdrop-blur-sm shadow-lg py-3"
               >
                 <PlayCircle className="w-5 h-5 mr-2" />
                 Start Assessment
@@ -586,19 +629,20 @@ export default function AssessmentPage() {
     )
   }
 
+
   // Main assessment interface
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 p-3">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-teal-50 to-orange-50 p-3">
       <div className="max-w-2xl mx-auto">
         {/* Mobile Header with timer and progress */}
-        <Card className="mb-3 bg-slate-800/50 backdrop-blur-sm border-slate-600/40 shadow-lg">
+        <Card className="mb-3 bg-white/80 backdrop-blur-sm border-teal-200 shadow-lg">
           <CardContent className="p-3">
             <div className="flex items-center justify-between mb-3">
-              <Badge variant="outline" className="flex items-center gap-1 border-blue-400/40 text-blue-300 text-xs px-2 py-1">
+              <Badge variant="outline" className="flex items-center gap-1 border-teal-300 text-teal-700 text-xs px-2 py-1">
                 <Timer className="w-3 h-3" />
                 {formatTime(timeRemaining)}
               </Badge>
-              <div className="flex items-center gap-2 text-xs text-slate-300">
+              <div className="flex items-center gap-2 text-xs text-teal-700">
                 <Brain className="w-3 h-3" />
                 <span>Q{currentQuestionIndex + 1}/{assessmentData.questions.length}</span>
               </div>
@@ -606,25 +650,26 @@ export default function AssessmentPage() {
                 onClick={handleSubmitTest}
                 variant="outline"
                 size="sm"
-                className="text-blue-300 border-blue-400/40 hover:bg-blue-500/20 backdrop-blur-sm bg-slate-700/30 text-xs px-2 py-1"
+                className="text-orange-700 border-orange-300 hover:bg-orange-50 backdrop-blur-sm bg-white/50 text-xs px-2 py-1"
               >
                 Submit
               </Button>
             </div>
             <div>
-              <div className="flex items-center justify-between text-xs text-slate-300 mb-1">
+              <div className="flex items-center justify-between text-xs text-teal-700 mb-1">
                 <span>Progress</span>
                 <span>
                   {userAnswers.filter(answer => answer.length > 0).length}/{assessmentData.questions.length}
                 </span>
               </div>
-              <Progress value={getProgress()} className="h-1.5 bg-slate-700/50" />
+              <Progress value={getProgress()} className="h-1.5 bg-gray-200" />
             </div>
           </CardContent>
         </Card>
 
+
         {/* Mobile Question navigation */}
-        <Card className="mb-3 bg-slate-800/50 backdrop-blur-sm border-slate-600/40 shadow-lg">
+        <Card className="mb-3 bg-white/80 backdrop-blur-sm border-teal-200 shadow-lg">
           <CardContent className="p-3">
             <div className="grid grid-cols-5 gap-2">
               {assessmentData.questions.map((_, index) => (
@@ -635,10 +680,10 @@ export default function AssessmentPage() {
                   onClick={() => setCurrentQuestionIndex(index)}
                   className={`h-8 text-xs ${
                     index === currentQuestionIndex
-                      ? 'bg-blue-500 hover:bg-blue-600 text-white'
+                      ? 'bg-teal-600 hover:bg-teal-700 text-white'
                       : userAnswers[index] && userAnswers[index].length > 0
-                      ? 'bg-emerald-500/20 text-emerald-300 border-emerald-400/40 hover:bg-emerald-500/30'
-                      : 'border-slate-600/40 text-slate-300 hover:bg-slate-700/50 bg-slate-700/30'
+                      ? 'bg-orange-100 text-orange-700 border-orange-300 hover:bg-orange-200'
+                      : 'border-gray-300 text-gray-700 hover:bg-gray-50 bg-white/50'
                   } backdrop-blur-sm`}
                 >
                   {index + 1}
@@ -648,20 +693,21 @@ export default function AssessmentPage() {
           </CardContent>
         </Card>
 
+
         {/* Current question */}
         {currentQuestion && (
-          <Card className="mb-3 bg-slate-800/50 backdrop-blur-sm border-slate-600/40 shadow-lg">
+          <Card className="mb-3 bg-white/80 backdrop-blur-sm border-teal-200 shadow-lg">
             <CardHeader className="pb-3">
               <div className="flex items-start justify-between">
-                <CardTitle className="text-lg text-white">Question {currentQuestionIndex + 1}</CardTitle>
-                <Badge variant="secondary" className="flex items-center gap-1 bg-slate-700/50 text-slate-300 text-xs px-2 py-1">
+                <CardTitle className="text-lg text-teal-800">Question {currentQuestionIndex + 1}</CardTitle>
+                <Badge variant="secondary" className="flex items-center gap-1 bg-gray-100 text-gray-700 text-xs px-2 py-1">
                   <AlertCircle className="w-3 h-3" />
                   {currentQuestion.answers.length > 1 ? 'Multiple' : 'Single'}
                 </Badge>
               </div>
             </CardHeader>
             <CardContent className="space-y-3 px-4 pb-4">
-              <div className="text-slate-200 text-sm">
+              <div className="text-gray-800 text-sm">
                 <QuestionRenderer>{currentQuestion.question}</QuestionRenderer>
               </div>
               
@@ -672,8 +718,8 @@ export default function AssessmentPage() {
                       variant={userAnswers[currentQuestionIndex]?.includes(index) ? "default" : "outline"}
                       className={`w-full p-3 h-auto text-left justify-start backdrop-blur-sm text-sm ${
                         userAnswers[currentQuestionIndex]?.includes(index)
-                          ? 'bg-blue-500 hover:bg-blue-600 text-white border-blue-400'
-                          : 'border-slate-600/40 bg-slate-700/50 hover:bg-slate-600/50 text-slate-200'
+                          ? 'bg-teal-600 hover:bg-teal-700 text-white border-teal-600'
+                          : 'border-gray-300 bg-white/50 hover:bg-gray-50 text-gray-800'
                       }`}
                       onClick={() => handleOptionSelect(index)}
                     >
@@ -681,10 +727,10 @@ export default function AssessmentPage() {
                         <div className={`w-4 h-4 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${
                           userAnswers[currentQuestionIndex]?.includes(index)
                             ? 'bg-white border-white'
-                            : 'bg-slate-600/50 border-slate-500'
+                            : 'bg-gray-100 border-gray-400'
                         }`}>
                           {userAnswers[currentQuestionIndex]?.includes(index) && (
-                            <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                            <div className="w-2 h-2 bg-teal-600 rounded-full"></div>
                           )}
                         </div>
                         <span className="flex-1 text-left">{option}</span>
@@ -697,22 +743,23 @@ export default function AssessmentPage() {
           </Card>
         )}
 
+
         {/* Mobile Navigation buttons */}
-        <Card className="bg-slate-800/50 backdrop-blur-sm border-slate-600/40 shadow-lg">
+        <Card className="bg-white/80 backdrop-blur-sm border-teal-200 shadow-lg">
           <CardContent className="p-3">
             <div className="flex justify-between gap-3">
               <Button
                 onClick={handlePreviousQuestion}
                 disabled={currentQuestionIndex === 0}
                 variant="outline"
-                className="flex-1 border-slate-600/40 text-slate-300 hover:bg-slate-700/50 backdrop-blur-sm py-3"
+                className="flex-1 border-gray-300 text-gray-700 hover:bg-gray-50 backdrop-blur-sm py-3"
               >
                 Previous
               </Button>
               <Button
                 onClick={handleNextQuestion}
                 disabled={currentQuestionIndex === assessmentData.questions.length - 1}
-                className="flex-1 bg-blue-500 hover:bg-blue-600 text-white backdrop-blur-sm py-3"
+                className="flex-1 bg-teal-600 hover:bg-teal-700 text-white backdrop-blur-sm py-3"
               >
                 Next
               </Button>

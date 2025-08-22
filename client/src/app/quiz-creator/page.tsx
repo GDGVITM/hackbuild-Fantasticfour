@@ -157,25 +157,22 @@ export default function QuizCreator() {
 
   if (previewMode) {
     return (
-      <div className="min-h-screen relative overflow-hidden" 
-           style={{ background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #134e4a 100%)' }}>
+      <div className="min-h-screen bg-gradient-to-br from-[#edf6f9] via-[#edf6f9] to-[#ffddd2]/20 relative overflow-hidden">
         
         {/* Mobile Preview Header */}
-        <header className="shadow-sm border-b border-opacity-20 relative z-10" 
-                style={{ backgroundColor: '#1f2937', borderColor: '#374151' }}>
+        <header className="bg-white/80 backdrop-blur-xl shadow-sm border-b border-white/20 relative z-10">
           <div className="px-3">
             <div className="flex justify-between items-center h-14">
               <div className="flex items-center space-x-2">
-                <Link href="/" className="text-lg font-bold" style={{ color: '#10b981' }}>
+                <Link href="/" className="text-lg font-bold bg-gradient-to-r from-[#006d77] to-[#83c5be] bg-clip-text text-transparent">
                   EduMitra
                 </Link>
                 <span className="text-gray-400 text-sm">|</span>
-                <h1 className="text-sm font-semibold" style={{ color: '#d1fae5' }}>Preview</h1>
+                <h1 className="text-sm font-semibold text-gray-800">Preview</h1>
               </div>
               <button 
                 onClick={() => setPreviewMode(false)}
-                className="flex items-center space-x-2 px-3 py-2 rounded-lg transition-colors"
-                style={{ backgroundColor: '#047857', color: 'white' }}
+                className="flex items-center space-x-2 px-3 py-2 rounded-lg bg-gradient-to-r from-[#006d77] to-[#83c5be] hover:shadow-lg text-white transition-all duration-200"
               >
                 <ArrowUp className="w-4 h-4" />
                 <span className="text-sm">Edit</span>
@@ -185,44 +182,42 @@ export default function QuizCreator() {
         </header>
 
         <div className="px-3 py-4">
-          <div className="rounded-lg shadow-sm border p-4"
-               style={{ backgroundColor: '#1f2937', borderColor: '#374151' }}>
+          <div className="bg-white/80 backdrop-blur-xl rounded-2xl shadow-lg border border-white/20 p-4">
             <div className="mb-6">
-              <h1 className="text-xl font-bold mb-3" style={{ color: '#d1fae5' }}>
+              <h1 className="text-xl font-bold mb-3 bg-gradient-to-r from-[#006d77] to-[#83c5be] bg-clip-text text-transparent">
                 {quiz.title || 'Untitled Quiz'}
               </h1>
-              <p className="text-sm mb-3" style={{ color: '#a7f3d0' }}>
+              <p className="text-sm mb-3 text-gray-600">
                 {quiz.description || 'No description provided'}
               </p>
-              <p className="text-xs" style={{ color: '#a7f3d0', opacity: 0.8 }}>
+              <p className="text-xs text-gray-500">
                 Time Limit: {quiz.timeLimit} minutes
               </p>
             </div>
 
             <div className="space-y-4">
               {quiz.questions.map((question, qIndex) => (
-                <div key={qIndex} className="p-4 rounded-lg border"
-                     style={{ backgroundColor: '#374151', borderColor: '#4b5563' }}>
-                  <h3 className="text-base font-semibold mb-3" style={{ color: '#d1fae5' }}>
+                <div key={qIndex} className="p-4 bg-gradient-to-r from-gray-50/80 to-white/50 rounded-xl border border-gray-100/50">
+                  <h3 className="text-base font-semibold mb-3 text-gray-800">
                     {qIndex + 1}. {question.question || 'Question not set'}
                   </h3>
                   <div className="space-y-2">
                     {question.options.map((option, oIndex) => (
-                      <div key={oIndex} className="flex items-center space-x-3 p-3 rounded"
-                           style={{ 
-                             backgroundColor: question.answer.includes(oIndex) ? '#047857' : '#4b5563',
-                             border: question.answer.includes(oIndex) ? '2px solid #10b981' : '1px solid #6b7280'
-                           }}>
-                        <div className="w-5 h-5 rounded border-2 flex items-center justify-center flex-shrink-0"
-                             style={{ 
-                               borderColor: question.answer.includes(oIndex) ? '#10b981' : '#6b7280',
-                               backgroundColor: question.answer.includes(oIndex) ? '#10b981' : 'transparent'
-                             }}>
+                      <div key={oIndex} className={`flex items-center space-x-3 p-3 rounded-lg border ${
+                        question.answer.includes(oIndex) 
+                          ? 'bg-[#83c5be]/10 border-[#83c5be]/30' 
+                          : 'bg-gray-50/50 border-gray-200/50'
+                      }`}>
+                        <div className={`w-5 h-5 rounded border-2 flex items-center justify-center flex-shrink-0 ${
+                          question.answer.includes(oIndex) 
+                            ? 'border-[#83c5be] bg-[#83c5be]' 
+                            : 'border-gray-300 bg-transparent'
+                        }`}>
                           {question.answer.includes(oIndex) && (
                             <CheckSquare className="w-3 h-3 text-white" />
                           )}
                         </div>
-                        <span className="text-sm" style={{ color: '#d1fae5' }}>
+                        <span className="text-sm text-gray-700">
                           {option || `Option ${oIndex + 1}`}
                         </span>
                       </div>
@@ -238,24 +233,28 @@ export default function QuizCreator() {
   }
 
   return (
-    <div className="min-h-screen relative overflow-hidden" 
-         style={{ background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #134e4a 100%)' }}>
+    <div className="min-h-screen bg-gradient-to-br from-[#edf6f9] via-[#edf6f9] to-[#ffddd2]/20 relative overflow-hidden">
       
+      {/* Enhanced Animated Background */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-[#83c5be]/10 to-[#006d77]/5 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-tr from-[#ffddd2]/20 to-[#e29578]/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-r from-[#83c5be]/5 to-[#006d77]/5 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '4s' }}></div>
+      </div>
+
       {/* Mobile Header */}
-      <header className="shadow-sm border-b border-opacity-20 relative z-10" 
-              style={{ backgroundColor: '#1f2937', borderColor: '#374151' }}>
+      <header className="bg-white/80 backdrop-blur-xl shadow-sm border-b border-white/20 relative z-10">
         <div className="px-3">
           <div className="flex justify-between items-center h-14">
             <div className="flex items-center space-x-2">
-              <Link href="/" className="text-lg font-bold" style={{ color: '#10b981' }}>
+              <Link href="/" className="text-lg font-bold bg-gradient-to-r from-[#006d77] to-[#83c5be] bg-clip-text text-transparent">
                 EduMitra
               </Link>
               <span className="text-gray-400 text-sm">|</span>
-              <h1 className="text-sm font-semibold" style={{ color: '#d1fae5' }}>Quiz Creator</h1>
+              <h1 className="text-sm font-semibold text-gray-800">Quiz Creator</h1>
             </div>
-            <Link href="/" className="p-2 rounded-lg transition-colors" 
-                  style={{ backgroundColor: '#374151', color: '#10b981' }}>
-              <Home className="w-5 h-5" />
+            <Link href="/" className="p-2 rounded-lg bg-white/80 border border-gray-200/50 hover:shadow-sm transition-all duration-200">
+              <Home className="w-5 h-5 text-[#006d77]" />
             </Link>
           </div>
         </div>
@@ -265,16 +264,14 @@ export default function QuizCreator() {
           <div className="flex space-x-2">
             <button 
               onClick={() => setPreviewMode(true)}
-              className="flex-1 flex items-center justify-center space-x-2 py-3 rounded-lg transition-colors"
-              style={{ backgroundColor: '#374151', color: '#10b981' }}
+              className="flex-1 flex items-center justify-center space-x-2 py-3 rounded-xl bg-white/80 border border-gray-200/50 hover:shadow-sm transition-all duration-200"
             >
-              <Eye className="w-4 h-4" />
-              <span className="text-sm font-medium">Preview</span>
+              <Eye className="w-4 h-4 text-[#006d77]" />
+              <span className="text-sm font-medium bg-gradient-to-r from-[#006d77] to-[#83c5be] bg-clip-text text-transparent">Preview</span>
             </button>
             <button 
               onClick={saveQuiz}
-              className="flex-1 flex items-center justify-center space-x-2 py-3 rounded-lg transition-colors"
-              style={{ backgroundColor: '#047857', color: 'white' }}
+              className="flex-1 flex items-center justify-center space-x-2 py-3 rounded-xl bg-gradient-to-r from-[#006d77] to-[#83c5be] hover:shadow-lg text-white transition-all duration-200"
             >
               <Save className="w-4 h-4" />
               <span className="text-sm font-medium">Save</span>
@@ -283,14 +280,13 @@ export default function QuizCreator() {
         </div>
       </header>
 
-      <div className="px-3 py-4 space-y-4">
+      <div className="px-3 py-4 space-y-4 relative z-10">
         {/* Quiz Settings */}
-        <div className="rounded-lg shadow-sm border p-4"
-             style={{ backgroundColor: '#1f2937', borderColor: '#374151' }}>
-          <h2 className="text-lg font-semibold mb-4" style={{ color: '#d1fae5' }}>Quiz Settings</h2>
+        <div className="bg-white/80 backdrop-blur-xl rounded-2xl shadow-lg border border-white/20 p-4">
+          <h2 className="text-lg font-semibold mb-4 bg-gradient-to-r from-[#006d77] to-[#83c5be] bg-clip-text text-transparent">Quiz Settings</h2>
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium mb-2" style={{ color: '#a7f3d0' }}>
+              <label className="block text-sm font-medium mb-2 text-gray-700">
                 Quiz Title
               </label>
               <input
@@ -298,16 +294,11 @@ export default function QuizCreator() {
                 value={quiz.title}
                 onChange={(e) => setQuiz(prev => ({ ...prev, title: e.target.value }))}
                 placeholder="Enter quiz title"
-                className="w-full px-3 py-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-emerald-500 text-base"
-                style={{ 
-                  backgroundColor: '#374151', 
-                  borderColor: '#4b5563', 
-                  color: '#d1fae5'
-                }}
+                className="w-full px-3 py-3 rounded-xl border border-gray-200/50 bg-gray-50/80 focus:outline-none focus:ring-2 focus:ring-[#83c5be]/30 focus:border-[#83c5be] text-base text-gray-800 placeholder-gray-400"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-2" style={{ color: '#a7f3d0' }}>
+              <label className="block text-sm font-medium mb-2 text-gray-700">
                 Time Limit (minutes)
               </label>
               <input
@@ -315,16 +306,11 @@ export default function QuizCreator() {
                 value={quiz.timeLimit}
                 onChange={(e) => setQuiz(prev => ({ ...prev, timeLimit: parseInt(e.target.value) || 30 }))}
                 min="1"
-                className="w-full px-3 py-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-emerald-500 text-base"
-                style={{ 
-                  backgroundColor: '#374151', 
-                  borderColor: '#4b5563', 
-                  color: '#d1fae5'
-                }}
+                className="w-full px-3 py-3 rounded-xl border border-gray-200/50 bg-gray-50/80 focus:outline-none focus:ring-2 focus:ring-[#83c5be]/30 focus:border-[#83c5be] text-base text-gray-800"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-2" style={{ color: '#a7f3d0' }}>
+              <label className="block text-sm font-medium mb-2 text-gray-700">
                 Description
               </label>
               <textarea
@@ -332,28 +318,21 @@ export default function QuizCreator() {
                 onChange={(e) => setQuiz(prev => ({ ...prev, description: e.target.value }))}
                 placeholder="Enter quiz description"
                 rows={3}
-                className="w-full px-3 py-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-emerald-500 text-base resize-none"
-                style={{ 
-                  backgroundColor: '#374151', 
-                  borderColor: '#4b5563', 
-                  color: '#d1fae5'
-                }}
+                className="w-full px-3 py-3 rounded-xl border border-gray-200/50 bg-gray-50/80 focus:outline-none focus:ring-2 focus:ring-[#83c5be]/30 focus:border-[#83c5be] text-base resize-none text-gray-800 placeholder-gray-400"
               />
             </div>
           </div>
         </div>
 
         {/* Questions Section */}
-        <div className="rounded-lg shadow-sm border p-4"
-             style={{ backgroundColor: '#1f2937', borderColor: '#374151' }}>
+        <div className="bg-white/80 backdrop-blur-xl rounded-2xl shadow-lg border border-white/20 p-4">
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-lg font-semibold" style={{ color: '#d1fae5' }}>
+            <h2 className="text-lg font-semibold bg-gradient-to-r from-[#006d77] to-[#83c5be] bg-clip-text text-transparent">
               Questions ({quiz.questions.length})
             </h2>
             <button
               onClick={addQuestion}
-              className="flex items-center space-x-1 px-3 py-2 rounded-lg transition-colors"
-              style={{ backgroundColor: '#047857', color: 'white' }}
+              className="flex items-center space-x-1 px-3 py-2 rounded-xl bg-gradient-to-r from-[#006d77] to-[#83c5be] hover:shadow-lg text-white transition-all duration-200"
             >
               <Plus className="w-4 h-4" />
               <span className="text-sm">Add</span>
@@ -363,14 +342,13 @@ export default function QuizCreator() {
           {quiz.questions.length === 0 ? (
             <div className="text-center py-8">
               <div className="text-4xl mb-3">📝</div>
-              <h3 className="text-base font-medium mb-2" style={{ color: '#d1fae5' }}>No questions yet</h3>
-              <p className="text-sm mb-4" style={{ color: '#a7f3d0', opacity: 0.8 }}>
+              <h3 className="text-base font-medium mb-2 text-gray-800">No questions yet</h3>
+              <p className="text-sm mb-4 text-gray-600">
                 Start by adding your first question
               </p>
               <button
                 onClick={addQuestion}
-                className="flex items-center space-x-2 px-4 py-3 rounded-lg transition-colors mx-auto"
-                style={{ backgroundColor: '#047857', color: 'white' }}
+                className="flex items-center space-x-2 px-4 py-3 rounded-xl bg-gradient-to-r from-[#006d77] to-[#83c5be] hover:shadow-lg text-white transition-all duration-200 mx-auto"
               >
                 <Plus className="w-4 h-4" />
                 <span className="text-sm font-medium">Add First Question</span>
@@ -379,41 +357,44 @@ export default function QuizCreator() {
           ) : (
             <div className="space-y-4">
               {quiz.questions.map((question, qIndex) => (
-                <div key={qIndex} className="p-4 rounded-lg border"
-                     style={{ backgroundColor: '#374151', borderColor: '#4b5563' }}>
+                <div key={qIndex} className="p-4 bg-gradient-to-r from-gray-50/80 to-white/50 rounded-xl border border-gray-100/50">
                   {/* Mobile Question Header */}
                   <div className="flex justify-between items-start mb-3">
-                    <h3 className="text-base font-semibold" style={{ color: '#d1fae5' }}>
+                    <h3 className="text-base font-semibold text-gray-800">
                       Q{qIndex + 1}
                     </h3>
                     <div className="flex items-center space-x-1">
                       <button
                         onClick={() => moveQuestion(qIndex, 'up')}
                         disabled={qIndex === 0}
-                        className="p-2 rounded transition-colors disabled:opacity-50"
-                        style={{ backgroundColor: qIndex === 0 ? '#4b5563' : '#047857', color: 'white' }}
+                        className={`p-2 rounded-lg transition-all duration-200 ${
+                          qIndex === 0 
+                            ? 'bg-gray-300/50 text-gray-400' 
+                            : 'bg-gradient-to-r from-[#83c5be] to-[#e29578] hover:shadow-md text-white'
+                        }`}
                       >
                         <ArrowUp className="w-3 h-3" />
                       </button>
                       <button
                         onClick={() => moveQuestion(qIndex, 'down')}
                         disabled={qIndex === quiz.questions.length - 1}
-                        className="p-2 rounded transition-colors disabled:opacity-50"
-                        style={{ backgroundColor: qIndex === quiz.questions.length - 1 ? '#4b5563' : '#047857', color: 'white' }}
+                        className={`p-2 rounded-lg transition-all duration-200 ${
+                          qIndex === quiz.questions.length - 1 
+                            ? 'bg-gray-300/50 text-gray-400' 
+                            : 'bg-gradient-to-r from-[#83c5be] to-[#e29578] hover:shadow-md text-white'
+                        }`}
                       >
                         <ArrowDown className="w-3 h-3" />
                       </button>
                       <button
                         onClick={() => duplicateQuestion(qIndex)}
-                        className="p-2 rounded transition-colors"
-                        style={{ backgroundColor: '#374151', color: '#10b981' }}
+                        className="p-2 rounded-lg bg-white/80 border border-gray-200/50 hover:shadow-sm text-[#006d77] transition-all duration-200"
                       >
                         <Copy className="w-3 h-3" />
                       </button>
                       <button
                         onClick={() => deleteQuestion(qIndex)}
-                        className="p-2 rounded transition-colors"
-                        style={{ backgroundColor: '#dc2626', color: 'white' }}
+                        className="p-2 rounded-lg bg-red-500 hover:bg-red-600 text-white transition-all duration-200"
                       >
                         <Trash2 className="w-3 h-3" />
                       </button>
@@ -422,7 +403,7 @@ export default function QuizCreator() {
 
                   {/* Question Text */}
                   <div className="mb-4">
-                    <label className="block text-xs font-medium mb-2" style={{ color: '#a7f3d0' }}>
+                    <label className="block text-xs font-medium mb-2 text-gray-600">
                       Question Text
                     </label>
                     <textarea
@@ -430,25 +411,19 @@ export default function QuizCreator() {
                       onChange={(e) => updateQuestion(qIndex, 'question', e.target.value)}
                       placeholder="Enter your question here..."
                       rows={3}
-                      className="w-full px-3 py-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-emerald-500 text-base resize-none"
-                      style={{ 
-                        backgroundColor: '#4b5563', 
-                        borderColor: '#6b7280', 
-                        color: '#d1fae5'
-                      }}
+                      className="w-full px-3 py-3 rounded-xl border border-gray-200/50 bg-gray-50/80 focus:outline-none focus:ring-2 focus:ring-[#83c5be]/30 focus:border-[#83c5be] text-base resize-none text-gray-800 placeholder-gray-400"
                     />
                   </div>
 
                   {/* Options */}
                   <div className="mb-3">
                     <div className="flex justify-between items-center mb-3">
-                      <label className="block text-xs font-medium" style={{ color: '#a7f3d0' }}>
+                      <label className="block text-xs font-medium text-gray-600">
                         Options (Tap to mark correct)
                       </label>
                       <button
                         onClick={() => addOption(qIndex)}
-                        className="text-xs px-2 py-1 rounded transition-colors"
-                        style={{ backgroundColor: '#047857', color: 'white' }}
+                        className="text-xs px-2 py-1 rounded-lg bg-gradient-to-r from-[#83c5be] to-[#e29578] hover:shadow-md text-white transition-all duration-200"
                       >
                         Add Option
                       </button>
@@ -459,26 +434,25 @@ export default function QuizCreator() {
                           <div className="flex items-center space-x-3">
                             <button
                               onClick={() => toggleAnswer(qIndex, oIndex)}
-                              className="flex-shrink-0 w-8 h-8 rounded border-2 flex items-center justify-center transition-colors"
-                              style={{
-                                borderColor: question.answer.includes(oIndex) ? '#10b981' : '#6b7280',
-                                backgroundColor: question.answer.includes(oIndex) ? '#10b981' : 'transparent'
-                              }}
+                              className={`flex-shrink-0 w-8 h-8 rounded-lg border-2 flex items-center justify-center transition-all duration-200 ${
+                                question.answer.includes(oIndex)
+                                  ? 'border-[#83c5be] bg-[#83c5be] shadow-sm'
+                                  : 'border-gray-300 bg-transparent hover:border-[#83c5be]/50'
+                              }`}
                             >
                               {question.answer.includes(oIndex) ? (
                                 <CheckSquare className="w-4 h-4 text-white" />
                               ) : (
-                                <Square className="w-4 h-4" style={{ color: '#6b7280' }} />
+                                <Square className="w-4 h-4 text-gray-400" />
                               )}
                             </button>
-                            <span className="text-xs" style={{ color: '#a7f3d0' }}>
+                            <span className="text-xs text-gray-600">
                               Option {oIndex + 1}
                             </span>
                             {question.options.length > 2 && (
                               <button
                                 onClick={() => removeOption(qIndex, oIndex)}
-                                className="ml-auto p-1 rounded transition-colors"
-                                style={{ backgroundColor: '#dc2626', color: 'white' }}
+                                className="ml-auto p-1 rounded-lg bg-red-500 hover:bg-red-600 text-white transition-all duration-200"
                               >
                                 <Trash2 className="w-3 h-3" />
                               </button>
@@ -489,12 +463,7 @@ export default function QuizCreator() {
                             value={option}
                             onChange={(e) => updateOption(qIndex, oIndex, e.target.value)}
                             placeholder={`Enter option ${oIndex + 1}`}
-                            className="w-full px-3 py-3 rounded border focus:outline-none focus:ring-2 focus:ring-emerald-500 text-base"
-                            style={{ 
-                              backgroundColor: '#4b5563', 
-                              borderColor: '#6b7280', 
-                              color: '#d1fae5'
-                            }}
+                            className="w-full px-3 py-3 rounded-xl border border-gray-200/50 bg-gray-50/80 focus:outline-none focus:ring-2 focus:ring-[#83c5be]/30 focus:border-[#83c5be] text-base text-gray-800 placeholder-gray-400"
                           />
                         </div>
                       ))}
@@ -502,8 +471,7 @@ export default function QuizCreator() {
                   </div>
 
                   {/* Answer Summary */}
-                  <div className="text-xs p-3 rounded"
-                       style={{ backgroundColor: '#4b5563', color: '#a7f3d0' }}>
+                  <div className="text-xs p-3 rounded-xl bg-[#83c5be]/10 border border-[#83c5be]/20 text-gray-700">
                     <strong>Correct:</strong> {
                       question.answer.length > 0 
                         ? question.answer.map(i => `Option ${i + 1}`).join(', ')

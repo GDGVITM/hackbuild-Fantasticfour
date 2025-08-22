@@ -530,11 +530,11 @@ export default function InterviewResourcesPage() {
               <h1 className="text-xl font-semibold" style={{ color: '#006d77' }}>Interview Resources</h1>
             </div>
             <div className="flex items-center space-x-4">
-              <span className="inline-flex items-center px-4 py-2 rounded-xl text-sm font-bold text-white shadow-lg animate-pulse"
+              {/* <span className="inline-flex items-center px-4 py-2 rounded-xl text-sm font-bold text-white shadow-lg animate-pulse"
                     style={{ backgroundColor: '#83c5be' }}>
                 <Award className="w-4 h-4 mr-2" />
                 Multi-Branch Support
-              </span>
+              </span> */}
             </div>
           </div>
         </div>
