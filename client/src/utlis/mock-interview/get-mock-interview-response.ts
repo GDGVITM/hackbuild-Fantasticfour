@@ -21,8 +21,9 @@ export const getMockInterviewResponse = async (
   const jsonFormat = `
   {
     "score": number,  \\ out of ${outOfMarks} increase or decrease based on the your previous question and candidate's response
-    "memory": [],  \\ array of string for storing summary of evaluations of candidate or any thing you want to remember. First copy the previous memory and append new memory to it.
-    "response": "" \\ the response to the candidate's question
+    "memory": string[],  \\ array of string for storing summary of evaluations of candidate or any thing you want to remember. First copy the previous memory and append new memory to it.
+    "response": string, \\ the response to the candidate's question. Your response should include the next interview question or follow-up question based on their response. Dont put feedback here, feedback should be in memory only.,
+    "feedback": string[] \\ track the feedback for the candidate's response here, but dont include it in the response to the candidate. This will be provided to the candidate after the interview for them to improve on.
   }
   `;
 
@@ -35,7 +36,8 @@ export const getMockInterviewResponse = async (
   - Don't deduct marks for spelling mistakes as it can be caused by speech to text errors.
   - Deduct marks for unrelated answers, lack of clarity, poor structure, and failure to address the question.
   - You can also choose to not change the score.
-  - You can change the question instead of asking the follow ups to better judge the candidate's skills.`;
+  - You can change the question instead of asking the follow ups to better judge the candidate's skills.
+  - Dont put too much unnecessary content in your response, keep it concise and to the point.`;
 
   const fullPrompt = `
   You are a mock interview bot conducting a interview. Your task is to ask questions, evaluate responses, and provide feedback to help the user improve their interview skills.
@@ -72,7 +74,7 @@ export const getMockInterviewResponse = async (
   } catch (error) {
     console.error("Error getting mock interview response:", error);
     // Return a default response in case of error
-    return { score: Math.floor(outOfMarks / 2), memory: previousResponses ? previousResponses.memory : [], response: "I apologize, but I am currently unable to process your request. Please try again later." };
+    return { score: Math.floor(outOfMarks / 2), memory: previousResponses ? previousResponses.memory : [], response: "I apologize, but I am currently unable to process your request. Please try again later.", feedback: []};
   }
 
 };
