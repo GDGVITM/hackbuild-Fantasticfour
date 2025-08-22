@@ -46,7 +46,7 @@ export const dummyAssessmentData: AssessmentData = {
       question: "## Physics - Newton's Laws\n\nAccording to **Newton's Second Law**, which equation correctly represents the relationship between force, mass, and acceleration?\n\n### Given:\n- F = Force (in Newtons)\n- m = Mass (in kg)\n- a = Acceleration (in m/s²)",
       options: [
         "`F = m + a`",
-        "**`F = m × a`** *(Correct - Force equals mass times acceleration)*",
+        "`F = m × a`",
         "`F = m / a`",
         "`F = a / m`"
       ],

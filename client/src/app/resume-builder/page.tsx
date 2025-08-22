@@ -5,6 +5,8 @@ import { ResumeData, SectionType } from './types';
 import { sampleResumeData } from './sampleData';
 import ResumeForm from './ResumeForm';
 import ResumePreview from './ResumePreview';
+import dynamic from 'next/dynamic';
+const PreviewButtonWithModal = dynamic(() => import('./PreviewButtonWithModal'), { ssr: false });
 import { downloadPDF } from './utils';
 import { 
   FileText, 
@@ -458,17 +460,8 @@ export default function TestResumePage() {
             {/* Ultra-Enhanced Preview Content */}
             <div className="relative p-8 sm:p-12">
               <div className="absolute inset-0 bg-gradient-to-br from-[#006d77]/3 via-transparent to-[#83c5be]/3"></div>
-              <div className="relative w-full">
-                <div className="flex justify-center">
-                  <div className="transform scale-75 sm:scale-90 lg:scale-100 origin-center shadow-2xl rounded-2xl overflow-hidden">
-                    <div className="relative">
-                      <div className="absolute inset-0 bg-gradient-to-br from-white via-[#f8fffe] to-[#edf6f9] rounded-2xl"></div>
-                      <div className="relative">
-                        <ResumePreview resumeData={resumeData} />
-                      </div>
-                    </div>
-                  </div>
-                </div>
+              <div className="relative w-full flex flex-col items-center">
+                <PreviewButtonWithModal resumeData={resumeData} />
               </div>
             </div>
           </div>
