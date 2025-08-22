@@ -163,9 +163,12 @@ export default function TimetablePage() {
     setTouchStart(e.targetTouches[0].clientX);
   };
 
-  const onTouchMove = (e: TouchEvent) => {
-    setTouchEnd(e.targetTouches.clientX);
-  };
+const onTouchMove = (e: TouchEvent) => {
+  if (e.touches.length > 0) {
+    setTouchEnd(e.touches[0].clientX);
+  }
+};
+
 
   const onTouchEnd = () => {
     if (!touchStart || !touchEnd) return;
