@@ -15,6 +15,7 @@ export default function LoginPage() {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     auth.initAuthQueue();
@@ -76,126 +77,181 @@ export default function LoginPage() {
   };
 
   return (
-    // Using "Alice Blue" for the main background
-    <div className="min-h-screen bg-[#edf6f9] flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="text-center">
-          {/* Logo/Brand Name using "Caribbean Current" */}
-          <Link href="/" className="text-4xl font-bold text-[#006d77] hover:opacity-80 transition-colors">
-            EduMitra
-          </Link>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Welcome back
-          </h2>
-          <p className="mt-2 text-center text-sm text-gray-600">
-            Sign in to continue to your dashboard
-          </p>
-        </div>
+    <div className="min-h-screen bg-gradient-to-br from-[#edf6f9] via-[#edf6f9] to-[#ffddd2]/20 relative overflow-hidden">
+      {/* Enhanced Animated Background - Matching Landing Page */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-[#83c5be]/10 to-[#006d77]/5 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-tr from-[#ffddd2]/20 to-[#e29578]/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-r from-[#83c5be]/5 to-[#006d77]/5 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '4s' }}></div>
       </div>
 
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white py-8 px-4 shadow-lg rounded-lg sm:px-10">
-          <form className="space-y-6" onSubmit={handleSubmit}>
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                Email address
-              </label>
-              <div className="mt-1">
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  required
-                  value={formData.email}
-                  onChange={handleChange}
-                  placeholder="you@example.com"
-                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-[#006d77] focus:border-[#006d77] sm:text-sm"
-                />
+      <div className="relative z-10 flex flex-col justify-center py-12 sm:px-6 lg:px-8 min-h-screen">
+        <div className="sm:mx-auto sm:w-full sm:max-w-md">
+          <div className="text-center animate-in fade-in zoom-in duration-1000">
+            {/* EduMitra Logo - Matching Landing Page */}
+            <Link href="/" className="group inline-flex items-center space-x-3 hover:scale-105 transition-all duration-300">
+              <div className="w-12 h-12 bg-gradient-to-br from-[#006d77] to-[#83c5be] rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-110">
+                <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                </svg>
               </div>
-            </div>
-
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-                Password
-              </label>
-              <div className="mt-1">
-                <input
-                  id="password"
-                  name="password"
-                  type="password"
-                  autoComplete="current-password"
-                  required
-                  value={formData.password}
-                  onChange={handleChange}
-                  placeholder="Your Password"
-                  className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-[#006d77] focus:border-[#006d77] sm:text-sm"
-                />
-              </div>
-            </div>
+              <span className="text-4xl font-bold bg-gradient-to-r from-[#006d77] to-[#83c5be] bg-clip-text text-transparent group-hover:scale-105 transition-transform duration-300">EduMitra</span>
+            </Link>
             
-            {error && (
-                <p className="text-sm text-red-600 text-center">{error}</p>
-            )}
+            <h2 className="mt-8 text-center text-4xl font-black bg-gradient-to-r from-[#006d77] via-[#83c5be] to-[#006d77] bg-clip-text text-transparent animate-in slide-in-from-bottom-4 duration-1000 delay-300">
+              Welcome back! 👋
+            </h2>
+            <p className="mt-3 text-center text-lg bg-gradient-to-r from-gray-600 to-gray-800 bg-clip-text text-transparent animate-in slide-in-from-bottom-4 duration-1000 delay-500">
+              Sign in to continue your learning journey
+            </p>
+          </div>
+        </div>
 
-            <div className="flex items-center justify-between">
-              <div className="flex items-center">
-                <input
-                  id="remember-me"
-                  name="remember-me"
-                  type="checkbox"
-                  className="h-4 w-4 text-[#006d77] focus:ring-[#e29578] border-gray-300 rounded"
-                />
-                <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">
-                  Remember me
+        <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-md animate-in slide-in-from-bottom-4 duration-1000 delay-700">
+          <div className="bg-white/80 backdrop-blur-xl py-10 px-8 shadow-2xl rounded-3xl border border-white/20 hover:shadow-3xl transition-all duration-300">
+            <form className="space-y-6" onSubmit={handleSubmit}>
+              <div>
+                <label htmlFor="email" className="block text-sm font-semibold bg-gradient-to-r from-[#006d77] to-[#83c5be] bg-clip-text text-transparent mb-2">
+                  Email address
                 </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                    <svg className="h-5 w-5 text-[#83c5be]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />
+                    </svg>
+                  </div>
+                  <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    autoComplete="email"
+                    required
+                    value={formData.email}
+                    onChange={handleChange}
+                    placeholder="you@example.com"
+                    className="block w-full pl-12 pr-4 py-4 border border-gray-200 rounded-2xl shadow-sm placeholder-gray-400 bg-gray-50/50 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-[#006d77]/20 focus:border-[#006d77] focus:bg-white transition-all duration-300 text-base text-gray-800"
+                  />
+                </div>
               </div>
 
-              <div className="text-sm">
-                <Link href="/forgot-password" className="font-medium text-[#006d77] hover:text-[#e29578]">
-                  Forgot password?
+              <div>
+                <label htmlFor="password" className="block text-sm font-semibold bg-gradient-to-r from-[#006d77] to-[#83c5be] bg-clip-text text-transparent mb-2">
+                  Password
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                    <svg className="h-5 w-5 text-[#83c5be]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                    </svg>
+                  </div>
+                  <input
+                    id="password"
+                    name="password"
+                    type={showPassword ? "text" : "password"}
+                    autoComplete="current-password"
+                    required
+                    value={formData.password}
+                    onChange={handleChange}
+                    placeholder="Your Password"
+                    className="block w-full pl-12 pr-12 py-4 border border-gray-200 rounded-2xl shadow-sm placeholder-gray-400 bg-gray-50/50 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-[#006d77]/20 focus:border-[#006d77] focus:bg-white transition-all duration-300 text-base text-gray-800"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute inset-y-0 right-0 pr-4 flex items-center"
+                  >
+                    <svg className="h-5 w-5 text-[#83c5be] hover:text-[#006d77] transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      {showPassword ? (
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21" />
+                      ) : (
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                      )}
+                    </svg>
+                  </button>
+                </div>
+              </div>
+              
+              {error && (
+                <div className="p-4 bg-red-50 border border-red-200 rounded-2xl animate-in slide-in-from-top-2 duration-300">
+                  <div className="flex items-center">
+                    <svg className="h-5 w-5 text-red-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <p className="text-sm text-red-600 font-medium">{error}</p>
+                  </div>
+                </div>
+              )}
+
+              <div className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <input
+                    id="remember-me"
+                    name="remember-me"
+                    type="checkbox"
+                    className="h-4 w-4 text-[#006d77] focus:ring-[#006d77]/20 border-gray-300 rounded transition-all duration-200"
+                  />
+                  <label htmlFor="remember-me" className="ml-2 block text-sm font-medium bg-gradient-to-r from-[#006d77] to-[#83c5be] bg-clip-text text-transparent">
+                    Remember me
+                  </label>
+                </div>
+
+                <div className="text-sm">
+                  <Link href="/forgot-password" className="font-semibold bg-gradient-to-r from-[#006d77] to-[#83c5be] bg-clip-text text-transparent hover:from-[#e29578] hover:to-[#ffddd2] transition-all duration-200">
+                    Forgot password?
+                  </Link>
+                </div>
+              </div>
+
+              <div>
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="group relative w-full flex justify-center py-4 px-4 border border-transparent rounded-2xl shadow-lg text-base font-semibold text-white bg-gradient-to-r from-[#006d77] to-[#83c5be] hover:shadow-xl hover:scale-105 focus:outline-none focus:ring-4 focus:ring-[#83c5be]/30 disabled:opacity-50 transition-all duration-300 overflow-hidden"
+                >
+                  <div className="absolute inset-0 bg-gradient-to-r from-[#83c5be] to-[#006d77] opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  {loading ? (
+                    <>
+                      <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white relative z-10" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      <span className="relative z-10">Signing in...</span>
+                    </>
+                  ) : (
+                    <span className="relative z-10 flex items-center">
+                      Sign in
+                      <svg className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                      </svg>
+                    </span>
+                  )}
+                </button>
+              </div>
+            </form>
+
+            <div className="mt-8">
+              <div className="relative">
+                <div className="absolute inset-0 flex items-center">
+                  <div className="w-full border-t border-gray-200" />
+                </div>
+                <div className="relative flex justify-center text-sm">
+                  <span className="px-4 bg-white/80 bg-gradient-to-r from-gray-500 to-gray-700 bg-clip-text text-transparent font-medium backdrop-blur-sm">New to EduMitra?</span>
+                </div>
+              </div>
+
+              <div className="mt-6">
+                <Link
+                  href="/signup"
+                  className="group relative w-full flex justify-center py-4 px-4 border-2 border-[#e29578] rounded-2xl shadow-lg text-base font-semibold bg-gradient-to-r from-[#e29578] to-[#ffddd2] bg-clip-text text-transparent bg-white/90 backdrop-blur-sm hover:bg-[#e29578] hover:text-white hover:shadow-xl hover:scale-105 focus:outline-none focus:ring-4 focus:ring-[#e29578]/30 transition-all duration-300"
+                >
+                  <span className="flex items-center group-hover:text-white">
+                    Create your account
+                    <svg className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                    </svg>
+                  </span>
                 </Link>
               </div>
-            </div>
-
-            <div>
-              <button
-                type="submit"
-                disabled={loading}
-                className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-[#006d77] hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#006d77] disabled:opacity-50 transition-all"
-              >
-                {loading ? (
-                  <>
-                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                    <span>Signing in...</span>
-                  </>
-                ) : (
-                  'Sign in'
-                )}
-              </button>
-            </div>
-          </form>
-
-          <div className="mt-6">
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-300" />
-              </div>
-              <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white text-gray-500">New to EduMitra?</span>
-              </div>
-            </div>
-
-            <div className="mt-6">
-              <Link
-                href="/signup"
-                className="w-full flex justify-center py-3 px-4 border border-[#e29578] rounded-lg shadow-sm text-sm font-medium text-[#e29578] bg-white hover:bg-[#ffddd2] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#e29578] transition-all"
-              >
-                Create your account
-              </Link>
             </div>
           </div>
         </div>

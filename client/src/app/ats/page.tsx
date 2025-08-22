@@ -19,7 +19,7 @@ export default function ATSPage() {
     formData.append("jd", jd);
 
     try {
-      const res = await fetch("http://localhost:8000/ats/score", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/ats/score`, {
         method: "POST",
         body: formData,
       });
@@ -57,11 +57,13 @@ export default function ATSPage() {
   };
 
   const getScoreColor = (score: number) => {
+  const getScoreColor = (score: number) => {
     if (score >= 80) return "text-[#006D77]";
     if (score >= 60) return "text-[#E29578]";
     return "text-red-500";
   };
 
+  const getScoreBg = (score: number) => {
   const getScoreBg = (score: number) => {
     if (score >= 80) return "bg-[#006D77]";
     if (score >= 60) return "bg-[#E29578]";
@@ -266,4 +268,6 @@ export default function ATSPage() {
       </div>
     </div>
   );
+  }
+}
 }

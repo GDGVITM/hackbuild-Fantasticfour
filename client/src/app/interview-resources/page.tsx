@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { 
   BookOpen, 
@@ -16,7 +16,10 @@ import {
   FileText,
   ExternalLink,
   Search,
-  Filter
+  Filter,
+  Star,
+  TrendingUp,
+  Award
 } from 'lucide-react';
 
 interface Resource {
@@ -29,6 +32,26 @@ interface Resource {
   difficulty: 'Beginner' | 'Intermediate' | 'Advanced';
   type: 'Course' | 'Practice' | 'Sheet' | 'Book' | 'Video';
 }
+
+// Animated Counter Component
+const AnimatedCounter = ({ end, duration = 2000 }: { end: number; duration?: number }) => {
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    let startTime: number;
+    const animate = (currentTime: number) => {
+      if (!startTime) startTime = currentTime;
+      const progress = Math.min((currentTime - startTime) / duration, 1);
+      setCount(Math.floor(progress * end));
+      if (progress < 1) {
+        requestAnimationFrame(animate);
+      }
+    };
+    requestAnimationFrame(animate);
+  }, [end, duration]);
+
+  return <span>{count}</span>;
+};
 
 const resources: Resource[] = [
   // Computer Science & IT Resources
@@ -337,30 +360,47 @@ const getCategoryIcon = (category: string) => {
 const getDifficultyColor = (difficulty: string) => {
   switch (difficulty) {
     case 'Beginner':
-      return 'bg-green-100 text-green-800';
+      return 'text-white';
     case 'Intermediate':
-      return 'bg-yellow-100 text-yellow-800';
+      return 'text-white';
     case 'Advanced':
-      return 'bg-red-100 text-red-800';
+      return 'text-white';
     default:
-      return 'bg-gray-100 text-gray-800';
+      return 'text-white';
+  }
+};
+
+const getDifficultyBg = (difficulty: string) => {
+  switch (difficulty) {
+    case 'Beginner':
+      return '#83c5be';
+    case 'Intermediate':
+      return '#e29578';
+    case 'Advanced':
+      return '#006d77';
+    default:
+      return '#83c5be';
   }
 };
 
 const getTypeColor = (type: string) => {
+  return 'text-white';
+};
+
+const getTypeBg = (type: string) => {
   switch (type) {
     case 'Course':
-      return 'bg-blue-100 text-blue-800';
+      return '#006d77';
     case 'Practice':
-      return 'bg-purple-100 text-purple-800';
+      return '#83c5be';
     case 'Sheet':
-      return 'bg-orange-100 text-orange-800';
+      return '#e29578';
     case 'Book':
-      return 'bg-indigo-100 text-indigo-800';
+      return '#ffddd2';
     case 'Video':
-      return 'bg-pink-100 text-pink-800';
+      return '#83c5be';
     default:
-      return 'bg-gray-100 text-gray-800';
+      return '#83c5be';
   }
 };
 
@@ -371,6 +411,11 @@ export default function InterviewResourcesPage() {
   const [selectedType, setSelectedType] = useState('All');
   const [searchTerm, setSearchTerm] = useState('');
   const [showFilters, setShowFilters] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    setIsLoaded(true);
+  }, []);
 
   const filteredResources = resources.filter(resource => {
     const matchesCategory = selectedCategory === 'All' || resource.category === selectedCategory;
@@ -384,190 +429,307 @@ export default function InterviewResourcesPage() {
   });
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
-      {/* Header */}
-      <header className="bg-white shadow-sm border-b">
+    <div className="min-h-screen relative overflow-hidden" style={{ backgroundColor: '#edf6f9' }}>
+      {/* Enhanced Decorative background elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {/* Large gradient orbs */}
+        <div className="absolute -top-40 -right-40 w-96 h-96 rounded-full opacity-10 animate-pulse" 
+             style={{ 
+               background: 'radial-gradient(circle, #006d77 0%, transparent 70%)',
+               animation: 'float 8s ease-in-out infinite'
+             }}></div>
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 rounded-full opacity-8 animate-pulse" 
+             style={{ 
+               background: 'radial-gradient(circle, #83c5be 0%, transparent 70%)',
+               animation: 'float 10s ease-in-out infinite reverse'
+             }}></div>
+        
+        {/* Floating particles */}
+        {[...Array(20)].map((_, i) => (
+          <div
+            key={i}
+            className="absolute w-2 h-2 rounded-full opacity-20"
+            style={{
+              backgroundColor: i % 3 === 0 ? '#006d77' : i % 3 === 1 ? '#83c5be' : '#e29578',
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              animation: `float ${3 + Math.random() * 4}s ease-in-out infinite`,
+              animationDelay: `${Math.random() * 2}s`
+            }}
+          />
+        ))}
+
+        
+        {/* Mesh gradient overlay */}
+        <div className="absolute inset-0 opacity-20" 
+             style={{
+               backgroundImage: `
+                 radial-gradient(circle at 20% 20%, #83c5be15 0%, transparent 50%),
+                 radial-gradient(circle at 80% 80%, #e2957815 0%, transparent 50%),
+                 radial-gradient(circle at 80% 20%, #006d7715 0%, transparent 50%),
+                 radial-gradient(circle at 20% 80%, #ffddd215 0%, transparent 50%)
+               `
+             }}></div>
+      </div>
+
+      {/* Custom animations */}
+      <style jsx>{`
+        @keyframes float {
+          0%, 100% { transform: translateY(0px) rotate(0deg); }
+          50% { transform: translateY(-20px) rotate(5deg); }
+        }
+        @keyframes slideIn {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes shimmer {
+          0% { transform: translateX(-100%); }
+          100% { transform: translateX(100%); }
+        }
+        .card-hover {
+          transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+          transform: translateY(-8px);
+          box-shadow: 0 25px 50px rgba(0, 109, 119, 0.2);
+        }
+        .shimmer-effect {
+          position: relative;
+          overflow: hidden;
+        }
+        .shimmer-effect::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: -100%;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+          animation: shimmer 2s infinite;
+        }
+      `}</style>
+
+      {/* Enhanced Header */}
+      <header className="shadow-2xl backdrop-blur-lg border-b relative z-10" 
+              style={{ 
+                backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                borderColor: 'rgba(131, 197, 190, 0.3)',
+                boxShadow: '0 8px 32px rgba(0, 109, 119, 0.15)'
+              }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
+          <div className="flex justify-between items-center h-18">
             <div className="flex items-center space-x-4">
-              <Link href="/" className="text-2xl font-bold text-blue-600">
-                EduMitra
+              <Link href="/" className="text-3xl font-bold tracking-tight flex items-center space-x-3 group" style={{ color: '#006d77' }}>
+                <div className="w-12 h-12 rounded-2xl flex items-center justify-center transition-all duration-300 group-hover:scale-110 shimmer-effect"
+                     style={{ background: 'linear-gradient(135deg, #006d77, #83c5be)' }}>
+                  <Star className="w-7 h-7 text-white" />
+                </div>
+                <span>EduMitra</span>
               </Link>
               <span className="text-gray-400">|</span>
-              <h1 className="text-xl font-semibold text-gray-900">Interview Resources</h1>
+              <h1 className="text-xl font-semibold" style={{ color: '#006d77' }}>Interview Resources</h1>
             </div>
-            <div className="flex items-center space-x-3">
-              <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                ✨ Multi-Branch Support
+            <div className="flex items-center space-x-4">
+              <span className="inline-flex items-center px-4 py-2 rounded-xl text-sm font-bold text-white shadow-lg animate-pulse"
+                    style={{ backgroundColor: '#83c5be' }}>
+                <Award className="w-4 h-4 mr-2" />
+                Multi-Branch Support
               </span>
             </div>
           </div>
         </div>
       </header>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Introduction */}
-        <div className="bg-white rounded-xl shadow-sm p-6 mb-8 border border-gray-200">
-          <div className="flex items-start space-x-4">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 relative z-10">
+        {/* Enhanced Introduction */}
+        <div className={`rounded-3xl shadow-2xl p-8 mb-8 backdrop-blur-lg card-hover relative overflow-hidden ${isLoaded ? 'animate-slideIn' : ''}`}
+             style={{ 
+               backgroundColor: 'rgba(255, 255, 255, 0.95)',
+               borderColor: 'rgba(131, 197, 190, 0.3)',
+               animation: isLoaded ? 'slideIn 0.8s ease-out' : 'none'
+             }}>
+          {/* Gradient overlay */}
+          <div className="absolute inset-0 opacity-30"
+               style={{
+                 background: 'linear-gradient(135deg, rgba(131, 197, 190, 0.1), rgba(0, 109, 119, 0.1))'
+               }}></div>
+          
+          <div className="flex items-start space-x-6 relative z-10">
             <div className="flex-shrink-0">
-              <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                <BookOpen className="w-6 h-6 text-blue-600" />
+              <div className="w-16 h-16 rounded-2xl flex items-center justify-center shadow-xl shimmer-effect"
+                   style={{ background: 'linear-gradient(135deg, #83c5be, #006d77)' }}>
+                <BookOpen className="w-8 h-8 text-white" />
               </div>
             </div>
             <div className="flex-1">
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">Interview Resources Hub</h2>
-              <p className="text-gray-600 mb-4">
+              <h2 className="text-3xl font-bold mb-3 tracking-tight" style={{ color: '#006d77' }}>Interview Resources Hub</h2>
+              <p className="text-lg mb-6 leading-relaxed" style={{ color: '#83c5be' }}>
                 Comprehensive collection of interview preparation resources for all engineering branches. From DSA sheets for CS students to core engineering concepts for Mechanical, Electrical, Civil, and Chemical engineers.
               </p>
-              <div className="flex flex-wrap gap-2">
-                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                  <Code className="w-3 h-3 mr-1" />
-                  DSA & Coding
-                </span>
-                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                  <Wrench className="w-3 h-3 mr-1" />
-                  Core Engineering
-                </span>
-                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
-                  <Calculator className="w-3 h-3 mr-1" />
-                  Aptitude & Reasoning
-                </span>
-                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                  <FileText className="w-3 h-3 mr-1" />
-                  Practice Sheets
-                </span>
+              <div className="flex flex-wrap gap-3">
+                {[
+                  { icon: Code, label: 'DSA & Coding', bg: '#006d77' },
+                  { icon: Wrench, label: 'Core Engineering', bg: '#83c5be' },
+                  { icon: Calculator, label: 'Aptitude & Reasoning', bg: '#e29578' },
+                  { icon: FileText, label: 'Practice Sheets', bg: '#ffddd2' }
+                ].map((item, index) => (
+                  <span key={index} 
+                        className="inline-flex items-center px-4 py-2 rounded-xl text-sm font-bold text-white shadow-lg transition-all duration-300 hover:scale-105"
+                        style={{ backgroundColor: item.bg }}>
+                    <item.icon className="w-4 h-4 mr-2" />
+                    {item.label}
+                  </span>
+                ))}
               </div>
             </div>
           </div>
         </div>
 
-        {/* Search and Filters */}
-        <div className="bg-white rounded-xl shadow-sm p-6 mb-6 border border-gray-200">
-          <div className="flex flex-col lg:flex-row gap-4">
-            {/* Search Bar */}
+        {/* Enhanced Search and Filters */}
+        <div className="rounded-3xl shadow-xl p-8 mb-8 backdrop-blur-lg card-hover"
+             style={{ 
+               backgroundColor: 'rgba(255, 255, 255, 0.95)',
+               borderColor: 'rgba(131, 197, 190, 0.3)'
+             }}>
+          <div className="flex flex-col lg:flex-row gap-6">
+            {/* Enhanced Search Bar */}
             <div className="flex-1">
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5" 
+                        style={{ color: '#83c5be' }} />
                 <input
                   type="text"
                   placeholder="Search resources..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full pl-12 pr-4 py-4 rounded-2xl text-lg font-medium transition-all duration-300 focus:scale-105 focus:shadow-xl"
+                  style={{ 
+                    backgroundColor: 'rgba(131, 197, 190, 0.1)',
+                    border: '2px solid rgba(131, 197, 190, 0.3)',
+                    color: '#006d77'
+                  }}
                 />
               </div>
             </div>
 
-            {/* Filter Toggle */}
+            {/* Enhanced Filter Toggle */}
             <button
               onClick={() => setShowFilters(!showFilters)}
-              className="lg:hidden flex items-center justify-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              className="lg:hidden flex items-center justify-center px-6 py-4 rounded-2xl text-white font-bold transition-all duration-300 hover:scale-105 hover:shadow-xl"
+              style={{ backgroundColor: '#006d77' }}
             >
               <Filter className="w-5 h-5 mr-2" />
               Filters
             </button>
           </div>
 
-          {/* Filters */}
-          <div className={`${showFilters ? 'block' : 'hidden'} lg:block mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4`}>
-            {/* Category Filter */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Category</label>
-              <select
-                value={selectedCategory}
-                onChange={(e) => setSelectedCategory(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              >
-                {categories.map(category => (
-                  <option key={category} value={category}>{category}</option>
-                ))}
-              </select>
-            </div>
-
-            {/* Branch Filter */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Branch</label>
-              <select
-                value={selectedBranch}
-                onChange={(e) => setSelectedBranch(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              >
-                {branches.map(branch => (
-                  <option key={branch} value={branch}>{branch}</option>
-                ))}
-              </select>
-            </div>
-
-            {/* Difficulty Filter */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Difficulty</label>
-              <select
-                value={selectedDifficulty}
-                onChange={(e) => setSelectedDifficulty(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              >
-                {difficulties.map(difficulty => (
-                  <option key={difficulty} value={difficulty}>{difficulty}</option>
-                ))}
-              </select>
-            </div>
-
-            {/* Type Filter */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Type</label>
-              <select
-                value={selectedType}
-                onChange={(e) => setSelectedType(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              >
-                {types.map(type => (
-                  <option key={type} value={type}>{type}</option>
-                ))}
-              </select>
-            </div>
+          {/* Enhanced Filters */}
+          <div className={`${showFilters ? 'block' : 'hidden'} lg:block mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6`}>
+            {[
+              { label: 'Category', value: selectedCategory, setValue: setSelectedCategory, options: categories },
+              { label: 'Branch', value: selectedBranch, setValue: setSelectedBranch, options: branches },
+              { label: 'Difficulty', value: selectedDifficulty, setValue: setSelectedDifficulty, options: difficulties },
+              { label: 'Type', value: selectedType, setValue: setSelectedType, options: types }
+            ].map((filter, index) => (
+              <div key={index}>
+                <label className="block text-sm font-bold mb-3" style={{ color: '#006d77' }}>
+                  {filter.label}
+                </label>
+                <select
+                  value={filter.value}
+                  onChange={(e) => filter.setValue(e.target.value)}
+                  className="w-full px-4 py-3 rounded-xl font-medium transition-all duration-300 focus:scale-105 focus:shadow-lg"
+                  style={{ 
+                    backgroundColor: 'rgba(131, 197, 190, 0.1)',
+                    border: '2px solid rgba(131, 197, 190, 0.3)',
+                    color: '#006d77'
+                  }}
+                >
+                  {filter.options.map(option => (
+                    <option key={option} value={option}>{option}</option>
+                  ))}
+                </select>
+              </div>
+            ))}
           </div>
         </div>
 
-        {/* Results Count */}
-        <div className="mb-6">
-          <p className="text-gray-600">
-            Showing <span className="font-semibold">{filteredResources.length}</span> resources
-            {searchTerm && (
-              <span> for &ldquo;<span className="font-semibold">{searchTerm}</span>&rdquo;</span>
-            )}
-          </p>
+        {/* Enhanced Results Count */}
+        <div className="mb-8">
+          <div className="inline-flex items-center px-6 py-3 rounded-2xl shadow-lg"
+               style={{ backgroundColor: 'rgba(255, 255, 255, 0.9)' }}>
+            <TrendingUp className="w-5 h-5 mr-2" style={{ color: '#83c5be' }} />
+            <p className="font-semibold" style={{ color: '#006d77' }}>
+              Showing <span className="text-xl font-bold">{filteredResources.length}</span> resources
+              {searchTerm && (
+                <span> for &ldquo;<span className="font-bold">{searchTerm}</span>&rdquo;</span>
+              )}
+            </p>
+          </div>
         </div>
 
-        {/* Resources Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-          {filteredResources.map((resource) => (
-            <div key={resource.id} className="bg-white rounded-xl shadow-sm border border-gray-200 hover:shadow-lg transition-shadow">
-              <div className="p-6">
-                <div className="flex items-start justify-between mb-4">
-                  <div className="flex items-center space-x-3">
-                    <div className="p-2 bg-blue-100 rounded-lg">
-                      {getCategoryIcon(resource.category)}
+        {/* Enhanced Resources Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+          {filteredResources.map((resource, index) => (
+            <div key={resource.id} 
+                 className="rounded-3xl shadow-xl border backdrop-blur-lg card-hover relative overflow-hidden"
+                 style={{ 
+                   backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                   borderColor: 'rgba(131, 197, 190, 0.3)',
+                   animation: `slideIn 0.6s ease-out ${index * 0.05}s both`
+                 }}>
+              {/* Gradient overlay */}
+              <div className="absolute top-0 left-0 right-0 h-1 opacity-80"
+                   style={{
+                     background: `linear-gradient(90deg, ${getDifficultyBg(resource.difficulty)}, ${getTypeBg(resource.type)})`
+                   }}></div>
+              
+              <div className="p-8">
+                <div className="flex items-start justify-between mb-6">
+                  <div className="flex items-center space-x-4">
+                    <div className="p-3 rounded-2xl shadow-lg shimmer-effect"
+                         style={{ backgroundColor: 'rgba(131, 197, 190, 0.2)' }}>
+                      <div style={{ color: '#006d77' }}>
+                        {getCategoryIcon(resource.category)}
+                      </div>
                     </div>
                     <div>
-                      <h3 className="text-lg font-semibold text-gray-900 mb-1">{resource.title}</h3>
+                      <h3 className="text-xl font-bold mb-2 tracking-tight" style={{ color: '#006d77' }}>
+                        {resource.title}
+                      </h3>
                       <div className="flex items-center space-x-2">
-                        {getBranchIcon(resource.branch[0])}
-                        <span className="text-sm text-gray-600">{resource.branch.join(', ')}</span>
+                        <div style={{ color: '#83c5be' }}>
+                          {getBranchIcon(resource.branch[0])}
+                        </div>
+                        <span className="text-sm font-medium" style={{ color: '#83c5be' }}>
+                          {resource.branch.join(', ')}
+                        </span>
                       </div>
                     </div>
                   </div>
                 </div>
 
-                <p className="text-gray-600 text-sm mb-4 line-clamp-3">{resource.description}</p>
+                <p className="text-base mb-6 leading-relaxed line-clamp-3" style={{ color: '#83c5be' }}>
+                  {resource.description}
+                </p>
 
-                <div className="flex flex-wrap gap-2 mb-4">
-                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${getDifficultyColor(resource.difficulty)}`}>
+                <div className="flex flex-wrap gap-3 mb-6">
+                  <span className="px-3 py-2 rounded-xl text-sm font-bold shadow-lg transition-all duration-300 hover:scale-105"
+                        style={{ 
+                          backgroundColor: getDifficultyBg(resource.difficulty),
+                          color: getDifficultyColor(resource.difficulty)
+                        }}>
                     {resource.difficulty}
                   </span>
-                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${getTypeColor(resource.type)}`}>
+                  <span className="px-3 py-2 rounded-xl text-sm font-bold shadow-lg transition-all duration-300 hover:scale-105"
+                        style={{ 
+                          backgroundColor: getTypeBg(resource.type),
+                          color: getTypeColor(resource.type)
+                        }}>
                     {resource.type}
                   </span>
-                  <span className="px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                  <span className="px-3 py-2 rounded-xl text-sm font-bold shadow-lg transition-all duration-300 hover:scale-105"
+                        style={{ backgroundColor: 'rgba(131, 197, 190, 0.2)', color: '#006d77' }}>
                     {resource.category}
                   </span>
                 </div>
@@ -576,44 +738,120 @@ export default function InterviewResourcesPage() {
                   href={resource.link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center justify-center space-x-2"
+                  className="w-full px-6 py-4 rounded-2xl text-base font-bold text-white transition-all duration-300 hover:scale-105 hover:shadow-xl flex items-center justify-center space-x-3 shimmer-effect"
+                  style={{ backgroundColor: '#006d77' }}
                 >
                   <span>Access Resource</span>
-                  <ExternalLink className="w-4 h-4" />
+                  <ExternalLink className="w-5 h-5" />
                 </a>
               </div>
             </div>
           ))}
         </div>
 
-        {/* No Results */}
+        {/* Enhanced No Results */}
         {filteredResources.length === 0 && (
-          <div className="text-center py-12">
-            <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Search className="w-8 h-8 text-gray-400" />
+          <div className="text-center py-16">
+            <div className="w-24 h-24 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-xl shimmer-effect"
+                 style={{ background: 'linear-gradient(135deg, #83c5be, #006d77)' }}>
+              <Search className="w-12 h-12 text-white" />
             </div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">No resources found</h3>
-            <p className="text-gray-600">Try adjusting your filters or search terms.</p>
+            <h3 className="text-2xl font-bold mb-3" style={{ color: '#006d77' }}>No resources found</h3>
+            <p className="text-lg" style={{ color: '#83c5be' }}>Try adjusting your filters or search terms.</p>
           </div>
         )}
 
-        {/* Quick Stats */}
-        <div className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div className="bg-white rounded-lg p-4 text-center border border-gray-200">
-            <div className="text-2xl font-bold text-blue-600">{resources.filter(r => r.category === 'DSA').length}</div>
-            <div className="text-sm text-gray-600">DSA Resources</div>
+        {/* Enhanced Quick Stats */}
+        <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6">
+          {[
+            {
+              count: resources.filter(r => r.category === 'DSA').length,
+              label: 'DSA Resources',
+              color: '#006d77',
+              icon: Code
+            },
+            {
+              count: resources.filter(r => r.category === 'Core Engineering').length,
+              label: 'Core Engineering',
+              color: '#83c5be',
+              icon: Wrench
+            },
+            {
+              count: resources.filter(r => r.type === 'Practice').length,
+              label: 'Practice Resources',
+              color: '#e29578',
+              icon: TrendingUp
+            },
+            {
+              count: new Set(resources.flatMap(r => r.branch)).size - 1,
+              label: 'Engineering Branches',
+              color: '#ffddd2',
+              icon: Award
+            }
+          ].map((stat, index) => (
+            <div key={index} 
+                 className="rounded-3xl shadow-xl p-6 text-center card-hover backdrop-blur-lg relative overflow-hidden"
+                 style={{ 
+                   backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                   borderColor: 'rgba(131, 197, 190, 0.3)',
+                   animation: `slideIn 0.8s ease-out ${index * 0.1}s both`
+                 }}>
+              {/* Background gradient */}
+              <div className="absolute inset-0 opacity-10"
+                   style={{
+                     background: `linear-gradient(135deg, ${stat.color}40, transparent)`
+                   }}></div>
+              
+              <div className="relative z-10">
+                <div className="w-16 h-16 rounded-2xl mx-auto mb-4 flex items-center justify-center shadow-lg shimmer-effect"
+                     style={{ backgroundColor: `${stat.color}20` }}>
+                  <stat.icon className="w-8 h-8" style={{ color: stat.color }} />
+                </div>
+                <div className="text-4xl font-bold mb-2" 
+                     style={{ color: stat.color === '#ffddd2' ? '#006d77' : stat.color }}>
+                  <AnimatedCounter end={stat.count} duration={2000} />
+                </div>
+                <div className="text-sm font-semibold" style={{ color: '#83c5be' }}>{stat.label}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Feature Highlight Section */}
+        <div className="mt-16 rounded-3xl shadow-2xl p-8 backdrop-blur-lg card-hover relative overflow-hidden"
+             style={{ 
+               backgroundColor: 'rgba(255, 255, 255, 0.95)',
+               borderColor: 'rgba(131, 197, 190, 0.3)'
+             }}>
+          {/* Animated background */}
+          <div className="absolute inset-0 opacity-5">
+            {[...Array(30)].map((_, i) => (
+              <div
+                key={i}
+                className="absolute w-1 h-1 rounded-full"
+                style={{
+                  backgroundColor: '#006d77',
+                  left: `${(i * 3.33) % 100}%`,
+                  top: `${20 + Math.sin(i * 0.5) * 30}%`,
+                  animation: `float ${3 + i * 0.1}s ease-in-out infinite`,
+                  animationDelay: `${i * 0.05}s`
+                }}
+              />
+            ))}
           </div>
-          <div className="bg-white rounded-lg p-4 text-center border border-gray-200">
-            <div className="text-2xl font-bold text-green-600">{resources.filter(r => r.category === 'Core Engineering').length}</div>
-            <div className="text-sm text-gray-600">Core Engineering</div>
-          </div>
-          <div className="bg-white rounded-lg p-4 text-center border border-gray-200">
-            <div className="text-2xl font-bold text-purple-600">{resources.filter(r => r.type === 'Practice').length}</div>
-            <div className="text-sm text-gray-600">Practice Resources</div>
-          </div>
-          <div className="bg-white rounded-lg p-4 text-center border border-gray-200">
-            <div className="text-2xl font-bold text-orange-600">{new Set(resources.flatMap(r => r.branch)).size - 1}</div>
-            <div className="text-sm text-gray-600">Engineering Branches</div>
+          
+          <div className="relative z-10 text-center">
+            <div className="w-20 h-20 rounded-3xl mx-auto mb-6 flex items-center justify-center shadow-xl shimmer-effect"
+                 style={{ background: 'linear-gradient(135deg, #006d77, #83c5be)' }}>
+              <Star className="w-10 h-10 text-white" />
+            </div>
+            <h3 className="text-3xl font-bold mb-4" style={{ color: '#006d77' }}>
+              Curated by Industry Experts
+            </h3>
+            <p className="text-lg max-w-2xl mx-auto leading-relaxed" style={{ color: '#83c5be' }}>
+              All resources are carefully selected and verified by professionals working in top tech companies and engineering firms. 
+              Stay ahead with the most relevant and up-to-date interview preparation materials.
+            </p>
           </div>
         </div>
       </div>
