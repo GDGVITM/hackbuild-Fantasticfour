@@ -1,6 +1,8 @@
 "use client";
 
 import React, { useState, useEffect, useRef, TouchEvent } from 'react';
+import { SAMPLE_TIMETABLE, DAYS, TimeSlot } from '@/lib/timetableData';
+import UpdateTimetableModal from '@/components/UpdateTimetableModal';
 
 // Enhanced color palette
 const COLORS = {
@@ -17,65 +19,7 @@ const COLORS = {
   warning: '#f59e0b'
 };
 
-// Sample timetable data structure
-interface TimeSlot {
-  time: string;
-  subject?: string;
-  room?: string;
-  teacher?: string;
-  type?: 'class' | 'break' | 'free' | 'exam' | 'lab';
-}
-
-const SAMPLE_TIMETABLE: { [key: string]: TimeSlot[] } = {
-  Monday: [
-    { time: '9:00 AM', subject: 'Advanced Mathematics', room: 'Room 101', teacher: 'Dr. Smith', type: 'class' },
-    { time: '10:30 AM', subject: 'Physics Lab', room: 'Physics Lab 2', teacher: 'Prof. Johnson', type: 'lab' },
-    { time: '12:00 PM', subject: 'Lunch Break', type: 'break' },
-    { time: '1:00 PM', subject: 'English Literature', room: 'Room 205', teacher: 'Ms. Davis', type: 'class' },
-    { time: '2:30 PM', subject: 'Chemistry Practical', room: 'Chemistry Lab 1', teacher: 'Dr. Wilson', type: 'lab' },
-    { time: '4:00 PM', subject: 'Study Period', room: 'Library', type: 'free' },
-  ],
-  Tuesday: [
-    { time: '9:00 AM', subject: 'World History', room: 'Room 102', teacher: 'Mr. Brown', type: 'class' },
-    { time: '10:30 AM', subject: 'Biology', room: 'Biology Lab 3', teacher: 'Dr. Taylor', type: 'class' },
-    { time: '12:00 PM', subject: 'Lunch Break', type: 'break' },
-    { time: '1:00 PM', subject: 'Digital Art', room: 'Computer Lab A', teacher: 'Ms. Garcia', type: 'lab' },
-    { time: '2:30 PM', subject: 'Physical Education', room: 'Main Gymnasium', teacher: 'Coach Miller', type: 'class' },
-    { time: '4:00 PM', subject: 'Basketball Practice', room: 'Outdoor Court', teacher: 'Coach Miller', type: 'free' },
-  ],
-  Wednesday: [
-    { time: '9:00 AM', subject: 'Computer Science', room: 'Tech Lab 4', teacher: 'Mr. Lee', type: 'lab' },
-    { time: '10:30 AM', subject: 'Calculus', room: 'Room 101', teacher: 'Dr. Smith', type: 'class' },
-    { time: '12:00 PM', subject: 'Lunch Break', type: 'break' },
-    { time: '1:00 PM', subject: 'Geography', room: 'Room 203', teacher: 'Ms. Anderson', type: 'class' },
-    { time: '2:30 PM', subject: 'Music Theory', room: 'Music Studio', teacher: 'Mr. Thompson', type: 'class' },
-    { time: '4:00 PM', subject: 'Band Practice', room: 'Music Hall', teacher: 'Mr. Thompson', type: 'free' },
-  ],
-  Thursday: [
-    { time: '9:00 AM', subject: 'Literature Analysis', room: 'Room 206', teacher: 'Ms. White', type: 'class' },
-    { time: '10:30 AM', subject: 'Physics Exam', room: 'Exam Hall A', teacher: 'Prof. Johnson', type: 'exam' },
-    { time: '12:00 PM', subject: 'Lunch Break', type: 'break' },
-    { time: '1:00 PM', subject: 'Spanish Conversation', room: 'Language Lab', teacher: 'Señora Martinez', type: 'class' },
-    { time: '2:30 PM', subject: 'Study Hall', room: 'Main Library', type: 'free' },
-  ],
-  Friday: [
-    { time: '9:00 AM', subject: 'Psychology', room: 'Room 104', teacher: 'Dr. Clark', type: 'class' },
-    { time: '10:30 AM', subject: 'Organic Chemistry', room: 'Advanced Lab', teacher: 'Dr. Wilson', type: 'lab' },
-    { time: '12:00 PM', subject: 'Lunch Break', type: 'break' },
-    { time: '1:00 PM', subject: 'Theater Arts', room: 'Main Theater', teacher: 'Ms. Roberts', type: 'class' },
-    { time: '2:30 PM', subject: 'Free Period', type: 'free' },
-  ],
-  Saturday: [
-    { time: '10:00 AM', subject: 'SAT Prep Class', room: 'Room 105', teacher: 'Various Teachers', type: 'exam' },
-    { time: '12:00 PM', subject: 'Sports Activities', room: 'Athletic Field', teacher: 'Coach Miller', type: 'free' },
-    { time: '2:00 PM', subject: 'Club Activities', room: 'Various Rooms', type: 'free' },
-  ],
-  Sunday: [
-    { time: 'All Day', subject: 'Rest & Recreation', type: 'free' },
-  ],
-};
-
-const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+// Sample timetable data structure is now imported from '@/lib/timetableData'
 
 // Enhanced type colors and icons
 const getTypeStyle = (type?: string) => {
@@ -131,6 +75,7 @@ export default function TimetablePage() {
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   
   const containerRef = useRef<HTMLDivElement>(null);
   const minSwipeDistance = 50;
@@ -163,11 +108,10 @@ export default function TimetablePage() {
     setTouchStart(e.targetTouches[0].clientX);
   };
 
-const onTouchMove = (e: TouchEvent) => {
-  if (e.touches.length > 0) {
-    setTouchEnd(e.touches[0].clientX);
-  }
-};
+  const onTouchMove = (e: TouchEvent) => {
+    // Use the first touch's clientX; fall back to null if not available
+    setTouchEnd(e.touches[0]?.clientX ?? null);
+  };
 
   const onTouchEnd = () => {
     if (!touchStart || !touchEnd) return;
@@ -185,6 +129,7 @@ const onTouchMove = (e: TouchEvent) => {
 
   const currentDay = DAYS[currentDayIndex];
   const currentTimetable = SAMPLE_TIMETABLE[currentDay] || [];
+  const hasTimetable = Object.values(SAMPLE_TIMETABLE).some(day => day.length > 0);
 
   const isToday = () => {
     const today = new Date().getDay();
@@ -284,7 +229,7 @@ const onTouchMove = (e: TouchEvent) => {
           borderBottomColor: `${COLORS.lightTeal}40`
         }}
       >
-        <div className="px-6 py-6">
+        <div className="px-4 py-4 sm:px-6 sm:py-6">
           {/* Top row with navigation and current time */}
           <div className="flex items-center justify-between mb-4">
             <button
@@ -304,7 +249,7 @@ const onTouchMove = (e: TouchEvent) => {
             <div className="text-center flex-1 mx-4">
               <div className="flex items-center justify-center space-x-3 mb-2">
                 <h1 
-                  className={`text-2xl font-black transition-all duration-300 ${
+                  className={`text-xl sm:text-2xl font-black transition-all duration-300 ${
                     isTransitioning ? 'scale-95 opacity-50' : 'scale-100 opacity-100'
                   }`}
                   style={{ 
@@ -403,7 +348,7 @@ const onTouchMove = (e: TouchEvent) => {
       {/* Enhanced Swipeable Content */}
       <div 
         ref={containerRef}
-        className={`px-6 py-8 pb-32 transition-all duration-300 ${
+        className={`px-4 py-6 sm:px-6 sm:py-8 pb-28 sm:pb-32 transition-all duration-300 ${
           isTransitioning ? 'opacity-50 transform scale-95' : 'opacity-100 transform scale-100'
         }`}
         onTouchStart={onTouchStart}
@@ -435,7 +380,7 @@ const onTouchMove = (e: TouchEvent) => {
               return (
                 <div
                   key={index}
-                  className="group rounded-2xl p-5 shadow-md hover:shadow-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] border-2"
+                  className="group rounded-2xl p-4 sm:p-5 shadow-md hover:shadow-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] border-2"
                   style={{ 
                     backgroundColor: typeStyle.backgroundColor,
                     borderColor: typeStyle.borderColor,
@@ -444,7 +389,7 @@ const onTouchMove = (e: TouchEvent) => {
                   <div className="flex items-start space-x-4">
                     {/* Enhanced Icon */}
                     <div 
-                      className="flex-shrink-0 w-12 h-12 rounded-xl flex items-center justify-center shadow-lg"
+                      className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center shadow-lg"
                       style={{ backgroundColor: `${typeStyle.iconBg}20` }}
                     >
                       <span className="text-xl">{typeStyle.icon}</span>
@@ -454,7 +399,7 @@ const onTouchMove = (e: TouchEvent) => {
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between mb-2">
                         <div 
-                          className="text-sm font-bold px-3 py-1 rounded-full"
+                          className="text-xs sm:text-sm font-bold px-3 py-1 rounded-full"
                           style={{ 
                             backgroundColor: `${COLORS.darkTeal}15`,
                             color: COLORS.darkTeal 
@@ -477,7 +422,7 @@ const onTouchMove = (e: TouchEvent) => {
                       
                       {slot.subject && (
                         <div 
-                          className="font-bold text-xl mb-2 group-hover:text-opacity-80 transition-all duration-300"
+                          className="font-bold text-lg sm:text-xl mb-2 group-hover:text-opacity-80 transition-all duration-300"
                           style={{ 
                             background: `linear-gradient(135deg, ${COLORS.darkTeal} 0%, ${COLORS.coral} 100%)`,
                             WebkitBackgroundClip: 'text',
@@ -526,15 +471,15 @@ const onTouchMove = (e: TouchEvent) => {
             })
           ) : (
             <div 
-              className="text-center py-16 rounded-3xl shadow-lg border-2 border-dashed"
+              className="text-center py-12 rounded-3xl shadow-lg border-2 border-dashed"
               style={{ 
                 backgroundColor: COLORS.peach,
                 borderColor: COLORS.coral
               }}
             >
-              <div className="text-6xl mb-4 animate-bounce">🎉</div>
+              <div className="text-5xl mb-4 animate-bounce">🎉</div>
               <p 
-                className="font-bold text-xl mb-2"
+                className="font-bold text-lg mb-2"
                 style={{ 
                   background: `linear-gradient(135deg, ${COLORS.darkTeal} 0%, ${COLORS.coral} 100%)`,
                   WebkitBackgroundClip: 'text',
@@ -545,7 +490,7 @@ const onTouchMove = (e: TouchEvent) => {
                 No Classes Today!
               </p>
               <p 
-                className="text-base font-medium"
+                className="text-sm font-medium"
                 style={{ color: COLORS.darkTeal }}
               >
                 Time to relax and recharge 🌟
@@ -557,13 +502,24 @@ const onTouchMove = (e: TouchEvent) => {
 
       {/* Enhanced Bottom Navigation */}
       <div 
-        className="fixed bottom-0 left-0 right-0 p-6 backdrop-blur-lg border-t"
+        className="fixed bottom-0 left-0 right-0 p-4 sm:p-6 backdrop-blur-lg border-t"
         style={{ 
           background: `linear-gradient(to top, ${COLORS.darkTeal}f0 0%, ${COLORS.darkTeal}80 100%)`,
           borderTopColor: `${COLORS.lightTeal}40`
         }}
       >
-        <div className="flex justify-center">
+        <div className="flex flex-col gap-3 sm:flex-row sm:justify-around sm:items-center">
+          <button
+            onClick={() => setIsModalOpen(true)}
+            className="w-full sm:w-auto py-3 rounded-full font-bold text-base sm:text-lg transition-all duration-300 shadow-lg hover:scale-105 active:scale-95 hover:shadow-xl"
+            style={{ 
+              backgroundColor: COLORS.coral,
+              color: COLORS.lightBlue,
+              boxShadow: `0 10px 25px ${COLORS.coral}40`
+            }}
+          >
+            {hasTimetable ? 'Update Timetable' : 'Add Timetable'}
+          </button>
           <button
             onClick={() => {
               const today = new Date().getDay();
@@ -573,7 +529,7 @@ const onTouchMove = (e: TouchEvent) => {
                 setIsTransitioning(false);
               }, 150);
             }}
-            className={`px-8 py-4 rounded-2xl font-bold text-lg transition-all duration-300 shadow-lg ${
+            className={`w-full sm:w-auto py-3 rounded-full font-bold text-base sm:text-lg transition-all duration-300 shadow-lg ${
               isToday() 
                 ? 'opacity-50 cursor-not-allowed' 
                 : 'hover:scale-105 active:scale-95 hover:shadow-xl'
@@ -589,6 +545,8 @@ const onTouchMove = (e: TouchEvent) => {
           </button>
         </div>
       </div>
+
+      <UpdateTimetableModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
 
       {/* Add custom styles for animations */}
       <style jsx>{`

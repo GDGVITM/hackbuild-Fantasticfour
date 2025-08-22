@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { format } from 'date-fns';
+import { SAMPLE_TIMETABLE, DAYS } from '@/lib/timetableData';
 
 // --- Premium Icon Components ---
 const OverviewIcon = () => (
@@ -65,38 +67,67 @@ const CalendarIcon = () => (
   </svg>
 );
 
+const ClockIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg {...props} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+  </svg>
+);
+
+const PrevIcon = () => (
+  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+  </svg>
+);
+
+const NextIcon = () => (
+  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+  </svg>
+);
+
+const UpdateIcon = () => (
+  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.962 8.962 0 0120 13c0 4.97-4.03 9-9 9a8.962 8.962 0 01-2.92-5M4 12h5m-5 0l5 5m5-5h5m-5 0l5-5" />
+  </svg>
+);
+
 export default function DashboardPage() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
-  const [currentTime, setCurrentTime] = useState<Date | null>(null);
-
-  useEffect(() => {
-    setMounted(true);
-    setCurrentTime(new Date());
-    const timer = setInterval(() => setCurrentTime(new Date()), 60000);
-    return () => clearInterval(timer);
-  }, []);
+  const [activeTab, setActiveTab] = useState('overview');
+  const [timetableDate, setTimetableDate] = useState(new Date());
 
   const sidebarItems = [
-    { href: "/community", icon: OverviewIcon, label: "Overview", active: true, count: null },
-    { href: "#", icon: CoursesIcon, label: "My Courses", active: false, count: 5 },
-    { href: "#", icon: CareerIcon, label: "Career Prep", active: false, count: 3 },
-    { href: "#", icon: SettingsIcon, label: "Settings", active: false, count: null },
+    { href: "#", icon: OverviewIcon, label: "Overview", tab: "overview", count: null },
+    { href: "#", icon: CoursesIcon, label: "My Courses", tab: "courses", count: 5 },
+    { href: "#", icon: CareerIcon, label: "Career Prep", tab: "career", count: 3 },
+    { href: "#", icon: SettingsIcon, label: "Settings", tab: "settings", count: null },
+  ];
+  
+  const bottomNavItems = [
+    { label: "Overview", icon: OverviewIcon, tab: "overview" },
+    { label: "Courses", icon: CoursesIcon, tab: "courses" },
+    { label: "Lectures", icon: ClockIcon, tab: "lectures" },
+    { label: "Career", icon: CareerIcon, tab: "career" },
   ];
 
-  const formatTime = (date: Date | null) => {
-    if (!date) return '';
-    return date.toLocaleTimeString('en-US', { 
-      hour: '2-digit', 
-      minute: '2-digit',
-      hour12: true 
+  const goToPreviousDay = () => {
+    setTimetableDate(prevDate => {
+      const newDate = new Date(prevDate);
+      newDate.setDate(newDate.getDate() - 1);
+      return newDate;
     });
   };
 
-  const formatDate = (date : Date | null) => {
-    if (!date) return '';
-    return date.toLocaleDateString('en-US');
+  const goToNextDay = () => {
+    setTimetableDate(prevDate => {
+      const newDate = new Date(prevDate);
+      newDate.setDate(newDate.getDate() + 1);
+      return newDate;
+    });
   };
+  
+  const dayOfWeek = DAYS[timetableDate.getDay()];
+  const lecturesForSelectedDate = SAMPLE_TIMETABLE[dayOfWeek] || [];
 
   return (
     <div className="min-h-screen flex bg-gradient-to-br from-[#edf6f9] via-[#edf6f9] to-[#ffddd2]/20 relative overflow-hidden">
@@ -146,16 +177,16 @@ export default function DashboardPage() {
         <nav className="mt-2 px-3 sm:px-4">
           <div className="space-y-1 sm:space-y-2">
             {sidebarItems.map((item, index) => (
-              <Link
+              <button
                 key={index}
-                href={item.href}
-                className={`flex items-center px-3 sm:px-4 py-3 sm:py-4 text-sm font-medium rounded-xl sm:rounded-2xl transition-all duration-300 group relative overflow-hidden ${
-                  item.active
+                onClick={() => setActiveTab(item.tab)}
+                className={`w-full flex items-center px-3 sm:px-4 py-3 sm:py-4 text-sm font-medium rounded-xl sm:rounded-2xl transition-all duration-300 group relative overflow-hidden ${
+                  activeTab === item.tab
                     ? 'bg-gradient-to-r from-[#83c5be] to-[#83c5be]/80 text-[#006d77] shadow-lg transform scale-[1.02]'
                     : 'hover:bg-white/10 hover:transform hover:translate-x-1 sm:hover:translate-x-2'
                 }`}
               >
-                {item.active && (
+                {activeTab === item.tab && (
                   <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent"></div>
                 )}
                 <div className="relative z-10 flex items-center w-full">
@@ -163,18 +194,18 @@ export default function DashboardPage() {
                   <span className="ml-3 flex-1">{item.label}</span>
                   {item.count && (
                     <span className={`text-xs px-2 py-1 rounded-full ${
-                      item.active 
+                      activeTab === item.tab 
                         ? 'bg-[#006d77]/20 text-[#006d77]' 
                         : 'bg-white/20 text-white'
                     }`}>
                       {item.count}
                     </span>
                   )}
-                  {item.active && (
+                  {activeTab === item.tab && (
                     <div className="ml-2 w-2 h-2 bg-[#006d77] rounded-full animate-pulse"></div>
                   )}
                 </div>
-              </Link>
+              </button>
             ))}
           </div>
         </nav>
@@ -212,9 +243,8 @@ export default function DashboardPage() {
       </aside>
 
       {/* --- Main Content --- */}
-      <div className="flex-1 flex flex-col min-w-0 relative z-10">
+      <div className="flex-1 flex flex-col min-w-0 relative z-10 pb-16 md:pb-0">
         {/* --- Premium Top Bar --- */}
-        {/* <header className="flex items-center justify-between h-14 sm:h-16 lg:h-20 bg-white/80 backdrop-blur-xl shadow-sm px-4 sm:px-6 border-b border-gray-100/50"> */}
         <header className="flex flex-wrap items-center justify-between min-h-16 sm:min-h-20 lg:min-h-24 bg-white/80 backdrop-blur-xl shadow-sm px-4 sm:px-6 border-b border-gray-100/50">
           <div className="flex items-center space-x-2 sm:space-x-6 flex-1 min-w-0">
             <button
@@ -230,22 +260,6 @@ export default function DashboardPage() {
                   Hi, Alex! 
                 </h1>
                 <span className="text-lg sm:text-2xl">🌟</span>
-              </div>
-              <div className="text-xs sm:text-sm text-gray-600 mt-1 flex flex-wrap items-center gap-1 sm:gap-4">
-                <span className="flex items-center text-[10px] sm:text-xs bg-[#83c5be]/10 hidden sm:inline">Ready to conquer your goals today?</span>
-                {/* <span className="sm:hidden">Ready to learn?</span> */}
-                {mounted && (
-                  <>
-                    <span className="flex items-center text-xs bg-[#83c5be]/10 px-2 py-1 rounded-full">
-                      <CalendarIcon />
-                      <span className="ml-1 hidden sm:inline">{formatDate(currentTime)}</span>
-                      <span className="ml-1 sm:hidden">{formatDate(currentTime).split('/')[0]}/{formatDate(currentTime).split('/')[1]}</span>
-                    </span>
-                    <span className="flex items-center text-xs bg-[#006d77]/10 px-2 py-1 rounded-full">
-                      <span>{formatTime(currentTime)}</span>
-                    </span>
-                  </>
-                )}
               </div>
             </div>
           </div>
@@ -271,6 +285,7 @@ export default function DashboardPage() {
 
             {/* Notification Bell */}
             <div className="relative">
+              <Link href="/announcements">
               <button className="p-2 sm:p-3 rounded-xl sm:rounded-2xl text-gray-500 hover:text-[#006d77] hover:bg-[#edf6f9] transition-all duration-200 relative">
                 <BellIcon />
                 <div className="absolute -top-1 -right-1 w-3.5 h-3.5 sm:w-5 sm:h-5 bg-[#e29578] rounded-full flex items-center justify-center shadow-lg">
@@ -278,9 +293,11 @@ export default function DashboardPage() {
                 </div>
                 <div className="absolute -top-1 -right-1 w-3.5 h-3.5 sm:w-5 sm:h-5 bg-[#e29578] rounded-full animate-ping opacity-25"></div>
               </button>
+              </Link>
             </div>
 
             {/* User Profile */}
+            <Link href="/dashboard/profile">
             <div className="flex items-center space-x-2 sm:space-x-4 bg-white/80 backdrop-blur-sm rounded-xl sm:rounded-2xl p-2 border border-gray-200/50 hover:shadow-md transition-all duration-300">
               <div className="text-right hidden sm:block">
                 <p className="text-sm font-semibold text-gray-800">Alex Johnson</p>
@@ -295,287 +312,174 @@ export default function DashboardPage() {
                 <div className="absolute -bottom-0.5 -right-0.5 sm:-bottom-1 sm:-right-1 w-3 h-3 sm:w-4 sm:h-4 bg-green-500 rounded-full border-2 border-white"></div>
               </div>
             </div>
+            </Link>
           </div>
         </header>
 
         <main className="flex-1 p-4 sm:p-6 lg:p-8 overflow-auto">
-          {/* --- Premium Quick Stats --- */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-6 sm:mb-8">
+          {/* --- Premium Quick Stats with Timetable Viewer --- */}
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6 mb-6 sm:mb-8">
             {[
               { 
-                title: "Overall Attendance", 
-                value: "92%", 
-                change: "+2.1%",
-                color: "text-[#006d77]", 
-                bgColor: "from-[#006d77]/10 to-[#006d77]/5", 
-                icon: "📊",
-                trend: "up"
+              title: "Overall Attendance", 
+              value: "92%", 
+              color: "text-[#006d77]", 
+              bgColor: "from-[#006d77]/10 to-[#006d77]/5", 
+              icon: "📊",
+              trend: "up"
               },
               { 
-                title: "Upcoming Deadlines", 
-                value: "3", 
-                change: "2 urgent",
-                color: "text-[#e29578]", 
-                bgColor: "from-[#e29578]/10 to-[#e29578]/5", 
-                icon: "⏰",
-                trend: "neutral"
+              title: "Courses Enrolled", 
+              value: "5", 
+              color: "text-[#006d77]", 
+              bgColor: "from-[#83c5be]/10 to-[#83c5be]/5", 
+              icon: "📚",
+              trend: "up"
               },
               { 
-                title: "Courses Enrolled", 
-                value: "5", 
-                change: "+1 this week",
-                color: "text-[#006d77]", 
-                bgColor: "from-[#83c5be]/10 to-[#83c5be]/5", 
-                icon: "📚",
-                trend: "up"
-              },
-              { 
-                title: "Study Streak", 
-                value: "12 Days", 
-                change: "Personal best!",
-                color: "text-[#006d77]", 
-                bgColor: "from-[#e29578]/10 to-[#ffddd2]/20", 
-                icon: "🔥",
-                trend: "up"
+              title: "Upcoming Deadlines", 
+              value: "12 Days", 
+              color: "text-[#006d77]", 
+              bgColor: "from-[#e29578]/10 to-[#ffddd2]/20", 
+              icon: "📅",
+              trend: "up"
               },
             ].map((stat, index) => (
-              <div key={index} className={`relative p-4 sm:p-6 bg-gradient-to-br ${stat.bgColor} backdrop-blur-sm rounded-2xl sm:rounded-3xl border border-white/50 hover:shadow-xl transition-all duration-500 hover:-translate-y-1 sm:hover:-translate-y-2 group overflow-hidden`}>
-                <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                
-                <div className="relative z-10">
-                  <div className="flex items-center justify-between mb-2 sm:mb-4">
-                    <span className="text-xl sm:text-3xl transform group-hover:scale-110 transition-transform duration-300">{stat.icon}</span>
-                    <div className="flex items-center space-x-1">
-                      {stat.trend === 'up' && (
-                        <div className="flex items-center text-xs text-green-600 bg-green-50 px-1 sm:px-2 py-1 rounded-full">
-                          <TrendingIcon />
-                          <span className="ml-1 hidden sm:inline">{stat.change}</span>
-                        </div>
-                      )}
-                      {stat.trend === 'neutral' && (
-                        <span className="text-xs text-orange-600 bg-orange-50 px-1 sm:px-2 py-1 rounded-full hidden sm:inline">
-                          {stat.change}
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                  
-                  <h3 className="text-xs sm:text-sm font-medium text-gray-600 mb-1 sm:mb-2">{stat.title}</h3>
-                  <p className={`text-xl sm:text-3xl font-bold ${stat.color} mb-1`}>{stat.value}</p>
+              <div
+              key={index}
+              className={`relative p-4 sm:p-6 bg-gradient-to-br ${stat.bgColor} backdrop-blur-sm rounded-2xl sm:rounded-3xl border border-white/50 hover:shadow-xl transition-all duration-500 hover:-translate-y-1 sm:hover:-translate-y-2 group overflow-hidden ${
+                // Make the 3rd card span two columns on small/mobile sizes for symmetry,
+                // revert to single column on large screens.
+                index === 2 ? 'col-span-2 lg:col-span-1' : 'col-span-1'
+              }`}
+              >
+              <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              
+              <div className="relative z-10">
+                <div className="flex items-center justify-between mb-2 sm:mb-4">
+                <span className="text-xl sm:text-3xl transform group-hover:scale-110 transition-transform duration-300">{stat.icon}</span>
+                <div className="flex items-center space-x-1">
+                 
                 </div>
+                </div>
+                
+                <h3 className="text-xs sm:text-sm font-medium text-gray-600 mb-1 sm:mb-2">{stat.title}</h3>
+                <p className={`text-xl sm:text-3xl font-bold ${stat.color} mb-1`}>{stat.value}</p>
+              </div>
 
-                {/* Decorative Elements */}
-                <div className="absolute top-0 right-0 w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-bl from-white/10 to-transparent rounded-full -mr-8 sm:-mr-10 -mt-8 sm:-mt-10"></div>
-                <div className="absolute bottom-0 left-0 w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-tr from-white/5 to-transparent rounded-full -ml-6 sm:-ml-8 -mb-6 sm:-mb-8"></div>
+              {/* Decorative Elements */}
+              <div className="absolute top-0 right-0 w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-bl from-white/10 to-transparent rounded-full -mr-8 sm:-mr-10 -mt-8 sm:-mt-10"></div>
+              <div className="absolute bottom-0 left-0 w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-tr from-white/5 to-transparent rounded-full -ml-6 sm:-ml-8 -mb-6 sm:-mb-8"></div>
               </div>
             ))}
-          </div>
+
+            
+            </div>
 
           {/* --- Enhanced Main Dashboard Sections --- */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
-            {/* Premium Upcoming Tasks */}
-            <div className="lg:col-span-2 bg-white/70 backdrop-blur-xl p-6 sm:p-8 rounded-2xl sm:rounded-3xl border border-white/50 shadow-xl">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 sm:mb-8 gap-4 sm:gap-0">
-                <div>
-                  <h2 className="text-xl sm:text-2xl font-bold text-gray-800 mb-2">Upcoming Tasks & Deadlines</h2>
-                  <p className="text-sm text-gray-500">Stay on top of your academic journey</p>
-                </div>
-                <button className="px-4 py-2 bg-[#006d77] text-white rounded-xl sm:rounded-2xl font-medium hover:bg-[#004f56] transition-all duration-200 hover:shadow-lg text-sm sm:text-base">
-                  View All
-                </button>
+            
+            <div className="col-span-1 lg:col-span-2 bg-white/70 backdrop-blur-xl p-4 sm:p-6 rounded-2xl sm:rounded-3xl border border-white/50 shadow-xl">
+              <div className="flex items-center justify-between mb-2 sm:mb-4">
+              <div className="flex items-center space-x-2">
+                <ClockIcon className="w-5 h-5 text-gray-600" />
+                <h3 className="text-sm sm:text-base font-bold text-gray-800">Today's Lectures</h3>
               </div>
-              
-              <div className="space-y-3 sm:space-y-4">
-                {[
-                  { 
-                    title: "Physics Assignment 2", 
-                    course: "PHY 301",
-                    due: "August 25, 2025", 
-                    priority: "High Priority", 
-                    priorityColor: "from-[#e29578] to-[#e29578]/80", 
-                    days: "3 days left",
-                    progress: 65,
-                    type: "Assignment"
-                  },
-                  { 
-                    title: "Math Quiz 4", 
-                    course: "MATH 205",
-                    due: "August 28, 2025", 
-                    priority: "Medium Priority", 
-                    priorityColor: "from-[#83c5be] to-[#83c5be]/80", 
-                    days: "6 days left",
-                    progress: 30,
-                    type: "Quiz"
-                  },
-                  { 
-                    title: "History Essay Outline", 
-                    course: "HIST 150",
-                    due: "September 2, 2025", 
-                    priority: "Medium Priority", 
-                    priorityColor: "from-[#83c5be] to-[#83c5be]/80", 
-                    days: "11 days left",
-                    progress: 80,
-                    type: "Essay"
-                  },
-                ].map((task, index) => (
-                  <div key={index} className="group relative p-4 sm:p-6 bg-gradient-to-r from-white to-gray-50/50 rounded-xl sm:rounded-2xl border border-gray-100/50 hover:shadow-lg transition-all duration-300 hover:border-[#83c5be]/30 overflow-hidden">
-                    <div className="absolute inset-0 bg-gradient-to-r from-[#83c5be]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                    
-                    <div className="relative z-10">
-                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-0">
-                        <div className="flex items-center space-x-3 sm:space-x-4 flex-1 min-w-0">
-                          <div className={`w-3 h-3 sm:w-4 sm:h-4 rounded-full bg-gradient-to-r ${task.priorityColor} shadow-sm flex-shrink-0`}></div>
-                          
-                          <div className="flex-1 min-w-0">
-                            <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 mb-1">
-                              <h3 className="font-bold text-gray-800 truncate text-sm sm:text-base">{task.title}</h3>
-                              <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full w-fit">
-                                {task.course}
-                              </span>
-                            </div>
-                            <p className="text-xs sm:text-sm text-gray-600 mb-2">Due: {task.due}</p>
-                            
-                            {/* Progress Bar */}
-                            <div className="w-full bg-gray-200 rounded-full h-1.5 mb-2">
-                              <div 
-                                className={`bg-gradient-to-r ${task.priorityColor} h-1.5 rounded-full transition-all duration-500`}
-                                style={{ width: `${task.progress}%` }}
-                              ></div>
-                            </div>
-                            <span className="text-xs text-gray-500">{task.progress}% Complete</span>
-                          </div>
-                        </div>
-                        
-                        <div className="flex items-center justify-between sm:justify-end space-x-3 sm:space-x-4">
-                          <div className="text-left sm:text-right">
-                            <span className="text-xs text-gray-500 font-medium block">{task.days}</span>
-                            <span className="text-xs text-gray-400">{task.type}</span>
-                          </div>
-                          <span className={`px-2 sm:px-3 py-1 sm:py-2 text-xs font-semibold text-white rounded-lg sm:rounded-xl bg-gradient-to-r ${task.priorityColor} shadow-sm`}>
-                            {task.priority}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
+              </div>
+              <div className="flex items-center justify-between mb-4">
+              <button onClick={goToPreviousDay} className="p-1 rounded-full text-gray-600 hover:bg-gray-100 transition-all duration-200">
+                <PrevIcon />
+              </button>
+              <div className="text-center">
+                <p className="text-sm sm:text-lg font-bold text-gray-800">{format(timetableDate, 'EEE, MMM d')}</p>
+              </div>
+              <button onClick={goToNextDay} className="p-1 rounded-full text-gray-600 hover:bg-gray-100 transition-all duration-200">
+                <NextIcon />
+              </button>
+              </div>
+              <div className="space-y-3 h-48 overflow-y-auto">
+              {lecturesForSelectedDate.length > 0 ? (
+                lecturesForSelectedDate.map((lecture, index) => (
+                <div key={index} className="p-3 bg-gray-50/70 backdrop-blur-sm rounded-xl border border-gray-100">
+                  <p className="text-xs font-semibold text-gray-800">{lecture.subject}</p>
+                  <p className="text-[10px] text-gray-600">{lecture.room} • {lecture.time}</p>
+                </div>
+                ))
+              ) : (
+                <div className="text-center py-4 text-gray-500 text-sm">
+                <p>No lectures today.</p>
+                </div>
+              )}
               </div>
 
-              {/* Add Task Button */}
-              <button className="w-full mt-4 sm:mt-6 p-3 sm:p-4 border-2 border-dashed border-gray-300 rounded-xl sm:rounded-2xl text-gray-500 hover:border-[#83c5be] hover:text-[#006d77] transition-all duration-200 group">
-                <div className="flex items-center justify-center space-x-2">
-                  <svg className="w-4 h-4 sm:w-5 sm:h-5 group-hover:scale-110 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                  </svg>
-                  <span className="font-medium text-sm sm:text-base">Add New Task</span>
-                </div>
-              </button>
+              <Link
+              href="/timetable"
+              className="w-full mt-4 inline-flex items-center justify-center px-4 py-2 bg-[#006d77] text-white rounded-xl sm:rounded-2xl font-medium hover:bg-[#004f56] transition-all duration-200"
+              >
+              View Full Timetable
+              </Link>
             </div>
+            
 
             {/* Premium Career Progress */}
-            <div className="bg-white/70 backdrop-blur-xl p-6 sm:p-8 rounded-2xl sm:rounded-3xl border border-white/50 shadow-xl">
-              <div className="mb-6 sm:mb-8">
-                <h2 className="text-xl sm:text-2xl font-bold text-gray-800 mb-2">Career Prep Progress</h2>
-                <p className="text-sm text-gray-500">Building your professional future</p>
+            <div className="bg-white/70 backdrop-blur-xl p-4 sm:p-6 rounded-2xl sm:rounded-3xl border border-white/50 shadow-xl w-full flex flex-col">
+              <div className="mb-4 sm:mb-8">
+                <h2 className="text-lg sm:text-2xl font-bold text-gray-800 mb-1">Career Prep Progress</h2>
+                <p className="text-xs sm:text-sm text-gray-500">Building your professional future</p>
               </div>
-              
-              <div className="space-y-4 sm:space-y-6">
+
+              <div className="space-y-3 sm:space-y-6 w-full">
                 {[
                   { label: "Resume Completion", progress: 75, color: "from-[#006d77] to-[#004f56]", bgColor: "bg-[#006d77]/10" },
                   { label: "Mock Interviews", progress: 40, color: "from-[#83c5be] to-[#006d77]", bgColor: "bg-[#83c5be]/10" },
                   { label: "Skills Assessment", progress: 90, color: "from-[#e29578] to-[#83c5be]", bgColor: "bg-[#e29578]/10" },
                 ].map((item, index) => (
-                  <div key={index} className={`p-3 sm:p-4 rounded-xl sm:rounded-2xl ${item.bgColor} border border-white/50`}>
+                  <div key={index} className={`p-3 sm:p-4 rounded-xl sm:rounded-2xl ${item.bgColor} border border-white/50 w-full`}>
                     <div className="flex items-center justify-between mb-2 sm:mb-3">
-                      <label className="text-sm font-semibold text-gray-700">{item.label}</label>
-                      <span className="text-base sm:text-lg font-bold text-gray-800">{item.progress}%</span>
+                      <label className="text-sm font-semibold text-gray-700 truncate">{item.label}</label>
+                      <span className="text-sm sm:text-lg font-bold text-gray-800">{item.progress}%</span>
                     </div>
                     <div className="relative w-full bg-gray-200/50 rounded-full h-2 sm:h-3 overflow-hidden">
                       <div
                         className={`bg-gradient-to-r ${item.color} h-2 sm:h-3 rounded-full transition-all duration-1000 ease-out relative overflow-hidden shadow-sm`}
                         style={{ width: `${item.progress}%` }}
                       >
-                        <div className="absolute inset-0 bg-gradient-to-r from-white/30 to-transparent"></div>
-                        <div className="absolute inset-0 bg-white/20 animate-pulse"></div>
+                        <div className="absolute inset-0 bg-gradient-to-r from-white/30 to-transparent pointer-events-none"></div>
+                        <div className="absolute inset-0 bg-white/20 animate-pulse pointer-events-none"></div>
                       </div>
                     </div>
                   </div>
                 ))}
-              </div>
-
-              {/* Achievement Badge */}
-              <div className="mt-6 sm:mt-8 p-3 sm:p-4 bg-gradient-to-r from-[#ffddd2]/30 to-[#e29578]/20 rounded-xl sm:rounded-2xl border border-[#e29578]/20">
-                <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-[#e29578] to-[#83c5be] rounded-xl sm:rounded-2xl flex items-center justify-center">
-                    <span className="text-lg sm:text-xl">🏆</span>
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-gray-800 text-sm sm:text-base">Achievement Unlocked!</h4>
-                    <p className="text-xs sm:text-sm text-gray-600">Career Preparation Superstar</p>
-                  </div>
-                </div>
               </div>
 
               {/* Call to Action */}
-              <div className="mt-4 sm:mt-6 p-4 sm:p-6 bg-gradient-to-r from-[#006d77]/10 to-[#83c5be]/10 rounded-xl sm:rounded-2xl border border-[#83c5be]/20">
+              <div className="mt-4 sm:mt-6 p-4 sm:p-6 bg-gradient-to-r from-[#006d77]/10 to-[#83c5be]/10 rounded-xl sm:rounded-2xl border border-[#83c5be]/20 w-full">
                 <p className="text-sm text-gray-600 mb-3 sm:mb-4 text-center">Ready to boost your career prep?</p>
-                <button className="w-full bg-gradient-to-r from-[#006d77] to-[#004f56] text-white py-2 sm:py-3 px-4 rounded-xl sm:rounded-2xl font-semibold hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 text-sm sm:text-base">
-                  Schedule Mock Interview
-                </button>
-              </div>
-            </div>
-          </div>
-
-          {/* Premium Quick Actions & Recent Activity */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 mt-6 sm:mt-8">
-            {/* Quick Actions */}
-            <div className="bg-white/70 backdrop-blur-xl p-6 sm:p-8 rounded-2xl sm:rounded-3xl border border-white/50 shadow-xl">
-              <h3 className="text-lg sm:text-xl font-bold text-gray-800 mb-4 sm:mb-6">Quick Actions</h3>
-              <div className="grid grid-cols-2 gap-3 sm:gap-4">
-                {[
-                  { label: "Join Study Group", color: "from-[#006d77] to-[#004f56]", icon: "👥" },
-                  { label: "Book Office Hours", color: "from-[#83c5be] to-[#006d77]", icon: "📅" },
-                  { label: "Submit Assignment", color: "from-[#e29578] to-[#83c5be]", icon: "📤" },
-                  { label: "Take Practice Quiz", color: "from-[#ffddd2] to-[#e29578] text-gray-700", icon: "🎯" },
-                ].map((action, index) => (
-                  <button
-                    key={index}
-                    className={`p-3 sm:p-4 rounded-xl sm:rounded-2xl font-semibold text-white bg-gradient-to-r ${action.color} hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 group`}
-                  >
-                    <div className="text-center">
-                      <div className="text-xl sm:text-2xl mb-1 sm:mb-2 group-hover:scale-110 transition-transform duration-200">
-                        {action.icon}
-                      </div>
-                      <div className="text-xs sm:text-sm leading-tight">{action.label}</div>
-                    </div>
+                <Link href="/career-resources">
+                  <button className="w-full bg-gradient-to-r from-[#006d77] to-[#004f56] text-white py-2 sm:py-3 px-4 rounded-xl sm:rounded-2xl font-semibold hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 text-sm sm:text-base">
+                    Explore Career Resources
                   </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Recent Activity */}
-            <div className="bg-white/70 backdrop-blur-xl p-6 sm:p-8 rounded-2xl sm:rounded-3xl border border-white/50 shadow-xl">
-              <h3 className="text-lg sm:text-xl font-bold text-gray-800 mb-4 sm:mb-6">Recent Activity</h3>
-              <div className="space-y-3 sm:space-y-4">
-                {[
-                  { action: "Completed", item: "Chemistry Lab Report", time: "2 hours ago", color: "text-green-600" },
-                  { action: "Joined", item: "Study Group - Linear Algebra", time: "1 day ago", color: "text-blue-600" },
-                  { action: "Submitted", item: "English Essay Draft", time: "2 days ago", color: "text-purple-600" },
-                ].map((activity, index) => (
-                  <div key={index} className="flex items-center space-x-3 sm:space-x-4 p-3 sm:p-4 bg-gradient-to-r from-gray-50/80 to-white rounded-xl sm:rounded-2xl border border-gray-100/50">
-                    <div className={`w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full ${activity.color.replace('text-', 'bg-')} flex-shrink-0`}></div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-gray-800">
-                        <span className={activity.color}>{activity.action}</span> {activity.item}
-                      </p>
-                      <p className="text-xs text-gray-500">{activity.time}</p>
-                    </div>
-                  </div>
-                ))}
+                </Link>
               </div>
             </div>
           </div>
         </main>
+      </div>
+
+      {/* --- Mobile Bottom Navigation --- */}
+      <div className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-white/90 backdrop-blur-xl shadow-2xl rounded-t-3xl border-t border-gray-100">
+        <div className="flex justify-around items-center h-16 sm:h-20 py-2">
+          {bottomNavItems.map((item, index) => (
+            <button
+              key={index}
+              onClick={() => setActiveTab(item.tab)}
+              className={`flex flex-col items-center justify-center space-y-1 transition-all duration-300 ${activeTab === item.tab ? 'text-[#006d77] font-semibold' : 'text-gray-500 hover:text-[#006d77]'}`}
+            >
+              <item.icon />
+              <span className="text-[10px] sm:text-xs font-medium">{item.label}</span>
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Enhanced Overlay for mobile */}
@@ -588,5 +492,3 @@ export default function DashboardPage() {
     </div>
   );
 }
-
-
