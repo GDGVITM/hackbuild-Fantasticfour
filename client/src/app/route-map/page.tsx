@@ -17,6 +17,12 @@ const routes: { path: string; label: string }[] = [
     { path: "/parent-dashboard", label: "Parent Dashboard" },
     { path: "/mock-interview", label: "Mock Interview" },
     { path: "/route-map", label: "Route Map" },
+    { path: "/quiz-creator", label: "Quiz Creator" },
+    { path: "/quiz", label: "Quiz" },
+    { path: "/classroom", label: "Classroom" },
+    { path: "/language-settings", label: "Language Settings" },
+    { path: "/timetable", label: "Timetable" },
+
 ];
 
 const containerStyle: React.CSSProperties = {
