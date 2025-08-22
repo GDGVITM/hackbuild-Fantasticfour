@@ -6,6 +6,8 @@ import * as THREE from 'three';
 import { Group } from 'three';
 import { GLTF } from 'three-stdlib';
 
+// removed top-level preload to avoid server-side invocation; we'll preload on the client inside the component
+
 // Define the expected GLTF result structure for better type safety.
 type GLTFResult = GLTF & {
   nodes: { [key: string]: THREE.Mesh | THREE.SkinnedMesh };
@@ -17,89 +19,129 @@ interface ModelProps {
   scale?: number;
 }
 
-interface TeacherModelProps {
-  topHalf?: boolean; // when true, crop to show only top half
-}
+type TeacherModelProps = Record<string, never>;
 
 const Model = ({ modelUrl, scale = 1.2 }: ModelProps) => {
-  // Use a type-safe ref for the Group
   const group = useRef<Group | null>(null);
 
   // Use the GLTFResult type to get type-safe scene and animations
-  const { scene, animations } = useGLTF(modelUrl) as unknown as GLTFResult;
-  
-  // The useAnimations hook returns an object with an `actions` map and `names` array
-  const { actions, names } = useAnimations(animations, group);
+  const gltf = useGLTF(modelUrl) as unknown as GLTFResult;
 
-  // Effect to play the most relevant animation when the component loads
+  // Attach animations to the gltf.scene (safer than passing a ref which may be null initially)
+  const { actions, names } = useAnimations(gltf.animations, gltf.scene);
+
+  // Play a relevant animation
   useEffect(() => {
     if (actions && names && names.length > 0) {
-      // Prioritize "explaining" or "idle" animations, otherwise play the first one
-      const animationToPlay = 
-        names.find(name => name.toLowerCase().includes('explaining')) || 
-        names.find(name => name.toLowerCase().includes('idle')) || 
-        names.find(name => name.toLowerCase().includes('standing')) || 
+      const animationToPlay =
+        names.find(name => name.toLowerCase().includes('explaining')) ||
+        names.find(name => name.toLowerCase().includes('idle')) ||
+        names.find(name => name.toLowerCase().includes('standing')) ||
         names[0];
 
-      if (actions[animationToPlay]) {
+      if (typeof animationToPlay === 'string' && actions[animationToPlay]) {
         actions[animationToPlay].reset().setLoop(THREE.LoopRepeat, Infinity).play();
       }
     }
   }, [actions, names]);
 
-  // Effect to center the model and adjust its vertical position
+  // Center the model and set encoding for textures without mutating the cached scene
+  // Also nudge the model upward so only the top-half is visible by default
   useEffect(() => {
-    if (scene) {
-      // Compute the bounding box to find the center
-      const box = new THREE.Box3().setFromObject(scene);
-      const center = box.getCenter(new THREE.Vector3());
-      
-      // Subtract the center to position the model at the origin
-      scene.position.sub(center); 
-      
-      // Adjust vertical position to be slightly lower
-      scene.position.y -= 0.4;
-    }
-  }, [scene]);
+    if (!group.current || !gltf.scene) return;
 
-  return <primitive ref={group} object={scene} dispose={null} scale={scale} />;
-};
+    // Ensure textures use sRGB encoding for correct colors
+    gltf.scene.traverse((obj: any) => {
+      if (obj.isMesh) {
+        const mat = obj.material as any;
+        if (mat) {
+          if (mat.map) {
+            // use any-cast because typings may not expose SRGBEncoding in this workspace
+            (mat.map as any).encoding = (THREE as any).SRGBEncoding || (THREE as any).sRGBEncoding;
+          }
+          if (mat.emissiveMap) {
+            (mat.emissiveMap as any).encoding = (THREE as any).SRGBEncoding || (THREE as any).sRGBEncoding;
+          }
+          mat.needsUpdate = true;
+        }
+        obj.castShadow = true;
+        obj.receiveShadow = true;
+      }
+    });
 
-const TeacherModel = ({ topHalf = false }: TeacherModelProps) => {
-  const modelUrl = '/Teacher Female Narration 01 (1).glb';
+    // Compute bounding box from the gltf.scene (do not mutate gltf.scene directly)
+    const box = new THREE.Box3().setFromObject(gltf.scene);
+    const center = box.getCenter(new THREE.Vector3());
+    const size = box.getSize(new THREE.Vector3());
 
-  // If topHalf is true we will crop the bottom part by placing the canvas
-  // inside an overflow-hidden container and making the canvas taller and
-  // translating it upwards by 60% so only the top portion is visible.
-  const canvasStyle: React.CSSProperties | undefined = topHalf
-    ? { height: '220%', transform: 'translateY(-60%)' }
-    : undefined;
+    // Position the group to center the model
+    group.current.position.set(-center.x, -center.y, -center.z);
+    // Reverse nudge: push model down to focus on top half
+    group.current.position.y -= size.y * 0.1; // adjusted factor reversed
 
-  const cameraPosition = topHalf ? [0, 0, 1.6] : [0, 0, 2.5];
-  const modelScale = topHalf ? 1.8 : 1.2;
+  }, [gltf.scene]);
 
   return (
-    <div className="w-full h-full rounded-2xl shadow-2xl overflow-hidden">
-      {/* Background behind the 3D canvas when visible */}
+    <group ref={group} scale={scale}>
+      <primitive object={gltf.scene} />
+    </group>
+  );
+};
+
+const TeacherModel = ({}: TeacherModelProps) => {
+  // Use the renamed model file placed in /public to avoid spaces and ensure same-origin loading
+  const modelUrl = '/teacher_female_narration.glb';
+
+  // Preload model only on client to keep any blob URLs alive where needed
+  React.useEffect(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        (useGLTF as any).preload && (useGLTF as any).preload(modelUrl);
+      } catch (e) {
+        // ignore preload errors
+      }
+    }
+  }, [modelUrl]);
+
+  // Zoomed-in top-half view: normal canvas height
+  const canvasStyle: React.CSSProperties = { height: '100%' };
+
+  // Camera positioned for top-half zoomed view
+  const cameraPosition = [0, 0.6, 1.6] as [number, number, number];
+  const modelScale = 1.6;
+
+  return (
+    <div className="w-full h-full rounded-2xl shadow-2xl overflow-hidden bg-transparent">
       <div className="w-full h-full bg-gradient-to-br from-gray-800 via-gray-900 to-black">
-        <Canvas camera={{ position: cameraPosition as [number, number, number], fov: 45 }} style={canvasStyle}>
-          {/* Lights for a good presentation */}
+        <Canvas
+          shadows
+          camera={{ position: cameraPosition, fov: 45 }}
+          style={canvasStyle}
+          onCreated={(state) => {
+            // some three.js typings in this project don't include newer renderer props;
+            // use any-casts to set desired runtime properties safely
+            try {
+              (state.gl as any).outputEncoding = (THREE as any).SRGBEncoding || (THREE as any).sRGBEncoding;
+              (state.gl as any).physicallyCorrectLights = true;
+            } catch (e) {
+              // ignore if renderer doesn't support these in this environment
+            }
+          }}
+        >
           <ambientLight intensity={0.9} color="#ffffff" />
-          <directionalLight position={[5, 5, 5]} intensity={1.5} color="#ffffff" />
+          <directionalLight position={[5, 5, 5]} intensity={1.2} color="#ffffff" castShadow />
           <directionalLight position={[-5, -5, -5]} intensity={0.7} color="#bde0fe" />
-          
-          {/* Suspense handles the loading state of the GLTF model */}
+
           <Suspense fallback={null}>
             <Model modelUrl={modelUrl} scale={modelScale} />
           </Suspense>
 
-          {/* OrbitControls allows for camera interaction */}
-          <OrbitControls 
+          <OrbitControls
             enablePan={false}
             enableZoom={false}
             enableRotate={true}
-            target={[0, 0, 0]}
-            minDistance={2}
+            target={[0, 1.4, 0]}
+            minDistance={1.2}
             maxDistance={5}
             minPolarAngle={Math.PI / 3}
             maxPolarAngle={Math.PI / 1.8}

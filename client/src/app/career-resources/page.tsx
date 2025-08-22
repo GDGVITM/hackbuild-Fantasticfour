@@ -10,6 +10,8 @@ export default function CareerResourcesPage() {
     { key: "mock", label: "Mock Interviews", progress: 40, color: "from-[#83c5be] to-[#006d77]" },
     { key: "ats", label: "ATS Compatibility", progress: 62, color: "from-[#e29578] to-[#83c5be]" },
     { key: "interview", label: "Interview Resources", progress: 28, color: "from-[#ffddd2] to-[#e29578]" },
+    { key: "library", label: "Interview Library", progress: 50, color: "from-[#023e8a] to-[#0077b6]" },
+    { key: "placement", label: "Placement Portal", progress: 80, color: "from-[#4a4e69] to-[#22223b]" },
   ];
 
   const [animated, setAnimated] = useState<number[]>(() => items.map(() => 0));
@@ -87,9 +89,9 @@ export default function CareerResourcesPage() {
           ))}
         </section>
 
-        {/* 4 Panels linking to tools */}
+        {/* 6 Panels linking to tools */}
         <section>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             <Link href="/resume-builder" className="group block">
               <div className="p-5 rounded-2xl bg-white/90 backdrop-blur-sm border border-white/50 shadow-lg hover:scale-102 transition-transform duration-200 active:scale-98 flex items-center space-x-4">
                 <div className="w-14 h-14 rounded-xl flex items-center justify-center text-white font-bold text-lg" style={{ background: 'linear-gradient(135deg,#006d77,#83c5be)' }}>
@@ -129,7 +131,7 @@ export default function CareerResourcesPage() {
               </div>
             </Link>
 
-            <Link href="/interview-library" className="group block">
+            <Link href="/interview-resources" className="group block">
               <div className="p-5 rounded-2xl bg-white/90 backdrop-blur-sm border border-white/50 shadow-lg hover:scale-102 transition-transform duration-200 active:scale-98 flex items-center space-x-4">
                 <div className="w-14 h-14 rounded-xl flex items-center justify-center text-white font-bold text-lg" style={{ background: 'linear-gradient(135deg,#ffddd2,#e29578)' }}>
                   📚
@@ -139,6 +141,32 @@ export default function CareerResourcesPage() {
                   <div className="text-sm text-gray-500">Guides, common questions and tips for interviews.</div>
                 </div>
                 <div className="text-xs text-[#e29578] font-semibold">View</div>
+              </div>
+            </Link>
+
+            <Link href="/interview-library" className="group block">
+              <div className="p-5 rounded-2xl bg-white/90 backdrop-blur-sm border border-white/50 shadow-lg hover:scale-102 transition-transform duration-200 active:scale-98 flex items-center space-x-4">
+                <div className="w-14 h-14 rounded-xl flex items-center justify-center text-white font-bold text-lg" style={{ background: 'linear-gradient(135deg,#023e8a,#0077b6)' }}>
+                  📖
+                </div>
+                <div className="flex-1">
+                  <div className="font-semibold text-gray-800">Interview Library</div>
+                  <div className="text-sm text-gray-500">Browse a collection of interview questions.</div>
+                </div>
+                <div className="text-xs text-[#0077b6] font-semibold">Explore</div>
+              </div>
+            </Link>
+
+            <Link href="/placement" className="group block">
+              <div className="p-5 rounded-2xl bg-white/90 backdrop-blur-sm border border-white/50 shadow-lg hover:scale-102 transition-transform duration-200 active:scale-98 flex items-center space-x-4">
+                <div className="w-14 h-14 rounded-xl flex items-center justify-center text-white font-bold text-lg" style={{ background: 'linear-gradient(135deg,#4a4e69,#22223b)' }}>
+                  🏢
+                </div>
+                <div className="flex-1">
+                  <div className="font-semibold text-gray-800">Placement Portal</div>
+                  <div className="text-sm text-gray-500">Find job opportunities and track applications.</div>
+                </div>
+                <div className="text-xs text-[#4a4e69] font-semibold">Visit</div>
               </div>
             </Link>
           </div>
