@@ -184,7 +184,7 @@ export default function TimetablePage() {
         <div className="text-center z-10">
           <div className="mb-8">
             <div 
-              className="w-16 h-16 border-4 border-t-transparent rounded-full animate-spin mx-auto mb-4"
+              className="w-16 h-16 border-4 border-t-transparent rounded-full animate-spin mx-auto mb-2 sm:mb-3 md:mb-4"
               style={{ borderColor: COLORS.lightBlue, borderTopColor: 'transparent' }}
             />
             <div 
@@ -193,7 +193,7 @@ export default function TimetablePage() {
             />
           </div>
           <h2 
-            className="text-2xl font-bold mb-2"
+            className="text-lg sm:text-xl md:text-2xl font-bold mb-2"
             style={{ 
               background: `linear-gradient(135deg, ${COLORS.lightBlue} 0%, ${COLORS.peach} 100%)`,
               WebkitBackgroundClip: 'text',
@@ -231,10 +231,10 @@ export default function TimetablePage() {
       >
         <div className="px-4 py-4 sm:px-6 sm:py-6">
           {/* Top row with navigation and current time */}
-          <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center justify-between mb-2 sm:mb-3 md:mb-4">
             <button
               onClick={() => navigateToDay('prev')}
-              className="p-3 rounded-2xl transition-all duration-300 hover:scale-110 active:scale-95 shadow-lg hover:shadow-xl"
+              className="p-3 rounded-lg sm:rounded-xl md:rounded-2xltransition-all duration-300 hover:scale-110 active:scale-95 shadow-lg hover:shadow-xl"
               style={{ 
                 backgroundColor: `${COLORS.lightBlue}40`,
                 color: COLORS.darkTeal,
@@ -249,7 +249,7 @@ export default function TimetablePage() {
             <div className="text-center flex-1 mx-4">
               <div className="flex items-center justify-center space-x-3 mb-2">
                 <h1 
-                  className={`text-xl sm:text-2xl font-black transition-all duration-300 ${
+                  className={`text-base sm:text-xl md:text-lg sm:text-xl md:text-2xl font-black transition-all duration-300 ${
                     isTransitioning ? 'scale-95 opacity-50' : 'scale-100 opacity-100'
                   }`}
                   style={{ 
@@ -274,7 +274,7 @@ export default function TimetablePage() {
                   </span>
                 )}
               </div>
-              <div className="flex items-center justify-center space-x-4">
+              <div className="flex items-center justify-center space-x-2 sm:space-x-3 md:space-x-4">
                 <p 
                   className="text-sm font-medium"
                   style={{ color: COLORS.lightTeal }}
@@ -292,7 +292,7 @@ export default function TimetablePage() {
 
             <button
               onClick={() => navigateToDay('next')}
-              className="p-3 rounded-2xl transition-all duration-300 hover:scale-110 active:scale-95 shadow-lg hover:shadow-xl"
+              className="p-3 rounded-lg sm:rounded-xl md:rounded-2xltransition-all duration-300 hover:scale-110 active:scale-95 shadow-lg hover:shadow-xl"
               style={{ 
                 backgroundColor: `${COLORS.lightBlue}40`,
                 color: COLORS.darkTeal,
@@ -373,20 +373,20 @@ export default function TimetablePage() {
         </div>
 
         {/* Enhanced Timetable */}
-        <div className="space-y-4">
+        <div className="space-y-2 sm:space-y-3 md:space-y-4">
           {currentTimetable.length > 0 ? (
             currentTimetable.map((slot, index) => {
               const typeStyle = getTypeStyle(slot.type);
               return (
                 <div
                   key={index}
-                  className="group rounded-2xl p-4 sm:p-5 shadow-md hover:shadow-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] border-2"
+                  className="group rounded-lg sm:rounded-xl md:rounded-2xlp-2 sm:p-3 md:p-4 sm:p-5 shadow-md hover:shadow-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] border-2"
                   style={{ 
                     backgroundColor: typeStyle.backgroundColor,
                     borderColor: typeStyle.borderColor,
                   }}
                 >
-                  <div className="flex items-start space-x-4">
+                  <div className="flex items-start space-x-2 sm:space-x-3 md:space-x-4">
                     {/* Enhanced Icon */}
                     <div 
                       className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center shadow-lg"
@@ -471,13 +471,13 @@ export default function TimetablePage() {
             })
           ) : (
             <div 
-              className="text-center py-12 rounded-3xl shadow-lg border-2 border-dashed"
+              className="text-center py-12 rounded-xl sm:rounded-2xl md:rounded-3xl shadow-lg border-2 border-dashed"
               style={{ 
                 backgroundColor: COLORS.peach,
                 borderColor: COLORS.coral
               }}
             >
-              <div className="text-5xl mb-4 animate-bounce">🎉</div>
+              <div className="text-5xl mb-2 sm:mb-3 md:mb-4 animate-bounce">🎉</div>
               <p 
                 className="font-bold text-lg mb-2"
                 style={{ 
@@ -502,7 +502,7 @@ export default function TimetablePage() {
 
       {/* Enhanced Bottom Navigation */}
       <div 
-        className="fixed bottom-0 left-0 right-0 p-4 sm:p-6 backdrop-blur-lg border-t"
+        className="fixed bottom-0 left-0 right-0 p-2 sm:p-2 sm:p-3 md:p-4 md:p-3 sm:p-4 md:p-6 backdrop-blur-lg border-t"
         style={{ 
           background: `linear-gradient(to top, ${COLORS.darkTeal}f0 0%, ${COLORS.darkTeal}80 100%)`,
           borderTopColor: `${COLORS.lightTeal}40`

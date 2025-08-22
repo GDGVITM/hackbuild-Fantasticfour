@@ -47,14 +47,14 @@ export default function CareerResourcesPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#edf6f9] via-[#edf6f9] to-[#ffddd2]/20 p-4 sm:p-6 lg:p-10 relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-[#edf6f9] via-[#edf6f9] to-[#ffddd2]/20 p-2 sm:p-2 sm:p-3 md:p-4 md:p-3 sm:p-4 md:p-6 lg:p-10 relative overflow-hidden">
       {/* Decorative gradient orbs like dashboard */}
       <div className="absolute -top-36 -right-36 w-72 h-72 bg-gradient-to-br from-[#83c5be]/10 to-[#006d77]/5 rounded-full blur-3xl animate-pulse pointer-events-none"></div>
       <div className="absolute -bottom-36 -left-36 w-72 h-72 bg-gradient-to-tr from-[#ffddd2]/20 to-[#e29578]/10 rounded-full blur-3xl animate-pulse pointer-events-none"></div>
 
       <div className="max-w-5xl mx-auto relative z-10">
-        <header className="mb-6 sm:mb-8">
-          <h1 className="text-2xl sm:text-3xl font-extrabold" style={{ background: 'linear-gradient(90deg,#006d77,#83c5be)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+        <header className="mb-3 sm:mb-3 sm:mb-4 md:mb-6 md:mb-8">
+          <h1 className="text-lg sm:text-xl md:text-2xl sm:text-xl sm:text-2xl md:text-3xl font-extrabold" style={{ background: 'linear-gradient(90deg,#006d77,#83c5be)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
             Career Resources
           </h1>
           <p className="text-sm sm:text-base text-gray-600 mt-1">
@@ -63,9 +63,9 @@ export default function CareerResourcesPage() {
         </header>
 
         {/* Progress overview - stacked on mobile */}
-        <section className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+        <section className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:p-3 md:p-4 mb-3 sm:mb-4 md:mb-6">
           {items.map((it, idx) => (
-            <div key={it.key} className="bg-white/80 backdrop-blur-xl p-4 rounded-2xl border border-white/50 shadow-md">
+            <div key={it.key} className="bg-white/80 backdrop-blur-xl p-2 sm:p-3 md:p-4 rounded-lg sm:rounded-xl md:rounded-2xlborder border-white/50 shadow-md">
               <div className="flex items-center justify-between mb-3">
                 <div>
                   <div className="text-sm font-semibold text-gray-800">{it.label}</div>
@@ -89,9 +89,9 @@ export default function CareerResourcesPage() {
 
         {/* 4 Panels linking to tools */}
         <section>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-2 sm:p-3 md:p-4">
             <Link href="/resume-builder" className="group block">
-              <div className="p-5 rounded-2xl bg-white/90 backdrop-blur-sm border border-white/50 shadow-lg hover:scale-102 transition-transform duration-200 active:scale-98 flex items-center space-x-4">
+              <div className="p-5 rounded-lg sm:rounded-xl md:rounded-2xlbg-white/90 backdrop-blur-sm border border-white/50 shadow-lg hover:scale-102 transition-transform duration-200 active:scale-98 flex items-center space-x-2 sm:space-x-3 md:space-x-4">
                 <div className="w-14 h-14 rounded-xl flex items-center justify-center text-white font-bold text-lg" style={{ background: 'linear-gradient(135deg,#006d77,#83c5be)' }}>
                   📄
                 </div>
@@ -104,7 +104,7 @@ export default function CareerResourcesPage() {
             </Link>
 
             <Link href="/ats" className="group block">
-              <div className="p-5 rounded-2xl bg-white/90 backdrop-blur-sm border border-white/50 shadow-lg hover:scale-102 transition-transform duration-200 active:scale-98 flex items-center space-x-4">
+              <div className="p-5 rounded-lg sm:rounded-xl md:rounded-2xlbg-white/90 backdrop-blur-sm border border-white/50 shadow-lg hover:scale-102 transition-transform duration-200 active:scale-98 flex items-center space-x-2 sm:space-x-3 md:space-x-4">
                 <div className="w-14 h-14 rounded-xl flex items-center justify-center text-white font-bold text-lg" style={{ background: 'linear-gradient(135deg,#e29578,#ffddd2)' }}>
                   🧾
                 </div>
@@ -117,7 +117,7 @@ export default function CareerResourcesPage() {
             </Link>
 
             <Link href="/mock-interview" className="group block">
-              <div className="p-5 rounded-2xl bg-white/90 backdrop-blur-sm border border-white/50 shadow-lg hover:scale-102 transition-transform duration-200 active:scale-98 flex items-center space-x-4">
+              <div className="p-5 rounded-lg sm:rounded-xl md:rounded-2xlbg-white/90 backdrop-blur-sm border border-white/50 shadow-lg hover:scale-102 transition-transform duration-200 active:scale-98 flex items-center space-x-2 sm:space-x-3 md:space-x-4">
                 <div className="w-14 h-14 rounded-xl flex items-center justify-center text-white font-bold text-lg" style={{ background: 'linear-gradient(135deg,#83c5be,#006d77)' }}>
                   🎙️
                 </div>
@@ -130,7 +130,7 @@ export default function CareerResourcesPage() {
             </Link>
 
             <Link href="/interview-library" className="group block">
-              <div className="p-5 rounded-2xl bg-white/90 backdrop-blur-sm border border-white/50 shadow-lg hover:scale-102 transition-transform duration-200 active:scale-98 flex items-center space-x-4">
+              <div className="p-5 rounded-lg sm:rounded-xl md:rounded-2xlbg-white/90 backdrop-blur-sm border border-white/50 shadow-lg hover:scale-102 transition-transform duration-200 active:scale-98 flex items-center space-x-2 sm:space-x-3 md:space-x-4">
                 <div className="w-14 h-14 rounded-xl flex items-center justify-center text-white font-bold text-lg" style={{ background: 'linear-gradient(135deg,#ffddd2,#e29578)' }}>
                   📚
                 </div>

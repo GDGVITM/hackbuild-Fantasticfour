@@ -32,8 +32,8 @@ const QuestionRenderer = ({ children }: { children: string }) => {
             .replace(/\*\*(.*?)\*\*/g, '<strong class="text-teal-700 font-semibold">$1</strong>')
             .replace(/`(.*?)`/g, '<code class="bg-teal-100 text-teal-800 px-1 py-0.5 rounded text-sm">$1</code>')
             .replace(/### (.*?)(\n|$)/g, '<h3 class="text-xl font-bold text-teal-800 mb-2 mt-4">$1</h3>')
-            .replace(/## (.*?)(\n|$)/g, '<h2 class="text-2xl font-bold text-teal-800 mb-3 mt-4">$1</h2>')
-            .replace(/# (.*?)(\n|$)/g, '<h1 class="text-3xl font-bold text-teal-800 mb-4 mt-4">$1</h1>')
+            .replace(/## (.*?)(\n|$)/g, '<h2 class="text-lg sm:text-xl md:text-2xl font-bold text-teal-800 mb-3 mt-4">$1</h2>')
+            .replace(/# (.*?)(\n|$)/g, '<h1 class="text-xl sm:text-2xl md:text-3xl font-bold text-teal-800 mb-2 sm:mb-3 md:mb-4 mt-4">$1</h1>')
             .replace(/> (.*?)(\n|$)/g, '<blockquote class="border-l-4 border-teal-400 pl-4 italic text-gray-700 my-2">$1</blockquote>')
             .replace(/\n/g, '<br/>') 
         }} 
@@ -389,12 +389,12 @@ export default function AssessmentPage() {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-teal-50 to-orange-50 flex items-center justify-center p-3">
         <Card className="w-full bg-white/80 backdrop-blur-sm border-teal-200 shadow-lg">
-          <CardContent className="p-6 text-center">
+          <CardContent className="p-3 sm:p-4 md:p-6 text-center">
             <div className="text-4xl mb-3">📝</div>
             <h2 className="text-xl font-bold text-teal-800 mb-3">
               No Assessment Available
             </h2>
-            <p className="text-teal-700 text-sm mb-4">
+            <p className="text-teal-700 text-sm mb-2 sm:mb-3 md:mb-4">
               No assessment data found. Please complete a course first or check your roadmap for available assessments.
             </p>
             <div className="space-y-2">
@@ -445,16 +445,16 @@ export default function AssessmentPage() {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-teal-50 to-orange-50 p-3">
         <div className="max-w-2xl mx-auto">
-          <Card className="mb-4 bg-white/80 backdrop-blur-sm border-teal-200 shadow-lg">
+          <Card className="mb-2 sm:mb-3 md:mb-4 bg-white/80 backdrop-blur-sm border-teal-200 shadow-lg">
             <CardHeader className="text-center pb-4">
               <div className="flex justify-center mb-3">
                 <Trophy className="w-12 h-12 text-orange-500" />
               </div>
-              <CardTitle className="text-2xl mb-2 text-teal-800">Assessment Complete!</CardTitle>
+              <CardTitle className="text-lg sm:text-xl md:text-2xl mb-2 text-teal-800">Assessment Complete!</CardTitle>
               <CardDescription className="text-base text-teal-700">Here are your results</CardDescription>
             </CardHeader>
             <CardContent className="px-4 pb-4">
-              <div className="text-center mb-4">
+              <div className="text-center mb-2 sm:mb-3 md:mb-4">
                 <div className={`text-4xl font-bold mb-2 ${getGradeColor()}`}>
                   {percentage}%
                 </div>
@@ -562,12 +562,12 @@ export default function AssessmentPage() {
             <div className="flex justify-center mb-3">
               <Brain className="w-12 h-12 text-teal-600" />
             </div>
-            <CardTitle className="text-2xl mb-2 text-teal-800">Ready for Assessment?</CardTitle>
+            <CardTitle className="text-lg sm:text-xl md:text-2xl mb-2 text-teal-800">Ready for Assessment?</CardTitle>
             <CardDescription className="text-base text-teal-700">
               Test your knowledge with {assessmentData.questions.length} questions
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4 px-4 pb-4">
+          <CardContent className="space-y-2 sm:space-y-3 md:space-y-4 px-4 pb-4">
             <div className="grid grid-cols-1 gap-3">
               <div className="text-center p-3 bg-teal-100 backdrop-blur-sm rounded-lg border border-teal-200">
                 <Clock className="w-6 h-6 mx-auto mb-2 text-teal-600" />

@@ -98,22 +98,22 @@ export default function App() {
         src="https://accounts.google.com/gsi/client" 
         strategy="afterInteractive"
       />
-      <div className="min-h-screen bg-gray-50 p-6">
+      <div className="min-h-screen bg-gray-50 p-3 sm:p-4 md:p-6">
         <div className="max-w-6xl mx-auto">
           <div className="mb-8">
-            <h1 className="text-3xl font-bold text-gray-800 mb-2">Google Classroom</h1>
+            <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 mb-2">Google Classroom</h1>
             <p className="text-gray-600">View your pending assignments and deadlines</p>
           </div>
 
           {loading ? (
             <div className="text-center py-8">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#006d77] mx-auto mb-4"></div>
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#006d77] mx-auto mb-2 sm:mb-3 md:mb-4"></div>
               <p className="text-gray-600">Initializing Google Classroom...</p>
             </div>
           ) : error ? (
             <div className="text-center py-12">
               <div className="text-red-500 mb-2">⚠️</div>
-              <p className="text-gray-600 mb-4">{error}</p>
+              <p className="text-gray-600 mb-2 sm:mb-3 md:mb-4">{error}</p>
               <button 
                 onClick={() => window.location.reload()} 
                 className="px-4 py-2 bg-[#006d77] text-white rounded-xl hover:bg-[#004f56] transition-colors"
@@ -123,9 +123,9 @@ export default function App() {
             </div>
           ) : !isSignedIn ? (
             <div className="text-center py-12">
-              <div className="bg-white rounded-2xl shadow-lg p-8 max-w-md mx-auto">
-                <h2 className="text-xl font-semibold text-gray-800 mb-4">Sign in to Google Classroom</h2>
-                <p className="text-gray-600 mb-6">Connect your Google account to view your assignments and courses</p>
+              <div className="bg-white rounded-lg sm:rounded-xl md:rounded-2xlshadow-lg p-4 sm:p-6 md:p-8 max-w-md mx-auto">
+                <h2 className="text-xl font-semibold text-gray-800 mb-2 sm:mb-3 md:mb-4">Sign in to Google Classroom</h2>
+                <p className="text-gray-600 mb-3 sm:mb-4 md:mb-6">Connect your Google account to view your assignments and courses</p>
                 <button
                   onClick={handleLogin}
                   className="px-6 py-3 bg-[#006d77] text-white rounded-xl hover:bg-[#004f56] transition-all duration-200 shadow-lg font-medium"
@@ -136,8 +136,8 @@ export default function App() {
             </div>
           ) : (
             <div>
-              <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl font-bold text-gray-800">Your Assignments</h2>
+              <div className="flex justify-between items-center mb-3 sm:mb-4 md:mb-6">
+                <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-800">Your Assignments</h2>
                 <button
                   onClick={handleLogout}
                   className="px-4 py-2 bg-red-500 text-white rounded-xl hover:bg-red-600 transition-colors"

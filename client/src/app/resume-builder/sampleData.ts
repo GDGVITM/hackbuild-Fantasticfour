@@ -3,7 +3,7 @@ import { ResumeData } from './types';
 // Sample resume data for testing
 export const sampleResumeData: ResumeData = {
   personalInfo: {
-    fullName: "Alex Johnson",
+    fullName: "Prathamesh Sankhe",
     email: "alex.johnson@email.com",
     phone: "+1 (555) 987-6543",
     location: "Austin, TX",

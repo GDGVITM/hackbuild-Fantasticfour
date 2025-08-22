@@ -56,8 +56,8 @@ export default function ResumeForm({
   return (
     <div className="space-y-6">
       {/* Section Navigation */}
-      <div className="bg-white/95 backdrop-blur-xl rounded-3xl shadow-xl border-2 border-[#83c5be]/20">
-        <div className="p-4">
+      <div className="bg-white/95 backdrop-blur-xl rounded-xl sm:rounded-2xl md:rounded-3xl shadow-xl border-2 border-[#83c5be]/20">
+        <div className="p-2 sm:p-3 md:p-4">
           {/* Mobile: Vertical stack */}
           <div className="flex flex-col space-y-3 sm:hidden">
             {sections.map((section) => {
@@ -66,7 +66,7 @@ export default function ResumeForm({
                 <button
                   key={section.key}
                   onClick={() => setActiveSection(section.key)}
-                  className={`flex items-center gap-3 px-6 py-4 rounded-2xl text-sm font-bold transition-all duration-300 hover:scale-105 ${
+                  className={`flex items-center gap-3 px-6 py-4 rounded-lg sm:rounded-xl md:rounded-2xltext-sm font-bold transition-all duration-300 hover:scale-105 ${
                     activeSection === section.key
                       ? `${section.bgColor} text-white shadow-xl transform scale-105`
                       : `bg-white/90 text-[#006d77] hover:${section.lightBg} border-2 ${section.borderColor}/30 shadow-lg`
@@ -88,7 +88,7 @@ export default function ResumeForm({
                   <button
                     key={section.key}
                     onClick={() => setActiveSection(section.key)}
-                    className={`flex items-center gap-3 px-6 py-4 rounded-2xl text-sm font-bold whitespace-nowrap transition-all duration-300 hover:scale-105 ${
+                    className={`flex items-center gap-3 px-6 py-4 rounded-lg sm:rounded-xl md:rounded-2xltext-sm font-bold whitespace-nowrap transition-all duration-300 hover:scale-105 ${
                       activeSection === section.key
                         ? `${section.bgColor} text-white shadow-xl transform scale-105`
                         : `bg-white/90 text-[#006d77] hover:${section.lightBg} border-2 ${section.borderColor}/30 shadow-lg`
@@ -106,26 +106,26 @@ export default function ResumeForm({
       
 
       {/* Form Sections */}
-      <div className="bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl border-2 border-[#83c5be]/20 overflow-hidden">
-        <div className="p-8">
+      <div className="bg-white/95 backdrop-blur-xl rounded-xl sm:rounded-2xl md:rounded-3xl shadow-2xl border-2 border-[#83c5be]/20 overflow-hidden">
+        <div className="p-4 sm:p-6 md:p-8">
           {/* Personal Info Section */}
           {activeSection === 'personal' && (
             <div className="space-y-8">
               <div className="text-center mb-8">
-                <div className={`w-20 h-20 ${currentSection?.bgColor} rounded-3xl flex items-center justify-center mx-auto mb-4 shadow-2xl`}>
+                <div className={`w-20 h-20 ${currentSection?.bgColor} rounded-xl sm:rounded-2xl md:rounded-3xl flex items-center justify-center mx-auto mb-2 sm:mb-3 md:mb-4 shadow-2xl`}>
                   <Users className="w-10 h-10 text-white" />
                 </div>
-                <h3 className="text-3xl font-black text-[#006d77] mb-2">Personal Information</h3>
+                <h3 className="text-xl sm:text-2xl md:text-3xl font-black text-[#006d77] mb-2">Personal Information</h3>
                 <p className="text-[#006d77]/70">Tell us about yourself</p>
               </div>
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-4xl mx-auto">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:p-4 md:p-6 max-w-4xl mx-auto">
                 <div className="space-y-2">
                   <label className="block text-sm font-bold text-[#006d77] mb-3">Full Name</label>
                   <input
                     type="text"
                     value={resumeData.personalInfo.fullName}
                     onChange={(e) => updatePersonalInfo('fullName', e.target.value)}
-                    className="w-full px-6 py-4 border-2 border-[#83c5be]/30 rounded-2xl focus:ring-4 focus:ring-[#006d77]/20 focus:border-[#006d77] text-[#006d77] bg-white/90 shadow-lg font-medium transition-all"
+                    className="w-full px-6 py-4 border-2 border-[#83c5be]/30 rounded-lg sm:rounded-xl md:rounded-2xlfocus:ring-4 focus:ring-[#006d77]/20 focus:border-[#006d77] text-[#006d77] bg-white/90 shadow-lg font-medium transition-all"
                     placeholder="Enter your full name"
                   />
                 </div>
@@ -135,7 +135,7 @@ export default function ResumeForm({
                     type="email"
                     value={resumeData.personalInfo.email}
                     onChange={(e) => updatePersonalInfo('email', e.target.value)}
-                    className="w-full px-6 py-4 border-2 border-[#83c5be]/30 rounded-2xl focus:ring-4 focus:ring-[#006d77]/20 focus:border-[#006d77] text-[#006d77] bg-white/90 shadow-lg font-medium transition-all"
+                    className="w-full px-6 py-4 border-2 border-[#83c5be]/30 rounded-lg sm:rounded-xl md:rounded-2xlfocus:ring-4 focus:ring-[#006d77]/20 focus:border-[#006d77] text-[#006d77] bg-white/90 shadow-lg font-medium transition-all"
                     placeholder="your.email@example.com"
                   />
                 </div>
@@ -145,7 +145,7 @@ export default function ResumeForm({
                     type="tel"
                     value={resumeData.personalInfo.phone}
                     onChange={(e) => updatePersonalInfo('phone', e.target.value)}
-                    className="w-full px-6 py-4 border-2 border-[#83c5be]/30 rounded-2xl focus:ring-4 focus:ring-[#006d77]/20 focus:border-[#006d77] text-[#006d77] bg-white/90 shadow-lg font-medium transition-all"
+                    className="w-full px-6 py-4 border-2 border-[#83c5be]/30 rounded-lg sm:rounded-xl md:rounded-2xlfocus:ring-4 focus:ring-[#006d77]/20 focus:border-[#006d77] text-[#006d77] bg-white/90 shadow-lg font-medium transition-all"
                     placeholder="+1 (555) 123-4567"
                   />
                 </div>
@@ -155,7 +155,7 @@ export default function ResumeForm({
                     type="text"
                     value={resumeData.personalInfo.location}
                     onChange={(e) => updatePersonalInfo('location', e.target.value)}
-                    className="w-full px-6 py-4 border-2 border-[#83c5be]/30 rounded-2xl focus:ring-4 focus:ring-[#006d77]/20 focus:border-[#006d77] text-[#006d77] bg-white/90 shadow-lg font-medium transition-all"
+                    className="w-full px-6 py-4 border-2 border-[#83c5be]/30 rounded-lg sm:rounded-xl md:rounded-2xlfocus:ring-4 focus:ring-[#006d77]/20 focus:border-[#006d77] text-[#006d77] bg-white/90 shadow-lg font-medium transition-all"
                     placeholder="City, State"
                   />
                 </div>
@@ -165,7 +165,7 @@ export default function ResumeForm({
                     type="url"
                     value={resumeData.personalInfo.linkedin}
                     onChange={(e) => updatePersonalInfo('linkedin', e.target.value)}
-                    className="w-full px-6 py-4 border-2 border-[#83c5be]/30 rounded-2xl focus:ring-4 focus:ring-[#006d77]/20 focus:border-[#006d77] text-[#006d77] bg-white/90 shadow-lg font-medium transition-all"
+                    className="w-full px-6 py-4 border-2 border-[#83c5be]/30 rounded-lg sm:rounded-xl md:rounded-2xlfocus:ring-4 focus:ring-[#006d77]/20 focus:border-[#006d77] text-[#006d77] bg-white/90 shadow-lg font-medium transition-all"
                     placeholder="linkedin.com/in/yourprofile"
                   />
                 </div>
@@ -175,7 +175,7 @@ export default function ResumeForm({
                     type="url"
                     value={resumeData.personalInfo.github}
                     onChange={(e) => updatePersonalInfo('github', e.target.value)}
-                    className="w-full px-6 py-4 border-2 border-[#83c5be]/30 rounded-2xl focus:ring-4 focus:ring-[#006d77]/20 focus:border-[#006d77] text-[#006d77] bg-white/90 shadow-lg font-medium transition-all"
+                    className="w-full px-6 py-4 border-2 border-[#83c5be]/30 rounded-lg sm:rounded-xl md:rounded-2xlfocus:ring-4 focus:ring-[#006d77]/20 focus:border-[#006d77] text-[#006d77] bg-white/90 shadow-lg font-medium transition-all"
                     placeholder="github.com/yourusername"
                   />
                 </div>
@@ -185,7 +185,7 @@ export default function ResumeForm({
                     type="url"
                     value={resumeData.personalInfo.website}
                     onChange={(e) => updatePersonalInfo('website', e.target.value)}
-                    className="w-full px-6 py-4 border-2 border-[#83c5be]/30 rounded-2xl focus:ring-4 focus:ring-[#006d77]/20 focus:border-[#006d77] text-[#006d77] bg-white/90 shadow-lg font-medium transition-all"
+                    className="w-full px-6 py-4 border-2 border-[#83c5be]/30 rounded-lg sm:rounded-xl md:rounded-2xlfocus:ring-4 focus:ring-[#006d77]/20 focus:border-[#006d77] text-[#006d77] bg-white/90 shadow-lg font-medium transition-all"
                     placeholder="yourwebsite.com"
                   />
                 </div>
@@ -197,22 +197,22 @@ export default function ResumeForm({
           {activeSection === 'summary' && (
             <div className="space-y-8">
               <div className="text-center mb-8">
-                <div className={`w-20 h-20 ${currentSection?.bgColor} rounded-3xl flex items-center justify-center mx-auto mb-4 shadow-2xl`}>
+                <div className={`w-20 h-20 ${currentSection?.bgColor} rounded-xl sm:rounded-2xl md:rounded-3xl flex items-center justify-center mx-auto mb-2 sm:mb-3 md:mb-4 shadow-2xl`}>
                   <FileText className="w-10 h-10 text-white" />
                 </div>
-                <h3 className="text-3xl font-black text-[#006d77] mb-2">Professional Summary</h3>
+                <h3 className="text-xl sm:text-2xl md:text-3xl font-black text-[#006d77] mb-2">Professional Summary</h3>
                 <p className="text-[#006d77]/70">Describe your professional background</p>
               </div>
               <div className="max-w-4xl mx-auto">
-                <label className="block text-sm font-bold text-[#006d77] mb-4">Summary</label>
+                <label className="block text-sm font-bold text-[#006d77] mb-2 sm:mb-3 md:mb-4">Summary</label>
                 <textarea
                   value={resumeData.summary}
                   onChange={(e) => updateResumeData('summary', e.target.value)}
                   rows={6}
-                  className="w-full px-6 py-4 border-2 border-[#83c5be]/30 rounded-2xl focus:ring-4 focus:ring-[#006d77]/20 focus:border-[#006d77] text-[#006d77] bg-white/90 shadow-lg font-medium transition-all resize-none"
+                  className="w-full px-6 py-4 border-2 border-[#83c5be]/30 rounded-lg sm:rounded-xl md:rounded-2xlfocus:ring-4 focus:ring-[#006d77]/20 focus:border-[#006d77] text-[#006d77] bg-white/90 shadow-lg font-medium transition-all resize-none"
                   placeholder="Write a compelling professional summary that highlights your key strengths and achievements..."
                 />
-                <div className="mt-4 p-4 bg-[#ffddd2]/30 border-2 border-[#e29578]/30 rounded-2xl">
+                <div className="mt-4 p-2 sm:p-3 md:p-4 bg-[#ffddd2]/30 border-2 border-[#e29578]/30 rounded-2xl">
                   <p className="text-sm text-[#006d77]/80 font-medium">Keep it concise (2-3 sentences) and highlight your key strengths</p>
                 </div>
               </div>
@@ -224,15 +224,15 @@ export default function ResumeForm({
             <div className="space-y-8">
               <div className="flex justify-between items-center">
                 <div className="text-center flex-1 mb-8">
-                  <div className={`w-20 h-20 ${currentSection?.bgColor} rounded-3xl flex items-center justify-center mx-auto mb-4 shadow-2xl`}>
+                  <div className={`w-20 h-20 ${currentSection?.bgColor} rounded-xl sm:rounded-2xl md:rounded-3xl flex items-center justify-center mx-auto mb-2 sm:mb-3 md:mb-4 shadow-2xl`}>
                     <Briefcase className="w-10 h-10 text-white" />
                   </div>
-                  <h3 className="text-3xl font-black text-[#006d77] mb-2">Work Experience</h3>
+                  <h3 className="text-xl sm:text-2xl md:text-3xl font-black text-[#006d77] mb-2">Work Experience</h3>
                   <p className="text-[#006d77]/70">Add your professional experience</p>
                 </div>
                 <button
                   onClick={addExperience}
-                  className="bg-[#006d77] hover:bg-[#83c5be] text-white px-6 py-3 rounded-2xl font-bold transition-all duration-300 flex items-center gap-2 shadow-xl hover:shadow-2xl hover:scale-105"
+                  className="bg-[#006d77] hover:bg-[#83c5be] text-white px-6 py-3 rounded-lg sm:rounded-xl md:rounded-2xlfont-bold transition-all duration-300 flex items-center gap-2 shadow-xl hover:shadow-2xl hover:scale-105"
                 >
                   <Plus className="w-5 h-5" />
                   Add Job
@@ -240,10 +240,10 @@ export default function ResumeForm({
               </div>
               <div className="space-y-6">
                 {resumeData.experience.map((exp, index) => (
-                  <div key={exp.id} className="p-8 border-2 border-[#83c5be]/30 rounded-3xl bg-[#edf6f9]/50 shadow-lg hover:shadow-xl transition-all">
-                    <div className="flex justify-between items-start mb-6">
+                  <div key={exp.id} className="p-4 sm:p-6 md:p-8 border-2 border-[#83c5be]/30 rounded-xl sm:rounded-2xl md:rounded-3xl bg-[#edf6f9]/50 shadow-lg hover:shadow-xl transition-all">
+                    <div className="flex justify-between items-start mb-3 sm:mb-4 md:mb-6">
                       <div className="flex items-center gap-3">
-                        <div className="w-12 h-12 bg-[#e29578] rounded-2xl flex items-center justify-center shadow-lg">
+                        <div className="w-12 h-12 bg-[#e29578] rounded-lg sm:rounded-xl md:rounded-2xlflex items-center justify-center shadow-lg">
                           <Briefcase className="w-6 h-6 text-white" />
                         </div>
                         <h4 className="text-xl font-black text-[#006d77]">Position #{index + 1}</h4>
@@ -256,7 +256,7 @@ export default function ResumeForm({
                         Remove
                       </button>
                     </div>
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 sm:p-4 md:p-6">
                       <input
                         type="text"
                         value={exp.title}
@@ -295,7 +295,7 @@ export default function ResumeForm({
                         )}
                       </div>
                       <div className="lg:col-span-2">
-                        <label className="flex items-center text-[#006d77] font-bold gap-3 mb-4">
+                        <label className="flex items-center text-[#006d77] font-bold gap-3 mb-2 sm:mb-3 md:mb-4">
                           <input
                             type="checkbox"
                             checked={exp.current}
@@ -323,10 +323,10 @@ export default function ResumeForm({
           {activeSection === 'skills' && (
             <div className="space-y-8">
               <div className="text-center mb-8">
-                <div className={`w-20 h-20 ${currentSection?.bgColor} rounded-3xl flex items-center justify-center mx-auto mb-4 shadow-2xl`}>
+                <div className={`w-20 h-20 ${currentSection?.bgColor} rounded-xl sm:rounded-2xl md:rounded-3xl flex items-center justify-center mx-auto mb-2 sm:mb-3 md:mb-4 shadow-2xl`}>
                   <Zap className="w-10 h-10 text-white" />
                 </div>
-                <h3 className="text-3xl font-black text-[#006d77] mb-2">Skills</h3>
+                <h3 className="text-xl sm:text-2xl md:text-3xl font-black text-[#006d77] mb-2">Skills</h3>
                 <p className="text-[#006d77]/70">List your technical and professional skills</p>
               </div>
               <div className="space-y-6 max-w-4xl mx-auto">
@@ -339,7 +339,7 @@ export default function ResumeForm({
                       ...resumeData.skills,
                       technical: e.target.value.split(',').map(s => s.trim()).filter(s => s)
                     })}
-                    className="w-full px-6 py-4 border-2 border-[#83c5be]/30 rounded-2xl focus:ring-4 focus:ring-[#006d77]/20 focus:border-[#006d77] text-[#006d77] bg-white/90 shadow-lg font-medium transition-all"
+                    className="w-full px-6 py-4 border-2 border-[#83c5be]/30 rounded-lg sm:rounded-xl md:rounded-2xlfocus:ring-4 focus:ring-[#006d77]/20 focus:border-[#006d77] text-[#006d77] bg-white/90 shadow-lg font-medium transition-all"
                     placeholder="JavaScript, Python, React, Node.js, etc."
                   />
                 </div>
@@ -352,7 +352,7 @@ export default function ResumeForm({
                       ...resumeData.skills,
                       languages: e.target.value.split(',').map(s => s.trim()).filter(s => s)
                     })}
-                    className="w-full px-6 py-4 border-2 border-[#83c5be]/30 rounded-2xl focus:ring-4 focus:ring-[#006d77]/20 focus:border-[#006d77] text-[#006d77] bg-white/90 shadow-lg font-medium transition-all"
+                    className="w-full px-6 py-4 border-2 border-[#83c5be]/30 rounded-lg sm:rounded-xl md:rounded-2xlfocus:ring-4 focus:ring-[#006d77]/20 focus:border-[#006d77] text-[#006d77] bg-white/90 shadow-lg font-medium transition-all"
                     placeholder="English (Native), Spanish (Conversational)"
                   />
                 </div>
@@ -365,11 +365,11 @@ export default function ResumeForm({
                       ...resumeData.skills,
                       tools: e.target.value.split(',').map(s => s.trim()).filter(s => s)
                     })}
-                    className="w-full px-6 py-4 border-2 border-[#83c5be]/30 rounded-2xl focus:ring-4 focus:ring-[#006d77]/20 focus:border-[#006d77] text-[#006d77] bg-white/90 shadow-lg font-medium transition-all"
+                    className="w-full px-6 py-4 border-2 border-[#83c5be]/30 rounded-lg sm:rounded-xl md:rounded-2xlfocus:ring-4 focus:ring-[#006d77]/20 focus:border-[#006d77] text-[#006d77] bg-white/90 shadow-lg font-medium transition-all"
                     placeholder="Git, VS Code, Figma, Docker, etc."
                   />
                 </div>
-                <div className="mt-6 p-6 bg-[#83c5be]/15 border-2 border-[#83c5be]/30 rounded-2xl">
+                <div className="mt-6 p-3 sm:p-4 md:p-6 bg-[#83c5be]/15 border-2 border-[#83c5be]/30 rounded-2xl">
                   <p className="text-sm text-[#006d77]/80 font-medium">Separate each skill with a comma. Focus on skills relevant to your target job.</p>
                 </div>
               </div>
@@ -377,7 +377,7 @@ export default function ResumeForm({
           )}
 
           {/* Navigation for mobile */}
-          <div className="mt-12 flex justify-between items-center gap-4">
+          <div className="mt-12 flex justify-between items-center gap-2 sm:p-3 md:p-4">
             <div className="flex flex-col space-y-3 sm:hidden">
             <button
               onClick={() => {
@@ -387,7 +387,7 @@ export default function ResumeForm({
                   setActiveSection(sectionKeys[currentIndex - 1]);
                 }
               }}
-              className="flex items-center gap-3 bg-[#edf6f9] hover:bg-[#83c5be]/20 text-[#006d77] px-6 py-3 rounded-2xl font-bold transition-all hover:scale-105 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex items-center gap-3 bg-[#edf6f9] hover:bg-[#83c5be]/20 text-[#006d77] px-6 py-3 rounded-lg sm:rounded-xl md:rounded-2xlfont-bold transition-all hover:scale-105 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
               disabled={activeSection === 'personal'}
             >
               <ChevronLeft className="w-5 h-5" />
@@ -409,7 +409,7 @@ export default function ResumeForm({
                   setActiveSection(sectionKeys[currentIndex + 1]);
                 }
               }}
-              className="flex items-center gap-3 bg-[#006d77] hover:bg-[#83c5be] text-white px-6 py-3 rounded-2xl font-bold transition-all hover:scale-105 shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex items-center gap-3 bg-[#006d77] hover:bg-[#83c5be] text-white px-6 py-3 rounded-lg sm:rounded-xl md:rounded-2xlfont-bold transition-all hover:scale-105 shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
               disabled={activeSection === 'certifications'}
             >
               Next

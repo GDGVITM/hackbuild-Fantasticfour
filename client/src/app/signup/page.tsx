@@ -97,7 +97,7 @@ export default function SignupPage() {
     <div className="min-h-screen bg-gradient-to-br from-[#edf6f9] via-[#edf6f9] to-[#ffddd2]/20 relative overflow-hidden">
       {/* Enhanced Animated Background - Matching Landing Page */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-[#83c5be]/10 to-[#006d77]/5 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute -top-2 sm:p-3 md:p-40 -right-40 w-80 h-80 bg-gradient-to-br from-[#83c5be]/10 to-[#006d77]/5 rounded-full blur-3xl animate-pulse"></div>
         <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-tr from-[#ffddd2]/20 to-[#e29578]/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-r from-[#83c5be]/5 to-[#006d77]/5 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '4s' }}></div>
       </div>
@@ -125,10 +125,10 @@ export default function SignupPage() {
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-2xl animate-in slide-in-from-bottom-4 duration-1000 delay-700">
-          <div className="bg-white/80 backdrop-blur-xl py-10 px-8 shadow-2xl rounded-3xl border border-white/20 hover:shadow-3xl transition-all duration-300">
+          <div className="bg-white/80 backdrop-blur-xl py-10 px-8 shadow-2xl rounded-xl sm:rounded-2xl md:rounded-3xl border border-white/20 hover:shadow-3xl transition-all duration-300">
             <form className="space-y-6" onSubmit={handleSubmit}>
               {/* Personal Information Section */}
-              <div className="space-y-4">
+              <div className="space-y-2 sm:space-y-3 md:space-y-4">
                 <h3 className="text-lg font-bold bg-gradient-to-r from-[#006d77] to-[#83c5be] bg-clip-text text-transparent flex items-center">
                   <div className="w-8 h-8 bg-gradient-to-r from-[#006d77] to-[#83c5be] rounded-lg flex items-center justify-center mr-3">
                     <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -138,7 +138,7 @@ export default function SignupPage() {
                   Personal Information
                 </h3>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:p-4 md:p-6">
                   <div>
                     <label htmlFor="name" className="block text-sm font-semibold bg-gradient-to-r from-[#006d77] to-[#83c5be] bg-clip-text text-transparent mb-2">Full Name</label>
                     <div className="relative">
@@ -155,7 +155,7 @@ export default function SignupPage() {
                         value={formData.name}
                         onChange={handleChange}
                         placeholder="John Doe"
-                        className="block w-full pl-12 pr-4 py-4 border border-gray-200 rounded-2xl shadow-sm placeholder-gray-400 bg-gray-50/50 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-[#006d77]/20 focus:border-[#006d77] focus:bg-white transition-all duration-300 text-base text-gray-800"
+                        className="block w-full pl-12 pr-4 py-4 border border-gray-200 rounded-lg sm:rounded-xl md:rounded-2xlshadow-sm placeholder-gray-400 bg-gray-50/50 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-[#006d77]/20 focus:border-[#006d77] focus:bg-white transition-all duration-300 text-base text-gray-800"
                       />
                     </div>
                   </div>
@@ -177,7 +177,7 @@ export default function SignupPage() {
                         value={formData.email}
                         onChange={handleChange}
                         placeholder="you@example.com"
-                        className="block w-full pl-12 pr-4 py-4 border border-gray-200 rounded-2xl shadow-sm placeholder-gray-400 bg-gray-50/50 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-[#006d77]/20 focus:border-[#006d77] focus:bg-white transition-all duration-300 text-base text-gray-800"
+                        className="block w-full pl-12 pr-4 py-4 border border-gray-200 rounded-lg sm:rounded-xl md:rounded-2xlshadow-sm placeholder-gray-400 bg-gray-50/50 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-[#006d77]/20 focus:border-[#006d77] focus:bg-white transition-all duration-300 text-base text-gray-800"
                       />
                     </div>
                   </div>
@@ -185,7 +185,7 @@ export default function SignupPage() {
               </div>
 
               {/* Academic Information Section */}
-              <div className="space-y-4">
+              <div className="space-y-2 sm:space-y-3 md:space-y-4">
                 <h3 className="text-lg font-bold bg-gradient-to-r from-[#83c5be] to-[#e29578] bg-clip-text text-transparent flex items-center">
                   <div className="w-8 h-8 bg-gradient-to-r from-[#83c5be] to-[#e29578] rounded-lg flex items-center justify-center mr-3">
                     <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -211,12 +211,12 @@ export default function SignupPage() {
                       value={formData.college}
                       onChange={handleChange}
                       placeholder="Your College Name"
-                      className="block w-full pl-12 pr-4 py-4 border border-gray-200 rounded-2xl shadow-sm placeholder-gray-400 bg-gray-50/50 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-[#006d77]/20 focus:border-[#006d77] focus:bg-white transition-all duration-300 text-base text-gray-800"
+                      className="block w-full pl-12 pr-4 py-4 border border-gray-200 rounded-lg sm:rounded-xl md:rounded-2xlshadow-sm placeholder-gray-400 bg-gray-50/50 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-[#006d77]/20 focus:border-[#006d77] focus:bg-white transition-all duration-300 text-base text-gray-800"
                     />
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:p-4 md:p-6">
                   <div>
                     <label htmlFor="branch" className="block text-sm font-semibold bg-gradient-to-r from-[#006d77] to-[#83c5be] bg-clip-text text-transparent mb-2">Branch/Course</label>
                     <div className="relative">
@@ -226,7 +226,7 @@ export default function SignupPage() {
                         required
                         value={formData.branch}
                         onChange={handleChange}
-                        className="block w-full pl-4 pr-10 py-4 border border-gray-200 rounded-2xl shadow-sm bg-gray-50/50 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-[#006d77]/20 focus:border-[#006d77] focus:bg-white transition-all duration-300 text-base appearance-none text-gray-800"
+                        className="block w-full pl-4 pr-10 py-4 border border-gray-200 rounded-lg sm:rounded-xl md:rounded-2xlshadow-sm bg-gray-50/50 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-[#006d77]/20 focus:border-[#006d77] focus:bg-white transition-all duration-300 text-base appearance-none text-gray-800"
                       >
                         <option value="">Select Branch</option>
                         <option value="Computer Science">Computer Science</option>
@@ -253,7 +253,7 @@ export default function SignupPage() {
                         required
                         value={formData.year}
                         onChange={handleChange}
-                        className="block w-full pl-4 pr-10 py-4 border border-gray-200 rounded-2xl shadow-sm bg-gray-50/50 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-[#006d77]/20 focus:border-[#006d77] focus:bg-white transition-all duration-300 text-base appearance-none text-gray-800"
+                        className="block w-full pl-4 pr-10 py-4 border border-gray-200 rounded-lg sm:rounded-xl md:rounded-2xlshadow-sm bg-gray-50/50 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-[#006d77]/20 focus:border-[#006d77] focus:bg-white transition-all duration-300 text-base appearance-none text-gray-800"
                       >
                         <option value="">Select Year</option>
                         <option value="1st Year">1st Year</option>
@@ -273,7 +273,7 @@ export default function SignupPage() {
               </div>
 
               {/* Security Section */}
-              <div className="space-y-4">
+              <div className="space-y-2 sm:space-y-3 md:space-y-4">
                 <h3 className="text-lg font-bold bg-gradient-to-r from-[#e29578] to-[#ffddd2] bg-clip-text text-transparent flex items-center">
                   <div className="w-8 h-8 bg-gradient-to-r from-[#e29578] to-[#ffddd2] rounded-lg flex items-center justify-center mr-3">
                     <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -283,7 +283,7 @@ export default function SignupPage() {
                   Security
                 </h3>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:p-4 md:p-6">
                   <div>
                     <label htmlFor="password" className="block text-sm font-semibold bg-gradient-to-r from-[#006d77] to-[#83c5be] bg-clip-text text-transparent mb-2">Password</label>
                     <div className="relative">
@@ -301,7 +301,7 @@ export default function SignupPage() {
                         value={formData.password}
                         onChange={handleChange}
                         placeholder="Create a strong password"
-                        className="block w-full pl-12 pr-12 py-4 border border-gray-200 rounded-2xl shadow-sm placeholder-gray-400 bg-gray-50/50 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-[#006d77]/20 focus:border-[#006d77] focus:bg-white transition-all duration-300 text-base text-gray-800"
+                        className="block w-full pl-12 pr-12 py-4 border border-gray-200 rounded-lg sm:rounded-xl md:rounded-2xlshadow-sm placeholder-gray-400 bg-gray-50/50 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-[#006d77]/20 focus:border-[#006d77] focus:bg-white transition-all duration-300 text-base text-gray-800"
                       />
                       <button
                         type="button"
@@ -336,7 +336,7 @@ export default function SignupPage() {
                         value={formData.confirmPassword}
                         onChange={handleChange}
                         placeholder="Confirm your password"
-                        className="block w-full pl-12 pr-12 py-4 border border-gray-200 rounded-2xl shadow-sm placeholder-gray-400 bg-gray-50/50 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-[#006d77]/20 focus:border-[#006d77] focus:bg-white transition-all duration-300 text-base text-gray-800"
+                        className="block w-full pl-12 pr-12 py-4 border border-gray-200 rounded-lg sm:rounded-xl md:rounded-2xlshadow-sm placeholder-gray-400 bg-gray-50/50 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-[#006d77]/20 focus:border-[#006d77] focus:bg-white transition-all duration-300 text-base text-gray-800"
                       />
                       <button
                         type="button"
@@ -357,7 +357,7 @@ export default function SignupPage() {
               </div>
               
               {error && (
-                <div className="p-4 bg-red-50 border border-red-200 rounded-2xl animate-in slide-in-from-top-2 duration-300">
+                <div className="p-2 sm:p-3 md:p-4 bg-red-50 border border-red-200 rounded-lg sm:rounded-xl md:rounded-2xlanimate-in slide-in-from-top-2 duration-300">
                   <div className="flex items-center">
                     <svg className="h-5 w-5 text-red-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -390,7 +390,7 @@ export default function SignupPage() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="group relative w-full flex justify-center py-4 px-4 border border-transparent rounded-2xl shadow-lg text-base font-semibold text-white bg-gradient-to-r from-[#006d77] to-[#83c5be] hover:shadow-xl hover:scale-105 focus:outline-none focus:ring-4 focus:ring-[#83c5be]/30 disabled:opacity-50 transition-all duration-300 overflow-hidden"
+                  className="group relative w-full flex justify-center py-4 px-4 border border-transparent rounded-lg sm:rounded-xl md:rounded-2xlshadow-lg text-base font-semibold text-white bg-gradient-to-r from-[#006d77] to-[#83c5be] hover:shadow-xl hover:scale-105 focus:outline-none focus:ring-4 focus:ring-[#83c5be]/30 disabled:opacity-50 transition-all duration-300 overflow-hidden"
                 >
                   <div className="absolute inset-0 bg-gradient-to-r from-[#83c5be] to-[#006d77] opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                   {loading ? (
@@ -425,7 +425,7 @@ export default function SignupPage() {
               <div className="mt-6">
                 <Link
                   href="/login"
-                  className="group relative w-full flex justify-center py-4 px-4 border-2 border-[#e29578] rounded-2xl shadow-lg text-base font-semibold bg-gradient-to-r from-[#e29578] to-[#ffddd2] bg-clip-text text-transparent bg-white/90 backdrop-blur-sm hover:bg-[#e29578] hover:text-white hover:shadow-xl hover:scale-105 focus:outline-none focus:ring-4 focus:ring-[#e29578]/30 transition-all duration-300"
+                  className="group relative w-full flex justify-center py-4 px-4 border-2 border-[#e29578] rounded-lg sm:rounded-xl md:rounded-2xlshadow-lg text-base font-semibold bg-gradient-to-r from-[#e29578] to-[#ffddd2] bg-clip-text text-transparent bg-white/90 backdrop-blur-sm hover:bg-[#e29578] hover:text-white hover:shadow-xl hover:scale-105 focus:outline-none focus:ring-4 focus:ring-[#e29578]/30 transition-all duration-300"
                 >
                   <span className="flex items-center group-hover:text-white">
                     Sign in instead

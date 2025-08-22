@@ -25,9 +25,9 @@ export default function ProfilePage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#edf6f9] p-6">
-      <div className="max-w-3xl mx-auto bg-white shadow-md rounded-lg p-6">
-        <h1 className="text-2xl font-bold mb-4">Your Profile</h1>
+    <div className="min-h-screen bg-[#edf6f9] p-3 sm:p-4 md:p-6">
+      <div className="max-w-3xl mx-auto bg-white shadow-md rounded-lg p-3 sm:p-4 md:p-6">
+        <h1 className="text-lg sm:text-xl md:text-2xl font-bold mb-2 sm:mb-3 md:mb-4">Your Profile</h1>
         <div className="space-y-2">
           <div>
             <h2 className="text-sm text-gray-500">Username</h2>

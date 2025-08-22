@@ -77,14 +77,14 @@ export default function InterviewLibraryPage() {
   }, [query, activeCategory]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#edf6f9] via-[#edf6f9] to-[#ffddd2]/20 p-4 sm:p-6 lg:p-10 relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-[#edf6f9] via-[#edf6f9] to-[#ffddd2]/20 p-2 sm:p-2 sm:p-3 md:p-4 md:p-3 sm:p-4 md:p-6 lg:p-10 relative overflow-hidden">
       {/* Decorative orbs similar to career-resources */}
       <div className="absolute -top-36 -right-36 w-72 h-72 bg-gradient-to-br from-[#83c5be]/10 to-[#006d77]/5 rounded-full blur-3xl animate-pulse pointer-events-none"></div>
       <div className="absolute -bottom-36 -left-36 w-72 h-72 bg-gradient-to-tr from-[#ffddd2]/20 to-[#e29578]/10 rounded-full blur-3xl animate-pulse pointer-events-none"></div>
 
       <div className="max-w-4xl mx-auto relative z-10">
-        <header className="mb-4">
-          <h1 className="text-2xl sm:text-3xl font-extrabold" style={{ background: 'linear-gradient(90deg,#006d77,#83c5be)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+        <header className="mb-2 sm:mb-3 md:mb-4">
+          <h1 className="text-lg sm:text-xl md:text-2xl sm:text-xl sm:text-2xl md:text-3xl font-extrabold" style={{ background: 'linear-gradient(90deg,#006d77,#83c5be)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
             Interview Library
           </h1>
           <p className="text-sm text-gray-600 mt-1">Curated guides, question banks and practice playbooks to help you prepare.</p>
@@ -97,7 +97,7 @@ export default function InterviewLibraryPage() {
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Search resources..."
-                className="w-full rounded-2xl border border-gray-200 px-4 py-2 text-sm bg-white/80 backdrop-blur-sm text-gray-700"
+                className="w-full rounded-lg sm:rounded-xl md:rounded-2xlborder border-gray-200 px-4 py-2 text-sm bg-white/80 backdrop-blur-sm text-gray-700"
               />
             </div>
             <div className="hidden sm:block">
@@ -121,10 +121,10 @@ export default function InterviewLibraryPage() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:p-3 md:p-4">
             {filtered.map((res) => (
               <Link key={res.id} href={res.href} className="group block">
-                <article className="p-4 rounded-2xl bg-white/90 backdrop-blur-sm border border-white/50 shadow-md hover:shadow-lg transition">
+                <article className="p-2 sm:p-3 md:p-4 rounded-lg sm:rounded-xl md:rounded-2xlbg-white/90 backdrop-blur-sm border border-white/50 shadow-md hover:shadow-lg transition">
                   <div className="flex items-start space-x-3">
                     <div className="w-12 h-12 rounded-lg flex items-center justify-center text-lg" style={{ background: 'linear-gradient(135deg,#ffddd2,#e29578)' }}>
                       <span className="text-xl">{res.emoji}</span>

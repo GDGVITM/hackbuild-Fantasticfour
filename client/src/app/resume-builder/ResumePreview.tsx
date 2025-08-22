@@ -11,16 +11,16 @@ export default function ResumePreview({ resumeData }: ResumePreviewProps) {
            width: '210mm',
            minHeight: '297mm'
          }}>
-      <div className="p-4 sm:p-8 lg:p-12 h-full text-gray-900" style={{ fontSize: '11pt', lineHeight: '1.5' }}>
+      <div className="p-2 sm:p-3 md:p-4 sm:p-4 sm:p-6 md:p-8 lg:p-12 h-full text-gray-900" style={{ fontSize: '11pt', lineHeight: '1.5' }}>
         {/* Header */}
-        <div className="text-center mb-6 sm:mb-8 pb-4 sm:pb-6 border-b-2 border-blue-500">
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3">{resumeData.personalInfo.fullName}</h1>
-          <div className="flex flex-wrap justify-center gap-2 sm:gap-4 text-sm text-gray-700 mb-2">
+        <div className="text-center mb-3 sm:mb-3 sm:mb-4 md:mb-6 md:mb-8 pb-4 sm:pb-6 border-b-2 border-blue-500">
+          <h1 className="text-lg sm:text-xl md:text-2xl sm:text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-3">{resumeData.personalInfo.fullName}</h1>
+          <div className="flex flex-wrap justify-center gap-2 sm:gap-2 sm:p-3 md:p-4 text-sm text-gray-700 mb-2">
             <span>📧 {resumeData.personalInfo.email}</span>
             <span>📱 {resumeData.personalInfo.phone}</span>
             <span>📍 {resumeData.personalInfo.location}</span>
           </div>
-          <div className="flex flex-wrap justify-center gap-2 sm:gap-4 text-sm text-blue-600">
+          <div className="flex flex-wrap justify-center gap-2 sm:gap-2 sm:p-3 md:p-4 text-sm text-blue-600">
             <span>🔗 {resumeData.personalInfo.linkedin}</span>
             <span>💻 {resumeData.personalInfo.github}</span>
             <span>🌐 {resumeData.personalInfo.website}</span>
@@ -29,7 +29,7 @@ export default function ResumePreview({ resumeData }: ResumePreviewProps) {
 
         {/* Summary */}
         {resumeData.summary && (
-          <div className="mb-6">
+          <div className="mb-3 sm:mb-4 md:mb-6">
             <h2 className="text-lg font-bold text-gray-900 mb-3 flex items-center border-b border-gray-300 pb-2">
               <span className="mr-2">💼</span> PROFESSIONAL SUMMARY
             </h2>
@@ -39,11 +39,11 @@ export default function ResumePreview({ resumeData }: ResumePreviewProps) {
 
         {/* Experience */}
         {resumeData.experience.length > 0 && (
-          <div className="mb-6">
+          <div className="mb-3 sm:mb-4 md:mb-6">
             <h2 className="text-lg font-bold text-gray-900 mb-3 flex items-center border-b border-gray-300 pb-2">
               <span className="mr-2">🚀</span> WORK EXPERIENCE
             </h2>
-            <div className="space-y-4">
+            <div className="space-y-2 sm:space-y-3 md:space-y-4">
               {resumeData.experience.map((exp) => (
                 <div key={exp.id}>
                   <div className="flex justify-between items-start mb-2">
@@ -69,7 +69,7 @@ export default function ResumePreview({ resumeData }: ResumePreviewProps) {
 
         {/* Education */}
         {resumeData.education.length > 0 && (
-          <div className="mb-6">
+          <div className="mb-3 sm:mb-4 md:mb-6">
             <h2 className="text-lg font-bold text-gray-900 mb-3 flex items-center border-b border-gray-300 pb-2">
               <span className="mr-2">🎓</span> EDUCATION
             </h2>
@@ -93,7 +93,7 @@ export default function ResumePreview({ resumeData }: ResumePreviewProps) {
         )}
 
         {/* Skills */}
-        <div className="mb-6">
+        <div className="mb-3 sm:mb-4 md:mb-6">
           <h2 className="text-lg font-bold text-gray-900 mb-3 flex items-center border-b border-gray-300 pb-2">
             <span className="mr-2">⚡</span> SKILLS
           </h2>
@@ -121,7 +121,7 @@ export default function ResumePreview({ resumeData }: ResumePreviewProps) {
 
         {/* Projects */}
         {resumeData.projects.length > 0 && (
-          <div className="mb-6">
+          <div className="mb-3 sm:mb-4 md:mb-6">
             <h2 className="text-lg font-bold text-gray-900 mb-3 flex items-center border-b border-gray-300 pb-2">
               <span className="mr-2">🛠️</span> PROJECTS
             </h2>

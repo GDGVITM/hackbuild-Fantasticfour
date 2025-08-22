@@ -68,10 +68,10 @@ export default function ATSPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#EDF6F9] p-4 sm:p-6 lg:p-8">
+    <div className="min-h-screen bg-[#EDF6F9] p-2 sm:p-2 sm:p-3 md:p-4 md:p-3 sm:p-4 md:p-6 lg:p-4 sm:p-6 md:p-8">
       {/* Background Pattern */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-[#83C5BE]/10 rounded-full blur-3xl"></div>
+        <div className="absolute -top-2 sm:p-3 md:p-40 -right-40 w-80 h-80 bg-[#83C5BE]/10 rounded-full blur-3xl"></div>
         <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-[#FFDDD2]/20 rounded-full blur-3xl"></div>
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-[#83C5BE]/5 rounded-full blur-3xl"></div>
       </div>
@@ -79,11 +79,11 @@ export default function ATSPage() {
       {/* Header */}
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-8 sm:mb-12">
-          <div className="inline-flex items-center gap-3 bg-white/70 backdrop-blur-sm px-6 py-3 rounded-full border border-[#83C5BE]/30 mb-4">
+          <div className="inline-flex items-center gap-3 bg-white/70 backdrop-blur-sm px-6 py-3 rounded-full border border-[#83C5BE]/30 mb-2 sm:mb-3 md:mb-4">
             <Target className="w-5 h-5 text-[#006D77]" />
             <span className="text-sm font-medium text-[#006D77]">AI-Powered ATS Analysis</span>
           </div>
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#006D77] mb-4 leading-tight">
+          <h1 className="text-xl sm:text-2xl md:text-3xl sm:text-4xl lg:text-5xl font-bold text-[#006D77] mb-2 sm:mb-3 md:mb-4 leading-tight">
             ATS Score Checker
           </h1>
           <p className="text-[#006D77]/70 text-lg sm:text-xl max-w-2xl mx-auto leading-relaxed">
@@ -92,10 +92,10 @@ export default function ATSPage() {
         </div>
 
         {/* Main Content */}
-        <div className="grid lg:grid-cols-2 gap-6 lg:gap-8 mb-8">
+        <div className="grid lg:grid-cols-2 gap-3 sm:p-4 md:p-6 lg:gap-2 sm:gap-3 md:gap-4 sm:p-6 md:p-8 mb-8">
           {/* Job Description Section */}
-          <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 sm:p-8 shadow-lg border border-[#83C5BE]/20 hover:shadow-xl transition-all duration-300">
-            <div className="flex items-center gap-3 mb-6">
+          <div className="bg-white/80 backdrop-blur-sm rounded-lg sm:rounded-xl md:rounded-2xlp-3 sm:p-3 sm:p-4 md:p-6 md:p-4 sm:p-6 md:p-8 shadow-lg border border-[#83C5BE]/20 hover:shadow-xl transition-all duration-300">
+            <div className="flex items-center gap-3 mb-3 sm:mb-4 md:mb-6">
               <div className="p-2 bg-[#006D77] rounded-lg">
                 <FileText className="w-5 h-5 text-white" />
               </div>
@@ -103,7 +103,7 @@ export default function ATSPage() {
             </div>
             <div className="relative">
               <textarea
-                className="w-full h-48 sm:h-56 p-4 border-2 border-[#83C5BE]/30 rounded-xl bg-white/70 text-[#006D77] placeholder-[#006D77]/50 focus:border-[#006D77] focus:outline-none focus:ring-4 focus:ring-[#006D77]/10 transition-all duration-300 resize-none"
+                className="w-full h-48 sm:h-56 p-2 sm:p-3 md:p-4 border-2 border-[#83C5BE]/30 rounded-xl bg-white/70 text-[#006D77] placeholder-[#006D77]/50 focus:border-[#006D77] focus:outline-none focus:ring-4 focus:ring-[#006D77]/10 transition-all duration-300 resize-none"
                 placeholder="Paste the complete job description here... Include requirements, skills, qualifications, and responsibilities for better analysis."
                 value={jd}
                 onChange={(e) => setJd(e.target.value)}
@@ -115,8 +115,8 @@ export default function ATSPage() {
           </div>
 
           {/* Resume Upload Section */}
-          <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 sm:p-8 shadow-lg border border-[#83C5BE]/20 hover:shadow-xl transition-all duration-300">
-            <div className="flex items-center gap-3 mb-6">
+          <div className="bg-white/80 backdrop-blur-sm rounded-lg sm:rounded-xl md:rounded-2xlp-3 sm:p-3 sm:p-4 md:p-6 md:p-4 sm:p-6 md:p-8 shadow-lg border border-[#83C5BE]/20 hover:shadow-xl transition-all duration-300">
+            <div className="flex items-center gap-3 mb-3 sm:mb-4 md:mb-6">
               <div className="p-2 bg-[#E29578] rounded-lg">
                 <Upload className="w-5 h-5 text-white" />
               </div>
@@ -124,7 +124,7 @@ export default function ATSPage() {
             </div>
             
             <div
-              className={`relative border-2 border-dashed rounded-xl p-8 text-center transition-all duration-300 ${
+              className={`relative border-2 border-dashed rounded-xl p-4 sm:p-6 md:p-8 text-center transition-all duration-300 ${
                 dragActive
                   ? "border-[#006D77] bg-[#006D77]/5"
                   : resume
@@ -185,7 +185,7 @@ export default function ATSPage() {
           <button
             onClick={handleUpload}
             disabled={!resume || !jd || isLoading}
-            className={`inline-flex items-center gap-3 px-8 py-4 rounded-2xl font-semibold text-lg transition-all duration-300 transform ${
+            className={`inline-flex items-center gap-3 px-8 py-4 rounded-lg sm:rounded-xl md:rounded-2xlfont-semibold text-lg transition-all duration-300 transform ${
               !resume || !jd || isLoading
                 ? "bg-gray-300 text-gray-500 cursor-not-allowed"
                 : "bg-[#006D77] text-white hover:shadow-xl hover:scale-105 active:scale-95 shadow-lg"
@@ -212,21 +212,21 @@ export default function ATSPage() {
 
         {/* Results Section */}
         {score !== null && (
-          <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 sm:p-8 shadow-xl border border-[#83C5BE]/20 animate-in slide-in-from-bottom duration-500">
-            <div className="text-center mb-6">
-              <div className="inline-flex items-center gap-2 mb-4">
+          <div className="bg-white/90 backdrop-blur-sm rounded-lg sm:rounded-xl md:rounded-2xlp-3 sm:p-3 sm:p-4 md:p-6 md:p-4 sm:p-6 md:p-8 shadow-xl border border-[#83C5BE]/20 animate-in slide-in-from-bottom duration-500">
+            <div className="text-center mb-3 sm:mb-4 md:mb-6">
+              <div className="inline-flex items-center gap-2 mb-2 sm:mb-3 md:mb-4">
                 <Target className="w-6 h-6 text-[#006D77]" />
-                <h3 className="text-2xl font-bold text-[#006D77]">Your ATS Score</h3>
+                <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-[#006D77]">Your ATS Score</h3>
               </div>
               
               {/* Score Circle */}
-              <div className="relative w-32 h-32 mx-auto mb-6">
+              <div className="relative w-32 h-32 mx-auto mb-3 sm:mb-4 md:mb-6">
                 <div className="absolute inset-0 rounded-full bg-gray-200"></div>
                 <div
                   className={`absolute inset-0 rounded-full ${getScoreBg(score)} opacity-20`}
                 ></div>
                 <div className="absolute inset-2 rounded-full bg-white flex items-center justify-center shadow-lg">
-                  <span className={`text-3xl font-bold ${getScoreColor(score)}`}>
+                  <span className={`text-xl sm:text-2xl md:text-3xl font-bold ${getScoreColor(score)}`}>
                     {score}%
                   </span>
                 </div>

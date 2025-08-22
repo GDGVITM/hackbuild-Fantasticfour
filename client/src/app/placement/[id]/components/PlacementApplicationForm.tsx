@@ -148,12 +148,12 @@ export default function PlacementApplicationForm({ placementData }: PlacementApp
       {/* Mobile-First Container */}
       <div className="px-3 sm:px-4 lg:px-8 py-3 sm:py-6 lg:py-8">
         {/* Mobile: Stacked Layout, Desktop: Grid Layout */}
-        <div className="space-y-4 lg:grid lg:grid-cols-3 lg:gap-8 lg:space-y-0">
+        <div className="space-y-2 sm:space-y-3 md:space-y-4 lg:grid lg:grid-cols-3 lg:gap-2 sm:gap-3 md:gap-4 sm:p-6 md:p-8 lg:space-y-0">
           {/* Job Details - Mobile: Top Card, Desktop: Sidebar */}
           <div className="lg:col-span-1 order-2 lg:order-1">
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 lg:p-6 lg:sticky lg:top-20">
+            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-2 sm:p-3 md:p-4 lg:p-3 sm:p-4 md:p-6 lg:sticky lg:top-20">
               {/* Mobile: Compact Header */}
-              <div className="flex items-center space-x-3 mb-3 lg:mb-4">
+              <div className="flex items-center space-x-3 mb-3 lg:mb-2 sm:mb-3 md:mb-4">
                 <div className="w-10 h-10 lg:w-12 lg:h-12 bg-blue-100 rounded-lg flex items-center justify-center">
                   <Building className="w-5 h-5 lg:w-6 lg:h-6 text-blue-600" />
                 </div>
@@ -164,7 +164,7 @@ export default function PlacementApplicationForm({ placementData }: PlacementApp
               </div>
 
               {/* Mobile: Condensed Info Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-2 lg:gap-3 mb-4 lg:mb-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-2 lg:gap-3 mb-2 sm:mb-3 md:mb-4 lg:mb-3 sm:mb-4 md:mb-6">
                 <div className="flex items-center space-x-2 text-xs lg:text-sm text-gray-600">
                   <MapPin className="w-3 h-3 lg:w-4 lg:h-4 flex-shrink-0" />
                   <span className="truncate">{placementData.location}</span>
@@ -218,7 +218,7 @@ export default function PlacementApplicationForm({ placementData }: PlacementApp
           <div className="lg:col-span-2 order-1 lg:order-2">
             <div className="bg-white rounded-lg shadow-sm border border-gray-200">
               {/* Mobile-First Progress Steps */}
-              <div className="border-b border-gray-200 p-3 lg:p-6">
+              <div className="border-b border-gray-200 p-3 lg:p-3 sm:p-4 md:p-6">
                 {/* Mobile: Compact Progress Indicators */}
                 <div className="flex items-center justify-between sm:hidden">
                   <div className="text-sm font-medium text-gray-900">
@@ -269,13 +269,13 @@ export default function PlacementApplicationForm({ placementData }: PlacementApp
               </div>
 
               {/* Form Content - Mobile-First Padding */}
-              <div className="p-4 lg:p-6">
+              <div className="p-2 sm:p-3 md:p-4 lg:p-3 sm:p-4 md:p-6">
                 {currentStep === 1 && (
-                  <div className="space-y-4 lg:space-y-6">
+                  <div className="space-y-2 sm:space-y-3 md:space-y-4 lg:space-y-6">
                     <h3 className="text-lg lg:text-xl font-semibold text-gray-900">Personal Information</h3>
                     
                     {/* Mobile-First Form Grid */}
-                    <div className="space-y-4 sm:grid sm:grid-cols-2 sm:gap-4 sm:space-y-0">
+                    <div className="space-y-2 sm:space-y-3 md:space-y-4 sm:grid sm:grid-cols-2 sm:gap-2 sm:p-3 md:p-4 sm:space-y-0">
                       <div className="sm:col-span-2 lg:col-span-1">
                         <label className="block text-sm font-medium text-gray-700 mb-2">Full Name *</label>
                         <input
@@ -370,13 +370,13 @@ export default function PlacementApplicationForm({ placementData }: PlacementApp
                 )}
 
                 {currentStep === 2 && (
-                  <div className="space-y-4 lg:space-y-6">
+                  <div className="space-y-2 sm:space-y-3 md:space-y-4 lg:space-y-6">
                     <h3 className="text-lg lg:text-xl font-semibold text-gray-900">Documents Upload</h3>
                     
-                    <div className="space-y-4 lg:space-y-4">
+                    <div className="space-y-2 sm:space-y-3 md:space-y-4 lg:space-y-2 sm:space-y-3 md:space-y-4">
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">Resume * (PDF only)</label>
-                        <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 lg:p-4">
+                        <div className="border-2 border-dashed border-gray-300 rounded-lg p-3 sm:p-4 md:p-6 lg:p-2 sm:p-3 md:p-4">
                           <input
                             type="file"
                             accept=".pdf"
@@ -396,7 +396,7 @@ export default function PlacementApplicationForm({ placementData }: PlacementApp
                       
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">Cover Letter (Optional)</label>
-                        <div className="border-2 border-dashed border-gray-300 rounded-lg p-4">
+                        <div className="border-2 border-dashed border-gray-300 rounded-lg p-2 sm:p-3 md:p-4">
                           <input
                             type="file"
                             accept=".pdf,.doc,.docx"
@@ -416,7 +416,7 @@ export default function PlacementApplicationForm({ placementData }: PlacementApp
                       
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">Academic Transcript *</label>
-                        <div className="border-2 border-dashed border-gray-300 rounded-lg p-4">
+                        <div className="border-2 border-dashed border-gray-300 rounded-lg p-2 sm:p-3 md:p-4">
                           <input
                             type="file"
                             accept=".pdf"
@@ -452,7 +452,7 @@ export default function PlacementApplicationForm({ placementData }: PlacementApp
                   <div className="space-y-6">
                     <h3 className="text-lg font-semibold text-gray-900">Experience & Background</h3>
                     
-                    <div className="space-y-4">
+                    <div className="space-y-2 sm:space-y-3 md:space-y-4">
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">Previous Internships</label>
                         <textarea
@@ -504,7 +504,7 @@ export default function PlacementApplicationForm({ placementData }: PlacementApp
                   <div className="space-y-6">
                     <h3 className="text-lg font-semibold text-gray-900">Review & Submit</h3>
                     
-                    <div className="bg-gray-50 rounded-lg p-4">
+                    <div className="bg-gray-50 rounded-lg p-2 sm:p-3 md:p-4">
                       <h4 className="font-medium text-gray-900 mb-3">Application Summary</h4>
                       <div className="space-y-2 text-sm">
                         <p><span className="font-medium">Name:</span> {formData.personalInfo.fullName || 'Not provided'}</p>
@@ -516,7 +516,7 @@ export default function PlacementApplicationForm({ placementData }: PlacementApp
                       </div>
                     </div>
                     
-                    <div className="space-y-4">
+                    <div className="space-y-2 sm:space-y-3 md:space-y-4">
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">Why do you want to work at {placementData.company}? *</label>
                         <textarea
@@ -551,7 +551,7 @@ export default function PlacementApplicationForm({ placementData }: PlacementApp
                       </div>
                     </div>
                     
-                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-2 sm:p-3 md:p-4">
                       <div className="flex items-start space-x-2">
                         <CheckCircle className="w-5 h-5 text-blue-600 mt-0.5" />
                         <div className="text-sm">
@@ -565,7 +565,7 @@ export default function PlacementApplicationForm({ placementData }: PlacementApp
               </div>
 
               {/* Mobile-First Navigation Buttons */}
-              <div className="border-t border-gray-200 p-4 lg:p-6">
+              <div className="border-t border-gray-200 p-2 sm:p-3 md:p-4 lg:p-3 sm:p-4 md:p-6">
                 <div className="flex flex-col space-y-3 sm:flex-row sm:justify-between sm:space-y-0">
                   <div className="flex space-x-2 sm:space-x-3">
                     <button

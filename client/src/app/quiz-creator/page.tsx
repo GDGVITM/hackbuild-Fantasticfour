@@ -182,8 +182,8 @@ export default function QuizCreator() {
         </header>
 
         <div className="px-3 py-4">
-          <div className="bg-white/80 backdrop-blur-xl rounded-2xl shadow-lg border border-white/20 p-4">
-            <div className="mb-6">
+          <div className="bg-white/80 backdrop-blur-xl rounded-lg sm:rounded-xl md:rounded-2xlshadow-lg border border-white/20 p-2 sm:p-3 md:p-4">
+            <div className="mb-3 sm:mb-4 md:mb-6">
               <h1 className="text-xl font-bold mb-3 bg-gradient-to-r from-[#006d77] to-[#83c5be] bg-clip-text text-transparent">
                 {quiz.title || 'Untitled Quiz'}
               </h1>
@@ -195,9 +195,9 @@ export default function QuizCreator() {
               </p>
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-2 sm:space-y-3 md:space-y-4">
               {quiz.questions.map((question, qIndex) => (
-                <div key={qIndex} className="p-4 bg-gradient-to-r from-gray-50/80 to-white/50 rounded-xl border border-gray-100/50">
+                <div key={qIndex} className="p-2 sm:p-3 md:p-4 bg-gradient-to-r from-gray-50/80 to-white/50 rounded-xl border border-gray-100/50">
                   <h3 className="text-base font-semibold mb-3 text-gray-800">
                     {qIndex + 1}. {question.question || 'Question not set'}
                   </h3>
@@ -237,7 +237,7 @@ export default function QuizCreator() {
       
       {/* Enhanced Animated Background */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-[#83c5be]/10 to-[#006d77]/5 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute -top-2 sm:p-3 md:p-40 -right-40 w-80 h-80 bg-gradient-to-br from-[#83c5be]/10 to-[#006d77]/5 rounded-full blur-3xl animate-pulse"></div>
         <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-tr from-[#ffddd2]/20 to-[#e29578]/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-r from-[#83c5be]/5 to-[#006d77]/5 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '4s' }}></div>
       </div>
@@ -280,11 +280,11 @@ export default function QuizCreator() {
         </div>
       </header>
 
-      <div className="px-3 py-4 space-y-4 relative z-10">
+      <div className="px-3 py-4 space-y-2 sm:space-y-3 md:space-y-4 relative z-10">
         {/* Quiz Settings */}
-        <div className="bg-white/80 backdrop-blur-xl rounded-2xl shadow-lg border border-white/20 p-4">
-          <h2 className="text-lg font-semibold mb-4 bg-gradient-to-r from-[#006d77] to-[#83c5be] bg-clip-text text-transparent">Quiz Settings</h2>
-          <div className="space-y-4">
+        <div className="bg-white/80 backdrop-blur-xl rounded-lg sm:rounded-xl md:rounded-2xlshadow-lg border border-white/20 p-2 sm:p-3 md:p-4">
+          <h2 className="text-lg font-semibold mb-2 sm:mb-3 md:mb-4 bg-gradient-to-r from-[#006d77] to-[#83c5be] bg-clip-text text-transparent">Quiz Settings</h2>
+          <div className="space-y-2 sm:space-y-3 md:space-y-4">
             <div>
               <label className="block text-sm font-medium mb-2 text-gray-700">
                 Quiz Title
@@ -325,8 +325,8 @@ export default function QuizCreator() {
         </div>
 
         {/* Questions Section */}
-        <div className="bg-white/80 backdrop-blur-xl rounded-2xl shadow-lg border border-white/20 p-4">
-          <div className="flex justify-between items-center mb-4">
+        <div className="bg-white/80 backdrop-blur-xl rounded-lg sm:rounded-xl md:rounded-2xlshadow-lg border border-white/20 p-2 sm:p-3 md:p-4">
+          <div className="flex justify-between items-center mb-2 sm:mb-3 md:mb-4">
             <h2 className="text-lg font-semibold bg-gradient-to-r from-[#006d77] to-[#83c5be] bg-clip-text text-transparent">
               Questions ({quiz.questions.length})
             </h2>
@@ -343,7 +343,7 @@ export default function QuizCreator() {
             <div className="text-center py-8">
               <div className="text-4xl mb-3">📝</div>
               <h3 className="text-base font-medium mb-2 text-gray-800">No questions yet</h3>
-              <p className="text-sm mb-4 text-gray-600">
+              <p className="text-sm mb-2 sm:mb-3 md:mb-4 text-gray-600">
                 Start by adding your first question
               </p>
               <button
@@ -355,9 +355,9 @@ export default function QuizCreator() {
               </button>
             </div>
           ) : (
-            <div className="space-y-4">
+            <div className="space-y-2 sm:space-y-3 md:space-y-4">
               {quiz.questions.map((question, qIndex) => (
-                <div key={qIndex} className="p-4 bg-gradient-to-r from-gray-50/80 to-white/50 rounded-xl border border-gray-100/50">
+                <div key={qIndex} className="p-2 sm:p-3 md:p-4 bg-gradient-to-r from-gray-50/80 to-white/50 rounded-xl border border-gray-100/50">
                   {/* Mobile Question Header */}
                   <div className="flex justify-between items-start mb-3">
                     <h3 className="text-base font-semibold text-gray-800">
@@ -402,7 +402,7 @@ export default function QuizCreator() {
                   </div>
 
                   {/* Question Text */}
-                  <div className="mb-4">
+                  <div className="mb-2 sm:mb-3 md:mb-4">
                     <label className="block text-xs font-medium mb-2 text-gray-600">
                       Question Text
                     </label>

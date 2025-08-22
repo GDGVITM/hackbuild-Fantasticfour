@@ -257,7 +257,7 @@ export default function AttendancePage() {
         }}
         >
         <div className="px-6 py-4">
-            <div className="flex items-center space-x-4 mb-4">
+            <div className="flex items-center space-x-2 sm:space-x-3 md:space-x-4 mb-2 sm:mb-3 md:mb-4">
             <button
                 onClick={() => router.back()}
                 className="p-2 rounded-xl transition-all duration-300 hover:scale-110 active:scale-95"
@@ -294,7 +294,7 @@ export default function AttendancePage() {
 
             {/* Class Information Card - Simplified */}
             <div 
-            className="rounded-xl p-4 shadow-sm border"
+            className="rounded-xl p-2 sm:p-3 md:p-4 shadow-sm border"
             style={{ 
                 backgroundColor: `${COLORS.lightBlue}60`,
                 borderColor: `${COLORS.lightTeal}60`
@@ -356,26 +356,26 @@ export default function AttendancePage() {
       {/* Main Content */}
       <div className="px-6 py-6 pb-32">
         {/* Search Bar */}
-        <div className="mb-6">
+        <div className="mb-3 sm:mb-4 md:mb-6">
           <input
             type="text"
             placeholder="🔍 Search students..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full p-4 rounded-xl border-2 font-medium"
+            className="w-full p-2 sm:p-3 md:p-4 rounded-xl border-2 font-medium"
             style={{ borderColor: COLORS.lightTeal, color: COLORS.darkTeal }}
           />
         </div>
 
         {/* Attendance Summary - Compact */}
         <div 
-          className="rounded-2xl p-4 shadow-lg border-2 mb-6"
+          className="rounded-lg sm:rounded-xl md:rounded-2xlp-2 sm:p-3 md:p-4 shadow-lg border-2 mb-3 sm:mb-4 md:mb-6"
           style={{ backgroundColor: COLORS.white, borderColor: COLORS.lightTeal }}
         >
           <div className="flex items-center justify-between">
             <div>
               <div 
-                className="text-2xl font-black"
+                className="text-lg sm:text-xl md:text-2xl font-black"
                 style={{ color: getAttendanceColor(parseFloat(presentPercentage)) }}
               >
                 {presentPercentage}%
@@ -389,7 +389,7 @@ export default function AttendancePage() {
             </div>
             <div className="text-right">
               <div 
-                className="text-2xl font-black"
+                className="text-lg sm:text-xl md:text-2xl font-black"
                 style={{ color: COLORS.darkTeal }}
               >
                 {attendanceStats.present + attendanceStats.late}/{attendanceStats.total}
@@ -407,7 +407,7 @@ export default function AttendancePage() {
         {/* Bulk Actions - Only show when students selected */}
         {selectedStudents.size > 0 && (
           <div 
-            className="rounded-xl p-4 mb-6 shadow-lg border-2"
+            className="rounded-xl p-2 sm:p-3 md:p-4 mb-3 sm:mb-4 md:mb-6 shadow-lg border-2"
             style={{ backgroundColor: COLORS.peach, borderColor: COLORS.coral }}
           >
             <div className="flex items-center justify-between mb-3">
@@ -458,7 +458,7 @@ export default function AttendancePage() {
             return (
               <div
                 key={student.id}
-                className={`p-4 rounded-lg ring-2 ${
+                className={`p-2 sm:p-3 md:p-4 rounded-lg ring-2 ${
     isSelected ? "ring-coral" : "ring-transparent"
   }`}
                 style={{ 
@@ -466,7 +466,7 @@ export default function AttendancePage() {
                   borderColor: isSelected ? COLORS.coral : COLORS.lightTeal,
                 }}
               >
-                <div className="flex items-center space-x-4">
+                <div className="flex items-center space-x-2 sm:space-x-3 md:space-x-4">
                   {/* Selection Checkbox */}
                   <button
                     onClick={() => toggleStudentSelection(student.id)}
@@ -553,7 +553,7 @@ export default function AttendancePage() {
             // Save attendance logic here
             alert('Attendance saved successfully!');
           }}
-          className="w-full py-4 rounded-2xl font-bold text-lg transition-all duration-300 hover:scale-105 active:scale-95 shadow-2xl"
+          className="w-full py-4 rounded-lg sm:rounded-xl md:rounded-2xlfont-bold text-lg transition-all duration-300 hover:scale-105 active:scale-95 shadow-2xl"
           style={{ 
             backgroundColor: COLORS.success,
             color: COLORS.white,

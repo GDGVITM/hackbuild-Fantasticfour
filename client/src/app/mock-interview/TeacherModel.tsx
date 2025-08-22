@@ -79,7 +79,7 @@ const TeacherModel = ({ topHalf = false }: TeacherModelProps) => {
   const modelScale = topHalf ? 1.8 : 1.2;
 
   return (
-    <div className="w-full h-full rounded-2xl shadow-2xl overflow-hidden">
+    <div className="w-full h-full rounded-lg sm:rounded-xl md:rounded-2xlshadow-2xl overflow-hidden">
       {/* Background behind the 3D canvas when visible */}
       <div className="w-full h-full bg-gradient-to-br from-gray-800 via-gray-900 to-black">
         <Canvas camera={{ position: cameraPosition as [number, number, number], fov: 45 }} style={canvasStyle}>

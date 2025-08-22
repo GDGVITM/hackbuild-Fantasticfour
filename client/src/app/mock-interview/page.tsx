@@ -218,7 +218,7 @@ export default function MockInterviewPage() {
     <div className="min-h-screen bg-gradient-to-br from-[#edf6f9] via-[#edf6f9] to-[#ffddd2]/20 relative overflow-hidden">
       {/* Enhanced Animated Background - Matching Landing Page */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-[#83c5be]/10 to-[#006d77]/5 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute -top-2 sm:p-3 md:p-40 -right-40 w-80 h-80 bg-gradient-to-br from-[#83c5be]/10 to-[#006d77]/5 rounded-full blur-3xl animate-pulse"></div>
         <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-tr from-[#ffddd2]/20 to-[#e29578]/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-r from-[#83c5be]/5 to-[#006d77]/5 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '4s' }}></div>
       </div>
@@ -227,14 +227,14 @@ export default function MockInterviewPage() {
       <header className="bg-white/80 backdrop-blur-xl shadow-lg border-b border-white/20 relative z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2 sm:space-x-3 md:space-x-4">
               <Link href="/" className="group flex items-center space-x-3 hover:scale-105 transition-all duration-300">
                 <div className="w-10 h-10 bg-gradient-to-br from-[#006d77] to-[#83c5be] rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-110">
                   <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                   </svg>
                 </div>
-                <span className="text-2xl font-bold bg-gradient-to-r from-[#006d77] to-[#83c5be] bg-clip-text text-transparent">EduMitra</span>
+                <span className="text-lg sm:text-xl md:text-2xl font-bold bg-gradient-to-r from-[#006d77] to-[#83c5be] bg-clip-text text-transparent">EduMitra</span>
               </Link>
               <div className="hidden sm:block w-px h-6 bg-gray-300"></div>
               <div className="flex items-center space-x-2">
@@ -245,13 +245,13 @@ export default function MockInterviewPage() {
               </div>
             </div>
             <div className="flex items-center space-x-3">
-              <Link href="/" className="group flex items-center space-x-2 px-4 py-2 rounded-2xl bg-gradient-to-r from-white/80 to-gray-50/80 backdrop-blur-sm border border-gray-200/50 hover:shadow-md transition-all duration-300 hover:scale-105">
+              <Link href="/" className="group flex items-center space-x-2 px-4 py-2 rounded-lg sm:rounded-xl md:rounded-2xlbg-gradient-to-r from-white/80 to-gray-50/80 backdrop-blur-sm border border-gray-200/50 hover:shadow-md transition-all duration-300 hover:scale-105">
                 <Home className="w-4 h-4 text-[#006d77]" />
                 <span className="font-medium bg-gradient-to-r from-[#006d77] to-[#83c5be] bg-clip-text text-transparent">Home</span>
               </Link>
               <button
                 onClick={() => setShowJson(!showJson)}
-                className={`px-4 py-2 rounded-2xl text-sm font-semibold transition-all duration-300 hover:scale-105 ${
+                className={`px-4 py-2 rounded-lg sm:rounded-xl md:rounded-2xltext-sm font-semibold transition-all duration-300 hover:scale-105 ${
                   showJson 
                     ? 'bg-gradient-to-r from-[#006d77] to-[#83c5be] text-white shadow-lg' 
                     : 'bg-gradient-to-r from-white/80 to-gray-50/80 backdrop-blur-sm border border-gray-200/50 bg-gradient-to-r from-[#83c5be] to-[#006d77] bg-clip-text text-transparent hover:shadow-md'
@@ -261,7 +261,7 @@ export default function MockInterviewPage() {
               </button>
               <button
                 onClick={clearChat}
-                className="px-4 py-2 rounded-2xl text-sm font-semibold text-white bg-gradient-to-r from-[#e29578] to-[#ffddd2] hover:shadow-lg transition-all duration-300 hover:scale-105"
+                className="px-4 py-2 rounded-lg sm:rounded-xl md:rounded-2xltext-sm font-semibold text-white bg-gradient-to-r from-[#e29578] to-[#ffddd2] hover:shadow-lg transition-all duration-300 hover:scale-105"
               >
                 Clear
               </button>
@@ -271,15 +271,15 @@ export default function MockInterviewPage() {
       </header>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-2 sm:gap-3 md:gap-4 sm:p-6 md:p-8">
           {/* Enhanced Chat Interface */}
           <div className="lg:col-span-2">
-            <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 flex flex-col hover:shadow-3xl transition-all duration-300" style={{ height: '700px' }}>
+            <div className="bg-white/80 backdrop-blur-xl rounded-xl sm:rounded-2xl md:rounded-3xl shadow-2xl border border-white/20 flex flex-col hover:shadow-3xl transition-all duration-300" style={{ height: '700px' }}>
               {/* Premium Chat Header */}
-              <div className="flex items-center justify-between p-6 border-b border-gray-100/50 bg-gradient-to-r from-white/90 to-gray-50/90 backdrop-blur-sm rounded-t-3xl">
-                <div className="flex items-center space-x-4">
+              <div className="flex items-center justify-between p-3 sm:p-4 md:p-6 border-b border-gray-100/50 bg-gradient-to-r from-white/90 to-gray-50/90 backdrop-blur-sm rounded-t-3xl">
+                <div className="flex items-center space-x-2 sm:space-x-3 md:space-x-4">
                   <div className="relative">
-                    <div className="w-12 h-12 bg-gradient-to-br from-[#83c5be] to-[#006d77] rounded-2xl flex items-center justify-center shadow-lg">
+                    <div className="w-12 h-12 bg-gradient-to-br from-[#83c5be] to-[#006d77] rounded-lg sm:rounded-xl md:rounded-2xlflex items-center justify-center shadow-lg">
                       <Bot className="w-6 h-6 text-white" />
                     </div>
                     <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-400 rounded-full border-2 border-white"></div>
@@ -301,14 +301,14 @@ export default function MockInterviewPage() {
               </div>
 
               {/* Enhanced Messages */}
-              <div className="flex-1 overflow-y-auto p-6 space-y-6 bg-gradient-to-b from-[#edf6f9]/50 to-white/50">
+              <div className="flex-1 overflow-y-auto p-3 sm:p-4 md:p-6 space-y-6 bg-gradient-to-b from-[#edf6f9]/50 to-white/50">
                 {messages.map((message) => (
                   <div
                     key={message.id}
                     className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'} animate-in slide-in-from-bottom-2 duration-300`}
                   >
                     <div className={`flex items-start space-x-3 max-w-[80%] ${message.type === 'user' ? 'flex-row-reverse space-x-reverse' : ''}`}>
-                      <div className={`w-10 h-10 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg ${
+                      <div className={`w-10 h-10 rounded-lg sm:rounded-xl md:rounded-2xlflex items-center justify-center flex-shrink-0 shadow-lg ${
                         message.type === 'user' 
                           ? 'bg-gradient-to-br from-[#006d77] to-[#83c5be]' 
                           : 'bg-gradient-to-br from-[#83c5be] to-[#e29578]'
@@ -319,7 +319,7 @@ export default function MockInterviewPage() {
                           <Bot className="w-5 h-5 text-white" />
                         )}
                       </div>
-                      <div className={`relative rounded-2xl p-4 shadow-sm border ${
+                      <div className={`relative rounded-lg sm:rounded-xl md:rounded-2xlp-2 sm:p-3 md:p-4 shadow-sm border ${
                         message.type === 'user' 
                           ? 'bg-gradient-to-br from-[#006d77] to-[#83c5be] text-white border-[#006d77]/20' 
                           : 'bg-white/90 backdrop-blur-sm border-gray-200/50 text-gray-800'
@@ -337,10 +337,10 @@ export default function MockInterviewPage() {
                 {isLoading && (
                   <div className="flex justify-start animate-in slide-in-from-bottom-2 duration-300">
                     <div className="flex items-start space-x-3">
-                      <div className="w-10 h-10 bg-gradient-to-br from-[#83c5be] to-[#e29578] rounded-2xl flex items-center justify-center shadow-lg">
+                      <div className="w-10 h-10 bg-gradient-to-br from-[#83c5be] to-[#e29578] rounded-lg sm:rounded-xl md:rounded-2xlflex items-center justify-center shadow-lg">
                         <Bot className="w-5 h-5 text-white" />
                       </div>
-                      <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-4 shadow-sm border border-gray-200/50">
+                      <div className="bg-white/90 backdrop-blur-sm rounded-lg sm:rounded-xl md:rounded-2xlp-2 sm:p-3 md:p-4 shadow-sm border border-gray-200/50">
                         <div className="flex items-center space-x-3">
                           <Loader2 className="w-4 h-4 animate-spin text-[#006d77]" />
                           <span className="text-sm text-gray-700">AI is analyzing your response...</span>
@@ -357,15 +357,15 @@ export default function MockInterviewPage() {
               </div>
 
               {/* Enhanced Input Area */}
-              <div className="p-6 border-t border-gray-100/50 bg-gradient-to-r from-white/90 to-gray-50/90 backdrop-blur-sm rounded-b-3xl">
-                <div className="flex space-x-4">
+              <div className="p-3 sm:p-4 md:p-6 border-t border-gray-100/50 bg-gradient-to-r from-white/90 to-gray-50/90 backdrop-blur-sm rounded-b-3xl">
+                <div className="flex space-x-2 sm:space-x-3 md:space-x-4">
                   <div className="flex-1 relative">
                     <textarea
                       value={inputText}
                       onChange={(e) => setInputText(e.target.value)}
                       onKeyPress={handleKeyPress}
                       placeholder="Share your thoughts and experiences... (Press Enter to send)"
-                      className="w-full resize-none border-2 rounded-2xl px-4 py-3 pr-12 focus:ring-2 focus:ring-[#006d77]/20 focus:border-[#006d77] text-sm bg-white/80 backdrop-blur-sm border-gray-200/50 text-gray-800 placeholder-gray-500 transition-all duration-300"
+                      className="w-full resize-none border-2 rounded-lg sm:rounded-xl md:rounded-2xlpx-4 py-3 pr-12 focus:ring-2 focus:ring-[#006d77]/20 focus:border-[#006d77] text-sm bg-white/80 backdrop-blur-sm border-gray-200/50 text-gray-800 placeholder-gray-500 transition-all duration-300"
                       rows={3}
                       disabled={isLoading}
                     />
@@ -376,7 +376,7 @@ export default function MockInterviewPage() {
                   <button
                     onClick={() => handleSendMessage()}
                     disabled={!inputText.trim() || isLoading}
-                    className="group bg-gradient-to-r from-[#006d77] to-[#83c5be] text-white p-4 rounded-2xl transition-all duration-300 flex items-center justify-center disabled:opacity-50 hover:shadow-lg hover:scale-105 disabled:hover:scale-100"
+                    className="group bg-gradient-to-r from-[#006d77] to-[#83c5be] text-white p-2 sm:p-3 md:p-4 rounded-lg sm:rounded-xl md:rounded-2xltransition-all duration-300 flex items-center justify-center disabled:opacity-50 hover:shadow-lg hover:scale-105 disabled:hover:scale-100"
                   >
                     <Send className="w-5 h-5 group-hover:translate-x-0.5 transition-transform duration-200" />
                   </button>
@@ -388,14 +388,14 @@ export default function MockInterviewPage() {
           {/* Enhanced Sidebar */}
           <div className="space-y-6">
             {/* Premium Instructions */}
-            <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-xl border border-white/20 p-6 hover:shadow-2xl transition-all duration-300">
-              <div className="flex items-center space-x-3 mb-6">
-                <div className="w-10 h-10 bg-gradient-to-br from-[#e29578] to-[#ffddd2] rounded-2xl flex items-center justify-center shadow-lg">
+            <div className="bg-white/80 backdrop-blur-xl rounded-xl sm:rounded-2xl md:rounded-3xl shadow-xl border border-white/20 p-3 sm:p-4 md:p-6 hover:shadow-2xl transition-all duration-300">
+              <div className="flex items-center space-x-3 mb-3 sm:mb-4 md:mb-6">
+                <div className="w-10 h-10 bg-gradient-to-br from-[#e29578] to-[#ffddd2] rounded-lg sm:rounded-xl md:rounded-2xlflex items-center justify-center shadow-lg">
                   <MessageSquare className="w-5 h-5 text-white" />
                 </div>
                 <h3 className="text-lg font-bold bg-gradient-to-r from-[#006d77] to-[#83c5be] bg-clip-text text-transparent">Interview Tips</h3>
               </div>
-              <div className="space-y-4">
+              <div className="space-y-2 sm:space-y-3 md:space-y-4">
                 {[
                   { icon: Target, text: "Answer questions naturally and authentically" },
                   { icon: Clock, text: "Take your time to think through responses" },
@@ -412,9 +412,9 @@ export default function MockInterviewPage() {
 
             {/* Enhanced JSON Response Display */}
             {showJson && lastAIResponse && (
-              <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-xl border border-white/20 p-6 hover:shadow-2xl transition-all duration-300">
-                <h3 className="text-lg font-bold bg-gradient-to-r from-[#006d77] to-[#83c5be] bg-clip-text text-transparent mb-4">AI Response Data</h3>
-                <div className="bg-gradient-to-br from-[#edf6f9] to-white rounded-2xl p-4 border border-gray-100/50">
+              <div className="bg-white/80 backdrop-blur-xl rounded-xl sm:rounded-2xl md:rounded-3xl shadow-xl border border-white/20 p-3 sm:p-4 md:p-6 hover:shadow-2xl transition-all duration-300">
+                <h3 className="text-lg font-bold bg-gradient-to-r from-[#006d77] to-[#83c5be] bg-clip-text text-transparent mb-2 sm:mb-3 md:mb-4">AI Response Data</h3>
+                <div className="bg-gradient-to-br from-[#edf6f9] to-white rounded-lg sm:rounded-xl md:rounded-2xlp-2 sm:p-3 md:p-4 border border-gray-100/50">
                   <pre className="text-xs whitespace-pre-wrap overflow-x-auto text-gray-800 font-mono">
                     {JSON.stringify(lastAIResponse, null, 2)}
                   </pre>
@@ -424,15 +424,15 @@ export default function MockInterviewPage() {
 
             {/* Enhanced Feedback Display */}
             {lastAIResponse && (
-              <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-xl border border-white/20 p-6 hover:shadow-2xl transition-all duration-300">
-                <h3 className="text-lg font-bold bg-gradient-to-r from-[#006d77] to-[#83c5be] bg-clip-text text-transparent mb-6">Performance Feedback</h3>
+              <div className="bg-white/80 backdrop-blur-xl rounded-xl sm:rounded-2xl md:rounded-3xl shadow-xl border border-white/20 p-3 sm:p-4 md:p-6 hover:shadow-2xl transition-all duration-300">
+                <h3 className="text-lg font-bold bg-gradient-to-r from-[#006d77] to-[#83c5be] bg-clip-text text-transparent mb-3 sm:mb-4 md:mb-6">Performance Feedback</h3>
                 
                 {lastAIResponse.score && (
-                  <div className="mb-6">
+                  <div className="mb-3 sm:mb-4 md:mb-6">
                     <div className="flex items-center justify-between mb-3">
                       <span className="text-sm font-semibold bg-gradient-to-r from-[#006d77] to-[#83c5be] bg-clip-text text-transparent">Response Score</span>
                       <div className="flex items-center space-x-2">
-                        <span className="text-2xl font-bold bg-gradient-to-r from-[#006d77] to-[#83c5be] bg-clip-text text-transparent">{lastAIResponse.score}</span>
+                        <span className="text-lg sm:text-xl md:text-2xl font-bold bg-gradient-to-r from-[#006d77] to-[#83c5be] bg-clip-text text-transparent">{lastAIResponse.score}</span>
                         <span className="text-sm text-gray-500">/10</span>
                       </div>
                     </div>
@@ -452,9 +452,9 @@ export default function MockInterviewPage() {
                 )}
 
                 {lastAIResponse.feedback && (
-                  <div className="mb-6">
+                  <div className="mb-3 sm:mb-4 md:mb-6">
                     <h4 className="text-sm font-semibold bg-gradient-to-r from-[#006d77] to-[#83c5be] bg-clip-text text-transparent mb-3">Detailed Feedback</h4>
-                    <div className="p-4 rounded-2xl bg-gradient-to-br from-[#edf6f9]/50 to-white/50 border border-gray-100/50">
+                    <div className="p-2 sm:p-3 md:p-4 rounded-lg sm:rounded-xl md:rounded-2xlbg-gradient-to-br from-[#edf6f9]/50 to-white/50 border border-gray-100/50">
                       <p className="text-sm text-gray-700 leading-relaxed">{lastAIResponse.feedback}</p>
                     </div>
                   </div>
@@ -477,9 +477,9 @@ export default function MockInterviewPage() {
             )}
 
             {/* Enhanced Stats */}
-            <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-xl border border-white/20 p-6 hover:shadow-2xl transition-all duration-300">
-              <h3 className="text-lg font-bold bg-gradient-to-r from-[#006d77] to-[#83c5be] bg-clip-text text-transparent mb-6">Session Analytics</h3>
-              <div className="space-y-4">
+            <div className="bg-white/80 backdrop-blur-xl rounded-xl sm:rounded-2xl md:rounded-3xl shadow-xl border border-white/20 p-3 sm:p-4 md:p-6 hover:shadow-2xl transition-all duration-300">
+              <h3 className="text-lg font-bold bg-gradient-to-r from-[#006d77] to-[#83c5be] bg-clip-text text-transparent mb-3 sm:mb-4 md:mb-6">Session Analytics</h3>
+              <div className="space-y-2 sm:space-y-3 md:space-y-4">
                 {[
                   {
                     label: "Responses Given",
@@ -500,7 +500,7 @@ export default function MockInterviewPage() {
                     color: "from-[#e29578] to-[#ffddd2]"
                   }
                 ].map((stat, index) => (
-                  <div key={index} className="flex items-center justify-between p-4 rounded-2xl bg-gradient-to-r from-[#edf6f9]/30 to-white/50 border border-gray-100/50">
+                  <div key={index} className="flex items-center justify-between p-2 sm:p-3 md:p-4 rounded-lg sm:rounded-xl md:rounded-2xlbg-gradient-to-r from-[#edf6f9]/30 to-white/50 border border-gray-100/50">
                     <div className="flex items-center space-x-3">
                       <div className={`w-8 h-8 bg-gradient-to-r ${stat.color} rounded-lg flex items-center justify-center shadow-sm`}>
                         <stat.icon className="w-4 h-4 text-white" />
@@ -515,9 +515,9 @@ export default function MockInterviewPage() {
 
             {/* JSON Response Display - Only when toggled */}
             {showJson && lastAIResponse && (
-              <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-4 lg:p-6">
-                <h3 className="font-semibold mb-3 lg:mb-4 text-[#006d77] text-sm lg:text-base">AI Response Data</h3>
-                <div className="bg-gray-50 rounded-lg p-3 lg:p-4 border">
+              <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-2 sm:p-3 md:p-4 lg:p-3 sm:p-4 md:p-6">
+                <h3 className="font-semibold mb-3 lg:mb-2 sm:mb-3 md:mb-4 text-[#006d77] text-sm lg:text-base">AI Response Data</h3>
+                <div className="bg-gray-50 rounded-lg p-3 lg:p-2 sm:p-3 md:p-4 border">
                   <pre className="text-xs whitespace-pre-wrap overflow-x-auto text-gray-800">
                     {JSON.stringify(lastAIResponse, null, 2)}
                   </pre>

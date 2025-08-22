@@ -14,7 +14,7 @@ export default function LandingPage() {
     <div className="min-h-screen bg-gradient-to-br from-[#edf6f9] via-[#edf6f9] to-[#ffddd2]/20">
       {/* Enhanced Animated Background */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-[#83c5be]/10 to-[#006d77]/5 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute -top-2 sm:p-3 md:p-40 -right-40 w-80 h-80 bg-gradient-to-br from-[#83c5be]/10 to-[#006d77]/5 rounded-full blur-3xl animate-pulse"></div>
         <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-tr from-[#ffddd2]/20 to-[#e29578]/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-r from-[#83c5be]/5 to-[#006d77]/5 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '4s' }}></div>
       </div>
@@ -31,13 +31,13 @@ export default function LandingPage() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                     </svg>
                   </div>
-                  <span className="text-2xl font-bold bg-gradient-to-r from-[#006d77] to-[#83c5be] bg-clip-text text-transparent group-hover:scale-105 transition-transform duration-300">EduMitra</span>
+                  <span className="text-lg sm:text-xl md:text-2xl font-bold bg-gradient-to-r from-[#006d77] to-[#83c5be] bg-clip-text text-transparent group-hover:scale-105 transition-transform duration-300">EduMitra</span>
                 </Link>
               </div>
             </div>
 
             <div className="hidden md:block">
-              <div className="ml-10 flex items-center space-x-4">
+              <div className="ml-10 flex items-center space-x-2 sm:space-x-3 md:space-x-4">
                 <Link href="/login" className={`${secondaryButtonClasses} w-auto px-6 py-3`}>
                   <span>Login</span>
                 </Link>
@@ -68,7 +68,7 @@ export default function LandingPage() {
 
           {mobileMenuOpen && (
             <div className="md:hidden pb-6 animate-in slide-in-from-top-5 duration-300">
-              <div className="flex flex-col space-y-4 mt-4">
+              <div className="flex flex-col space-y-2 sm:space-y-3 md:space-y-4 mt-4">
                 <Link href="/login" className={`${secondaryButtonClasses} text-center w-full`}>
                   <span>Login</span>
                 </Link>
@@ -86,7 +86,7 @@ export default function LandingPage() {
       <section className="relative pt-32 pb-20 sm:pt-40 sm:pb-28 px-4 overflow-hidden">
         <div className="max-w-5xl mx-auto text-center relative z-10">
           <div className="animate-in fade-in zoom-in duration-1000">
-            <div className="mb-6">
+            <div className="mb-3 sm:mb-4 md:mb-6">
               <span className="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium bg-gradient-to-r from-[#83c5be]/20 to-[#006d77]/20 text-[#006d77] border border-[#83c5be]/30 backdrop-blur-sm">
                 <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
@@ -94,16 +94,16 @@ export default function LandingPage() {
                 Your Education Revolution Starts Here
               </span>
             </div>
-            <h1 className="text-5xl sm:text-6xl md:text-7xl font-black text-gray-900 mb-6 leading-tight">
+            <h1 className="text-5xl sm:text-6xl md:text-7xl font-black text-gray-900 mb-3 sm:mb-4 md:mb-6 leading-tight">
               <span className="bg-gradient-to-r from-[#006d77] via-[#83c5be] to-[#006d77] bg-clip-text text-transparent">Edu</span>Mitra
             </h1>
-            <p className="text-xl sm:text-2xl md:text-3xl text-[#006d77] font-bold mb-6 animate-in slide-in-from-bottom-4 duration-1000 delay-300">
+            <p className="text-base sm:text-xl md:text-lg sm:text-xl md:text-2xl md:text-xl sm:text-2xl md:text-3xl text-[#006d77] font-bold mb-3 sm:mb-4 md:mb-6 animate-in slide-in-from-bottom-4 duration-1000 delay-300">
               Your Unified Education & Career Companion
             </p>
             <p className="text-lg md:text-xl text-gray-700 mb-10 max-w-3xl mx-auto leading-relaxed animate-in slide-in-from-bottom-4 duration-1000 delay-500">
               Transform your academic journey with personalized dashboards, smart career guidance, and comprehensive tools designed for the modern student.
             </p>
-            <div className="flex flex-col sm:flex-row gap-6 justify-center max-w-lg mx-auto animate-in slide-in-from-bottom-4 duration-1000 delay-700">
+            <div className="flex flex-col sm:flex-row gap-3 sm:p-4 md:p-6 justify-center max-w-lg mx-auto animate-in slide-in-from-bottom-4 duration-1000 delay-700">
               <Link href="/signup" className={`${primaryButtonClasses} w-full sm:w-auto`}>
                 <span className="relative z-10 flex items-center">
                   Get Started Free
@@ -124,8 +124,8 @@ export default function LandingPage() {
           </div>
         </div>
 
-        <div className="absolute top-20 left-10 w-20 h-20 bg-gradient-to-br from-[#ffddd2] to-[#e29578] rounded-2xl opacity-60 animate-bounce" style={{ animationDelay: '1s' }}></div>
-        <div className="absolute top-40 right-10 w-16 h-16 bg-gradient-to-br from-[#83c5be] to-[#006d77] rounded-full opacity-60 animate-bounce" style={{ animationDelay: '2s' }}></div>
+        <div className="absolute top-20 left-10 w-20 h-20 bg-gradient-to-br from-[#ffddd2] to-[#e29578] rounded-lg sm:rounded-xl md:rounded-2xlopacity-60 animate-bounce" style={{ animationDelay: '1s' }}></div>
+        <div className="absolute top-2 sm:p-3 md:p-40 right-10 w-16 h-16 bg-gradient-to-br from-[#83c5be] to-[#006d77] rounded-full opacity-60 animate-bounce" style={{ animationDelay: '2s' }}></div>
         <div className="absolute bottom-20 left-1/4 w-12 h-12 bg-gradient-to-br from-[#e29578] to-[#ffddd2] rounded-xl opacity-60 animate-bounce" style={{ animationDelay: '0.5s' }}></div>
       </section>
 
@@ -134,51 +134,51 @@ export default function LandingPage() {
         <div className="absolute inset-0 bg-gradient-to-r from-[#edf6f9]/50 to-[#ffddd2]/20"></div>
         <div className="max-w-6xl mx-auto relative z-10">
           <div className="text-center mb-16">
-            <span className="inline-block px-4 py-2 bg-gradient-to-r from-[#e29578]/20 to-[#ffddd2]/20 text-[#e29578] rounded-full text-sm font-semibold mb-4 border border-[#e29578]/20">
+            <span className="inline-block px-4 py-2 bg-gradient-to-r from-[#e29578]/20 to-[#ffddd2]/20 text-[#e29578] rounded-full text-sm font-semibold mb-2 sm:mb-3 md:mb-4 border border-[#e29578]/20">
               The Problem We Solve
             </span>
-            <h2 className="text-4xl sm:text-5xl font-black text-gray-900 mb-6">The Challenge Students Face</h2>
+            <h2 className="text-4xl sm:text-5xl font-black text-gray-900 mb-3 sm:mb-4 md:mb-6">The Challenge Students Face</h2>
             <p className="text-xl text-gray-700 max-w-4xl mx-auto leading-relaxed">
               Today's students juggle academics, exams, and careers across fragmented platforms, struggling with poor connectivity and generic, one-size-fits-all solutions.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-2 sm:gap-3 md:gap-4 sm:p-6 md:p-8">
             <div className="group relative">
-              <div className="absolute inset-0 bg-gradient-to-br from-[#ffddd2]/20 to-[#e29578]/10 rounded-2xl transform group-hover:scale-105 transition-transform duration-300"></div>
-              <div className="relative text-center p-8 bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-white/20">
-                <div className="w-16 h-16 bg-gradient-to-br from-[#ffddd2] to-[#e29578] rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:shadow-xl group-hover:scale-110 transition-all duration-300">
+              <div className="absolute inset-0 bg-gradient-to-br from-[#ffddd2]/20 to-[#e29578]/10 rounded-lg sm:rounded-xl md:rounded-2xltransform group-hover:scale-105 transition-transform duration-300"></div>
+              <div className="relative text-center p-4 sm:p-6 md:p-8 bg-white/80 backdrop-blur-sm rounded-lg sm:rounded-xl md:rounded-2xlshadow-lg hover:shadow-xl transition-all duration-300 border border-white/20">
+                <div className="w-16 h-16 bg-gradient-to-br from-[#ffddd2] to-[#e29578] rounded-lg sm:rounded-xl md:rounded-2xlflex items-center justify-center mx-auto mb-3 sm:mb-4 md:mb-6 shadow-lg group-hover:shadow-xl group-hover:scale-110 transition-all duration-300">
                   <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
                   </svg>
                 </div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-4">Multiple Apps Chaos</h3>
+                <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 mb-2 sm:mb-3 md:mb-4">Multiple Apps Chaos</h3>
                 <p className="text-gray-700 leading-relaxed">Students waste time switching between different platforms for academics, test prep, and career planning.</p>
               </div>
             </div>
 
             <div className="group relative">
-              <div className="absolute inset-0 bg-gradient-to-br from-[#83c5be]/20 to-[#006d77]/10 rounded-2xl transform group-hover:scale-105 transition-transform duration-300"></div>
-              <div className="relative text-center p-8 bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-white/20">
-                <div className="w-16 h-16 bg-gradient-to-br from-[#83c5be] to-[#006d77] rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:shadow-xl group-hover:scale-110 transition-all duration-300">
+              <div className="absolute inset-0 bg-gradient-to-br from-[#83c5be]/20 to-[#006d77]/10 rounded-lg sm:rounded-xl md:rounded-2xltransform group-hover:scale-105 transition-transform duration-300"></div>
+              <div className="relative text-center p-4 sm:p-6 md:p-8 bg-white/80 backdrop-blur-sm rounded-lg sm:rounded-xl md:rounded-2xlshadow-lg hover:shadow-xl transition-all duration-300 border border-white/20">
+                <div className="w-16 h-16 bg-gradient-to-br from-[#83c5be] to-[#006d77] rounded-lg sm:rounded-xl md:rounded-2xlflex items-center justify-center mx-auto mb-3 sm:mb-4 md:mb-6 shadow-lg group-hover:shadow-xl group-hover:scale-110 transition-all duration-300">
                   <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0" />
                   </svg>
                 </div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-4">Connectivity Barriers</h3>
+                <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 mb-2 sm:mb-3 md:mb-4">Connectivity Barriers</h3>
                 <p className="text-gray-700 leading-relaxed">Poor internet access limits educational opportunities, especially in underserved regions.</p>
               </div>
             </div>
 
             <div className="group relative">
-              <div className="absolute inset-0 bg-gradient-to-br from-[#e29578]/20 to-[#ffddd2]/10 rounded-2xl transform group-hover:scale-105 transition-transform duration-300"></div>
-              <div className="relative text-center p-8 bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-white/20">
-                <div className="w-16 h-16 bg-gradient-to-br from-[#e29578] to-[#ffddd2] rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:shadow-xl group-hover:scale-110 transition-all duration-300">
+              <div className="absolute inset-0 bg-gradient-to-br from-[#e29578]/20 to-[#ffddd2]/10 rounded-lg sm:rounded-xl md:rounded-2xltransform group-hover:scale-105 transition-transform duration-300"></div>
+              <div className="relative text-center p-4 sm:p-6 md:p-8 bg-white/80 backdrop-blur-sm rounded-lg sm:rounded-xl md:rounded-2xlshadow-lg hover:shadow-xl transition-all duration-300 border border-white/20">
+                <div className="w-16 h-16 bg-gradient-to-br from-[#e29578] to-[#ffddd2] rounded-lg sm:rounded-xl md:rounded-2xlflex items-center justify-center mx-auto mb-3 sm:mb-4 md:mb-6 shadow-lg group-hover:shadow-xl group-hover:scale-110 transition-all duration-300">
                   <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                   </svg>
                 </div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-4">Generic Solutions</h3>
+                <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 mb-2 sm:mb-3 md:mb-4">Generic Solutions</h3>
                 <p className="text-gray-700 leading-relaxed">One-size-fits-all content that ignores individual learning styles and career aspirations.</p>
               </div>
             </div>
@@ -191,16 +191,16 @@ export default function LandingPage() {
         <div className="absolute inset-0 bg-gradient-to-br from-[#edf6f9] via-[#edf6f9] to-[#83c5be]/10"></div>
         <div className="max-w-7xl mx-auto relative z-10">
           <div className="text-center mb-16">
-            <span className="inline-block px-4 py-2 bg-gradient-to-r from-[#006d77]/20 to-[#83c5be]/20 text-[#006d77] rounded-full text-sm font-semibold mb-4 border border-[#006d77]/20">
+            <span className="inline-block px-4 py-2 bg-gradient-to-r from-[#006d77]/20 to-[#83c5be]/20 text-[#006d77] rounded-full text-sm font-semibold mb-2 sm:mb-3 md:mb-4 border border-[#006d77]/20">
               Our Powerful Solution
             </span>
-            <h2 className="text-4xl sm:text-5xl font-black text-gray-900 mb-6">Everything You Need to Succeed</h2>
+            <h2 className="text-4xl sm:text-5xl font-black text-gray-900 mb-3 sm:mb-4 md:mb-6">Everything You Need to Succeed</h2>
             <p className="text-xl text-gray-700 leading-relaxed max-w-3xl mx-auto">
               Comprehensive, intelligent features designed for the modern student's journey from academics to career success.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-3 md:gap-4 sm:p-6 md:p-8">
             {[
               {
                 title: "AI-Powered Dashboard",
@@ -240,14 +240,14 @@ export default function LandingPage() {
               }
             ].map((feature, index) => (
               <div key={index} className="group relative">
-                <div className="absolute inset-0 bg-gradient-to-br from-white/60 to-white/30 rounded-3xl transform group-hover:scale-105 transition-all duration-300 shadow-lg group-hover:shadow-2xl"></div>
-                <div className="relative p-8 bg-white/40 backdrop-blur-sm rounded-3xl border border-white/20 h-full flex flex-col">
-                  <div className={`w-16 h-16 bg-gradient-to-br ${feature.gradient} rounded-2xl flex items-center justify-center mb-6 shadow-lg group-hover:shadow-xl group-hover:scale-110 transition-all duration-300`}>
+                <div className="absolute inset-0 bg-gradient-to-br from-white/60 to-white/30 rounded-xl sm:rounded-2xl md:rounded-3xl transform group-hover:scale-105 transition-all duration-300 shadow-lg group-hover:shadow-2xl"></div>
+                <div className="relative p-4 sm:p-6 md:p-8 bg-white/40 backdrop-blur-sm rounded-xl sm:rounded-2xl md:rounded-3xl border border-white/20 h-full flex flex-col">
+                  <div className={`w-16 h-16 bg-gradient-to-br ${feature.gradient} rounded-lg sm:rounded-xl md:rounded-2xlflex items-center justify-center mb-3 sm:mb-4 md:mb-6 shadow-lg group-hover:shadow-xl group-hover:scale-110 transition-all duration-300`}>
                     <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={feature.icon} />
                     </svg>
                   </div>
-                  <h3 className="text-2xl font-bold text-gray-900 mb-4 group-hover:text-[#006d77] transition-colors duration-300">{feature.title}</h3>
+                  <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 mb-2 sm:mb-3 md:mb-4 group-hover:text-[#006d77] transition-colors duration-300">{feature.title}</h3>
                   <p className="text-gray-700 leading-relaxed flex-grow">{feature.description}</p>
                   <div className="mt-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     <span className="inline-flex items-center text-sm font-semibold text-[#006d77]">
@@ -280,11 +280,11 @@ export default function LandingPage() {
           <h2 className="text-4xl sm:text-5xl md:text-6xl font-black text-white mb-8 leading-tight">
             Ready to Transform<br />Your Education Journey?
           </h2>
-          <p className="text-xl sm:text-2xl text-[#edf6f9] mb-12 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-base sm:text-xl md:text-lg sm:text-xl md:text-2xl text-[#edf6f9] mb-12 max-w-3xl mx-auto leading-relaxed">
             Join thousands of students who are already excelling with EduMitra's comprehensive platform.
           </p>
-          <div className="flex flex-col sm:flex-row gap-6 justify-center max-w-lg mx-auto">
-            <Link href="/signup" className="group relative py-5 px-10 bg-white text-[#006d77] hover:bg-[#edf6f9] font-bold rounded-2xl transition-all duration-300 shadow-2xl hover:shadow-3xl hover:scale-105 w-full sm:w-auto">
+          <div className="flex flex-col sm:flex-row gap-3 sm:p-4 md:p-6 justify-center max-w-lg mx-auto">
+            <Link href="/signup" className="group relative py-5 px-10 bg-white text-[#006d77] hover:bg-[#edf6f9] font-bold rounded-lg sm:rounded-xl md:rounded-2xltransition-all duration-300 shadow-2xl hover:shadow-3xl hover:scale-105 w-full sm:w-auto">
               <span className="flex items-center justify-center">
                 Start Your Journey
                 <svg className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -292,7 +292,7 @@ export default function LandingPage() {
                 </svg>
               </span>
             </Link>
-            <Link href="/login" className="group py-5 px-10 border-3 border-white text-white hover:bg-white hover:text-[#006d77] font-bold rounded-2xl transition-all duration-300 shadow-xl hover:shadow-2xl hover:scale-105 w-full sm:w-auto backdrop-blur-sm">
+            <Link href="/login" className="group py-5 px-10 border-3 border-white text-white hover:bg-white hover:text-[#006d77] font-bold rounded-lg sm:rounded-xl md:rounded-2xltransition-all duration-300 shadow-xl hover:shadow-2xl hover:scale-105 w-full sm:w-auto backdrop-blur-sm">
               <span className="flex items-center justify-center">
                 Sign In
                 <svg className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -303,14 +303,14 @@ export default function LandingPage() {
           </div>
           </div>
 
-          <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-3 sm:p-4 md:p-6">
             {[
               { name: "Priya S.", role: "Engineering Student", quote: "EduMitra transformed my JEE prep completely!" },
               { name: "Rahul K.", role: "MBA Aspirant", quote: "The career tools helped me land my dream internship." },
               { name: "Ananya M.", role: "NEET Aspirant", quote: "Offline features saved my medical entrance prep." }
             ].map((testimonial, index) => (
-              <div key={index} className="p-6 bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20 hover:bg-white/20 transition-all duration-300">
-                <p className="text-white/90 mb-4 italic">"{testimonial.quote}"</p>
+              <div key={index} className="p-3 sm:p-4 md:p-6 bg-white/10 backdrop-blur-sm rounded-lg sm:rounded-xl md:rounded-2xlborder border-white/20 hover:bg-white/20 transition-all duration-300">
+                <p className="text-white/90 mb-2 sm:mb-3 md:mb-4 italic">"{testimonial.quote}"</p>
                 <div className="flex items-center">
                   <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center mr-3">
                     <span className="text-white font-bold text-sm">{testimonial.name.charAt(0)}</span>
@@ -325,8 +325,8 @@ export default function LandingPage() {
           </div>
         </div>
 
-        <div className="absolute top-20 left-10 w-24 h-24 bg-white/10 rounded-3xl rotate-12 animate-pulse"></div>
-        <div className="absolute bottom-20 right-10 w-20 h-20 bg-white/10 rounded-2xl -rotate-12 animate-pulse" style={{ animationDelay: '1s' }}></div>
+        <div className="absolute top-20 left-10 w-24 h-24 bg-white/10 rounded-xl sm:rounded-2xl md:rounded-3xl rotate-12 animate-pulse"></div>
+        <div className="absolute bottom-20 right-10 w-20 h-20 bg-white/10 rounded-lg sm:rounded-xl md:rounded-2xl-rotate-12 animate-pulse" style={{ animationDelay: '1s' }}></div>
       
       {/* --- Footer --- */}
       <footer className="relative py-16 px-4 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
@@ -336,18 +336,18 @@ export default function LandingPage() {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
             {/* Logo & Description */}
             <div className="md:col-span-2">
-              <div className="flex items-center space-x-3 mb-6">
+              <div className="flex items-center space-x-3 mb-3 sm:mb-4 md:mb-6">
                 <div className="w-12 h-12 bg-gradient-to-br from-[#006d77] to-[#83c5be] rounded-xl flex items-center justify-center shadow-lg">
                   <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                   </svg>
                 </div>
-                <span className="text-3xl font-bold bg-gradient-to-r from-[#83c5be] to-white bg-clip-text text-transparent">EduMitra</span>
+                <span className="text-xl sm:text-2xl md:text-3xl font-bold bg-gradient-to-r from-[#83c5be] to-white bg-clip-text text-transparent">EduMitra</span>
               </div>
-              <p className="text-gray-300 leading-relaxed mb-6 max-w-md">
+              <p className="text-gray-300 leading-relaxed mb-3 sm:mb-4 md:mb-6 max-w-md">
                 Empowering students with comprehensive tools for academic excellence and career success. Your trusted companion in the journey of learning and growth.
               </p>
-              <div className="flex space-x-4">
+              <div className="flex space-x-2 sm:space-x-3 md:space-x-4">
                 {['twitter', 'instagram', 'linkedin', 'youtube'].map((social) => (
                   <a key={social} href={`#${social}`} className="group w-10 h-10 bg-gray-800 hover:bg-gradient-to-br hover:from-[#006d77] hover:to-[#83c5be] rounded-lg flex items-center justify-center transition-all duration-300 hover:scale-110">
                     <svg className="w-5 h-5 text-gray-400 group-hover:text-white transition-colors duration-300" fill="currentColor" viewBox="0 0 24 24">
@@ -360,7 +360,7 @@ export default function LandingPage() {
 
             {/* Quick Links */}
             <div>
-              <h4 className="text-lg font-bold text-white mb-6">Quick Links</h4>
+              <h4 className="text-lg font-bold text-white mb-3 sm:mb-4 md:mb-6">Quick Links</h4>
               <ul className="space-y-3">
                 {['About Us', 'Features', 'Pricing', 'Success Stories', 'Help Center'].map((link) => (
                   <li key={link}>
@@ -377,8 +377,8 @@ export default function LandingPage() {
 
             {/* Contact Info */}
             <div>
-              <h4 className="text-lg font-bold text-white mb-6">Get In Touch</h4>
-              <div className="space-y-4">
+              <h4 className="text-lg font-bold text-white mb-3 sm:mb-4 md:mb-6">Get In Touch</h4>
+              <div className="space-y-2 sm:space-y-3 md:space-y-4">
                 <div className="flex items-start space-x-3">
                   <svg className="w-5 h-5 text-[#83c5be] mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
@@ -404,7 +404,7 @@ export default function LandingPage() {
 
           {/* Bottom Section */}
           <div className="border-t border-gray-700 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
-            <div className="text-gray-400 text-sm mb-4 md:mb-0">
+            <div className="text-gray-400 text-sm mb-2 sm:mb-3 md:mb-4 md:mb-0">
               © 2025 EduMitra. All rights reserved. | Built with ❤️ for students
             </div>
             <div className="flex space-x-6 text-sm">

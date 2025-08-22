@@ -212,9 +212,9 @@ const SkillMatcher: React.FC<SkillMatcherProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-2 sm:p-3 md:p-4">
       <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-hidden">
-        <div className="flex items-center justify-between p-6 border-b border-gray-200">
+        <div className="flex items-center justify-between p-3 sm:p-4 md:p-6 border-b border-gray-200">
           <div className="flex items-center space-x-3">
             <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
               <Target className="w-5 h-5 text-blue-600" />
@@ -232,24 +232,24 @@ const SkillMatcher: React.FC<SkillMatcherProps> = ({
           </button>
         </div>
 
-        <div className="p-6 overflow-y-auto max-h-[calc(90vh-120px)]">
+        <div className="p-3 sm:p-4 md:p-6 overflow-y-auto max-h-[calc(90vh-120px)]">
           {loading ? (
             <div className="flex items-center justify-center py-12">
               <div className="text-center">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-2 sm:mb-3 md:mb-4"></div>
                 <p className="text-gray-600">Analyzing your skills...</p>
               </div>
             </div>
           ) : (
             <div className="space-y-6">
               {/* Match Score */}
-              <div className={`p-6 rounded-lg border-2 ${getMatchBgColor(matchPercentage)}`}>
-                <div className="flex items-center justify-between mb-4">
+              <div className={`p-3 sm:p-4 md:p-6 rounded-lg border-2 ${getMatchBgColor(matchPercentage)}`}>
+                <div className="flex items-center justify-between mb-2 sm:mb-3 md:mb-4">
                   <div className="flex items-center space-x-3">
                     <TrendingUp className={`w-6 h-6 ${getMatchColor(matchPercentage)}`} />
                     <h3 className="text-lg font-semibold text-gray-900">Match Score</h3>
                   </div>
-                  <div className={`text-3xl font-bold ${getMatchColor(matchPercentage)}`}>
+                  <div className={`text-xl sm:text-2xl md:text-3xl font-bold ${getMatchColor(matchPercentage)}`}>
                     {matchPercentage}%
                   </div>
                 </div>
@@ -257,10 +257,10 @@ const SkillMatcher: React.FC<SkillMatcherProps> = ({
               </div>
 
               {/* Skill Analysis */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:p-4 md:p-6">
                 {/* Required Skills Analysis */}
-                <div className="bg-gray-50 rounded-lg p-4">
-                  <h4 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                <div className="bg-gray-50 rounded-lg p-2 sm:p-3 md:p-4">
+                  <h4 className="text-lg font-semibold text-gray-900 mb-2 sm:mb-3 md:mb-4 flex items-center">
                     <Award className="w-5 h-5 text-blue-600 mr-2" />
                     Required Skills Analysis
                   </h4>
@@ -290,8 +290,8 @@ const SkillMatcher: React.FC<SkillMatcherProps> = ({
                 </div>
 
                 {/* Your Skills */}
-                <div className="bg-gray-50 rounded-lg p-4">
-                  <h4 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+                <div className="bg-gray-50 rounded-lg p-2 sm:p-3 md:p-4">
+                  <h4 className="text-lg font-semibold text-gray-900 mb-2 sm:mb-3 md:mb-4 flex items-center">
                     <User className="w-5 h-5 text-green-600 mr-2" />
                     Your Skills Profile
                   </h4>
@@ -331,7 +331,7 @@ const SkillMatcher: React.FC<SkillMatcherProps> = ({
               </div>
 
               {/* Action Recommendations */}
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-2 sm:p-3 md:p-4">
                 <h4 className="text-lg font-semibold text-blue-900 mb-3">Next Steps</h4>
                 <div className="space-y-2">
                   {matchPercentage >= 80 ? (
@@ -362,7 +362,7 @@ const SkillMatcher: React.FC<SkillMatcherProps> = ({
           )}
         </div>
 
-        <div className="border-t border-gray-200 p-6">
+        <div className="border-t border-gray-200 p-3 sm:p-4 md:p-6">
           <div className="flex justify-end space-x-3">
             <button
               onClick={onClose}

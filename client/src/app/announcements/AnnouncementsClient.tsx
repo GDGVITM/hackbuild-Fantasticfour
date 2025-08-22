@@ -247,8 +247,8 @@ export default function AnnouncementsClient() {
       <header className="bg-white shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            <div className="flex items-center space-x-4">
-              <Link href="/" className="text-2xl font-bold text-blue-600">
+            <div className="flex items-center space-x-2 sm:space-x-3 md:space-x-4">
+              <Link href="/" className="text-lg sm:text-xl md:text-2xl font-bold text-blue-600">
                 EduMitra
               </Link>
               <span className="text-gray-400">|</span>
@@ -269,51 +269,51 @@ export default function AnnouncementsClient() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Quick Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-          <div className="bg-white rounded-lg p-4 shadow-sm border border-gray-200">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-2 sm:p-3 md:p-4 mb-8">
+          <div className="bg-white rounded-lg p-2 sm:p-3 md:p-4 shadow-sm border border-gray-200">
             <div className="flex items-center space-x-3">
               <div className="p-2 bg-red-100 rounded-lg">
                 <AlertCircle className="w-5 h-5 text-red-600" />
               </div>
               <div>
                 <p className="text-sm font-medium text-gray-900">Urgent</p>
-                <p className="text-2xl font-bold text-red-600">{urgentAnnouncements.length}</p>
+                <p className="text-lg sm:text-xl md:text-2xl font-bold text-red-600">{urgentAnnouncements.length}</p>
               </div>
             </div>
           </div>
           
-          <div className="bg-white rounded-lg p-4 shadow-sm border border-gray-200">
+          <div className="bg-white rounded-lg p-2 sm:p-3 md:p-4 shadow-sm border border-gray-200">
             <div className="flex items-center space-x-3">
               <div className="p-2 bg-green-100 rounded-lg">
                 <Briefcase className="w-5 h-5 text-green-600" />
               </div>
               <div>
                 <p className="text-sm font-medium text-gray-900">Placements</p>
-                <p className="text-2xl font-bold text-green-600">{placementAnnouncements.length}</p>
+                <p className="text-lg sm:text-xl md:text-2xl font-bold text-green-600">{placementAnnouncements.length}</p>
               </div>
             </div>
           </div>
           
-          <div className="bg-white rounded-lg p-4 shadow-sm border border-gray-200">
+          <div className="bg-white rounded-lg p-2 sm:p-3 md:p-4 shadow-sm border border-gray-200">
             <div className="flex items-center space-x-3">
               <div className="p-2 bg-blue-100 rounded-lg">
                 <TrendingUp className="w-5 h-5 text-blue-600" />
               </div>
               <div>
                 <p className="text-sm font-medium text-gray-900">Active</p>
-                <p className="text-2xl font-bold text-blue-600">{mockAnnouncements.filter(a => a.isActive).length}</p>
+                <p className="text-lg sm:text-xl md:text-2xl font-bold text-blue-600">{mockAnnouncements.filter(a => a.isActive).length}</p>
               </div>
             </div>
           </div>
           
-          <div className="bg-white rounded-lg p-4 shadow-sm border border-gray-200">
+          <div className="bg-white rounded-lg p-2 sm:p-3 md:p-4 shadow-sm border border-gray-200">
             <div className="flex items-center space-x-3">
               <div className="p-2 bg-purple-100 rounded-lg">
                 <Calendar className="w-5 h-5 text-purple-600" />
               </div>
               <div>
                 <p className="text-sm font-medium text-gray-900">This Week</p>
-                <p className="text-2xl font-bold text-purple-600">
+                <p className="text-lg sm:text-xl md:text-2xl font-bold text-purple-600">
                   {mockAnnouncements.filter(a => {
                     const weekFromNow = new Date();
                     weekFromNow.setDate(weekFromNow.getDate() + 7);
@@ -326,8 +326,8 @@ export default function AnnouncementsClient() {
         </div>
 
         {/* Search and Filters */}
-        <div className="bg-white rounded-xl shadow-sm p-6 mb-6 border border-gray-200">
-          <div className="flex flex-col lg:flex-row gap-4">
+        <div className="bg-white rounded-xl shadow-sm p-3 sm:p-4 md:p-6 mb-3 sm:mb-4 md:mb-6 border border-gray-200">
+          <div className="flex flex-col lg:flex-row gap-2 sm:p-3 md:p-4">
             {/* Search Bar */}
             <div className="flex-1">
               <div className="relative">
@@ -353,7 +353,7 @@ export default function AnnouncementsClient() {
           </div>
 
           {/* Filters */}
-          <div className={`${showFilters ? 'block' : 'hidden'} lg:block mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4`}>
+          <div className={`${showFilters ? 'block' : 'hidden'} lg:block mt-4 grid grid-cols-1 sm:grid-cols-2 gap-2 sm:p-3 md:p-4`}>
             {/* Type Filter */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Type</label>
@@ -390,7 +390,7 @@ export default function AnnouncementsClient() {
         </div>
 
         {/* Results Count */}
-        <div className="mb-6">
+        <div className="mb-3 sm:mb-4 md:mb-6">
           <p className="text-gray-600">
             Showing <span className="font-semibold">{filteredAnnouncements.length}</span> announcements
           </p>
@@ -400,10 +400,10 @@ export default function AnnouncementsClient() {
         <div className="space-y-6">
           {filteredAnnouncements.map((announcement) => (
             <div key={announcement.id} className="bg-white rounded-xl shadow-sm border border-gray-200 hover:shadow-lg transition-shadow">
-              <div className="p-6">
+              <div className="p-3 sm:p-4 md:p-6">
                 {/* Header */}
-                <div className="flex items-start justify-between mb-4">
-                  <div className="flex items-start space-x-4">
+                <div className="flex items-start justify-between mb-2 sm:mb-3 md:mb-4">
+                  <div className="flex items-start space-x-2 sm:space-x-3 md:space-x-4">
                     <div className="p-2 bg-blue-100 rounded-lg flex-shrink-0">
                       {getTypeIcon(announcement.type)}
                     </div>
@@ -431,7 +431,7 @@ export default function AnnouncementsClient() {
                 </div>
 
                 {/* Details */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4 text-sm">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 sm:p-3 md:p-4 mb-2 sm:mb-3 md:mb-4 text-sm">
                   <div className="flex items-center space-x-2 text-gray-600">
                     <Calendar className="w-4 h-4" />
                     <span>Posted: {formatDate(announcement.date)}</span>
@@ -461,7 +461,7 @@ export default function AnnouncementsClient() {
 
                 {/* Eligibility & Requirements */}
                 {(announcement.eligibility || announcement.requirements) && (
-                  <div className="mb-4">
+                  <div className="mb-2 sm:mb-3 md:mb-4">
                     {announcement.eligibility && (
                       <div className="mb-2">
                         <h4 className="text-sm font-medium text-gray-900 mb-1">Eligibility:</h4>
@@ -491,7 +491,7 @@ export default function AnnouncementsClient() {
                 )}
 
                 {/* Tags */}
-                <div className="mb-4">
+                <div className="mb-2 sm:mb-3 md:mb-4">
                   <div className="flex flex-wrap gap-1">
                     {announcement.tags.map((tag, index) => (
                       <span key={index} className="inline-flex items-center px-2 py-1 rounded-full text-xs bg-gray-100 text-gray-600">
@@ -532,7 +532,7 @@ export default function AnnouncementsClient() {
         {/* No Results */}
         {filteredAnnouncements.length === 0 && (
           <div className="text-center py-12">
-            <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-2 sm:mb-3 md:mb-4">
               <Bell className="w-8 h-8 text-gray-400" />
             </div>
             <h3 className="text-lg font-semibold text-gray-900 mb-2">No announcements found</h3>

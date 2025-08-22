@@ -82,7 +82,7 @@ export default function UpcomingAssignments({ accessToken }: UpcomingAssignments
     return (
       <div className="flex items-center justify-center py-12">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#006d77] mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#006d77] mx-auto mb-2 sm:mb-3 md:mb-4"></div>
           <p className="text-gray-600">Loading assignments...</p>
         </div>
       </div>
@@ -101,8 +101,8 @@ export default function UpcomingAssignments({ accessToken }: UpcomingAssignments
   if (assignments.length === 0) {
     return (
       <div className="text-center py-12">
-        <div className="bg-white rounded-2xl shadow-lg p-8 max-w-md mx-auto">
-          <div className="text-green-500 text-4xl mb-4">🎉</div>
+        <div className="bg-white rounded-lg sm:rounded-xl md:rounded-2xlshadow-lg p-4 sm:p-6 md:p-8 max-w-md mx-auto">
+          <div className="text-green-500 text-4xl mb-2 sm:mb-3 md:mb-4">🎉</div>
           <h3 className="text-xl font-semibold text-gray-800 mb-2">All caught up!</h3>
           <p className="text-gray-600">No upcoming assignments found</p>
         </div>
@@ -111,14 +111,14 @@ export default function UpcomingAssignments({ accessToken }: UpcomingAssignments
   }
 
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+    <div className="grid gap-2 sm:p-3 md:p-4 md:grid-cols-2 lg:grid-cols-3">
       {assignments.map((assignment, index) => {
         const daysLeft = getDaysUntilDue(assignment.due);
         
         return (
-          <Card key={index} className="shadow-lg rounded-2xl border-0 hover:shadow-xl transition-all duration-300 hover:scale-105">
-            <CardContent className="p-6">
-              <div className="flex items-start justify-between mb-4">
+          <Card key={index} className="shadow-lg rounded-lg sm:rounded-xl md:rounded-2xlborder-0 hover:shadow-xl transition-all duration-300 hover:scale-105">
+            <CardContent className="p-3 sm:p-4 md:p-6">
+              <div className="flex items-start justify-between mb-2 sm:mb-3 md:mb-4">
                 <div className="flex items-center">
                   <BookOpen className="w-5 h-5 mr-2" style={{ color: '#006d77' }} />
                   <span className="text-sm font-medium text-gray-600">{assignment.course}</span>
@@ -135,7 +135,7 @@ export default function UpcomingAssignments({ accessToken }: UpcomingAssignments
               </h3>
               
               {assignment.description && (
-                <p className="text-sm text-gray-600 mb-4 line-clamp-2">
+                <p className="text-sm text-gray-600 mb-2 sm:mb-3 md:mb-4 line-clamp-2">
                   {assignment.description}
                 </p>
               )}

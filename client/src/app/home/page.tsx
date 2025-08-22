@@ -133,7 +133,7 @@ export default function HomePage() {
       
       {/* Decorative background elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-80 h-80 rounded-full opacity-20" 
+        <div className="absolute -top-2 sm:p-3 md:p-40 -right-40 w-80 h-80 rounded-full opacity-20" 
              style={{ backgroundColor: '#ffddd2' }}></div>
         <div className="absolute -bottom-40 -left-40 w-80 h-80 rounded-full opacity-20" 
              style={{ backgroundColor: '#e29578' }}></div>
@@ -148,15 +148,15 @@ export default function HomePage() {
               style={{ backgroundColor: '#ffddd2', borderColor: '#83c5be' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            <div className="flex items-center space-x-4">
-              <Link href="/" className="text-2xl font-bold" style={{ color: '#006d77' }}>
+            <div className="flex items-center space-x-2 sm:space-x-3 md:space-x-4">
+              <Link href="/" className="text-lg sm:text-xl md:text-2xl font-bold" style={{ color: '#006d77' }}>
                 EduMitra
               </Link>
               <span className="text-gray-400">|</span>
               <h1 className="text-xl font-semibold" style={{ color: '#006d77' }}>Dashboard</h1>
             </div>
             <div className="flex items-center space-x-3">
-              <div className="hidden md:flex items-center space-x-4">
+              <div className="hidden md:flex items-center space-x-2 sm:space-x-3 md:space-x-4">
                 <Link href="/dashboard" className="flex items-center space-x-2 transition-colors hover:opacity-80" 
                       style={{ color: '#006d77' }}>
                   <Monitor className="w-4 h-4" />
@@ -175,26 +175,26 @@ export default function HomePage() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 relative z-10">
         {/* Welcome Section */}
-        <div className="rounded-xl shadow-sm border p-8 mb-8"
+        <div className="rounded-xl shadow-sm border p-4 sm:p-6 md:p-8 mb-8"
              style={{ backgroundColor: '#ffddd2', borderColor: '#83c5be' }}>
           <div className="text-center">
-            <h1 className="text-4xl font-bold mb-4" style={{ color: '#006d77' }}>
+            <h1 className="text-4xl font-bold mb-2 sm:mb-3 md:mb-4" style={{ color: '#006d77' }}>
               Welcome to EduMitra
             </h1>
-            <p className="text-lg mb-6" style={{ color: '#006d77', opacity: 0.8 }}>
+            <p className="text-lg mb-3 sm:mb-4 md:mb-6" style={{ color: '#006d77', opacity: 0.8 }}>
               Your comprehensive education and career companion. Access all tools and resources in one place.
             </p>
             <div className="flex items-center justify-center space-x-8">
               <div className="text-center">
-                <div className="text-3xl font-bold" style={{ color: '#006d77' }}>{features.length}</div>
+                <div className="text-xl sm:text-2xl md:text-3xl font-bold" style={{ color: '#006d77' }}>{features.length}</div>
                 <div className="text-sm" style={{ color: '#006d77', opacity: 0.8 }}>Available Tools</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold" style={{ color: '#006d77' }}>24/7</div>
+                <div className="text-xl sm:text-2xl md:text-3xl font-bold" style={{ color: '#006d77' }}>24/7</div>
                 <div className="text-sm" style={{ color: '#006d77', opacity: 0.8 }}>Access</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold" style={{ color: '#006d77' }}>∞</div>
+                <div className="text-xl sm:text-2xl md:text-3xl font-bold" style={{ color: '#006d77' }}>∞</div>
                 <div className="text-sm" style={{ color: '#006d77', opacity: 0.8 }}>Possibilities</div>
               </div>
             </div>
@@ -202,9 +202,9 @@ export default function HomePage() {
         </div>
 
         {/* Category Filter */}
-        <div className="rounded-xl shadow-sm border p-6 mb-8"
+        <div className="rounded-xl shadow-sm border p-3 sm:p-4 md:p-6 mb-8"
              style={{ backgroundColor: '#ffddd2', borderColor: '#83c5be' }}>
-          <h2 className="text-lg font-semibold mb-4" style={{ color: '#006d77' }}>Filter by Category</h2>
+          <h2 className="text-lg font-semibold mb-2 sm:mb-3 md:mb-4" style={{ color: '#006d77' }}>Filter by Category</h2>
           <div className="flex flex-wrap gap-3">
             {categories.map((category) => (
               <button
@@ -225,25 +225,25 @@ export default function HomePage() {
         </div>
 
         {/* Features Grid */}
-        <div className="rounded-xl shadow-sm border p-6"
+        <div className="rounded-xl shadow-sm border p-3 sm:p-4 md:p-6"
              style={{ backgroundColor: '#ffddd2', borderColor: '#83c5be' }}>
-          <h2 className="text-xl font-semibold mb-6" style={{ color: '#006d77' }}>
+          <h2 className="text-xl font-semibold mb-3 sm:mb-4 md:mb-6" style={{ color: '#006d77' }}>
             {selectedCategory === 'all' ? 'All Features' : categories.find(c => c.key === selectedCategory)?.label}
             <span className="text-sm font-normal opacity-80 ml-2">({filteredFeatures.length} tools)</span>
           </h2>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:p-4 md:p-6">
             {filteredFeatures.map((feature, index) => (
               <Link
                 key={index}
                 href={feature.href}
-                className="group block p-6 rounded-xl border transition-all duration-200 hover:scale-105 hover:shadow-lg"
+                className="group block p-3 sm:p-4 md:p-6 rounded-xl border transition-all duration-200 hover:scale-105 hover:shadow-lg"
                 style={{ 
                   backgroundColor: feature.bgColor, 
                   borderColor: '#d1d5db'
                 }}
               >
-                <div className="flex items-start space-x-4">
+                <div className="flex items-start space-x-2 sm:space-x-3 md:space-x-4">
                   <div 
                     className="flex-shrink-0 w-12 h-12 rounded-lg flex items-center justify-center"
                     style={{ backgroundColor: feature.color + '20' }}
@@ -279,10 +279,10 @@ export default function HomePage() {
         </div>
 
         {/* Quick Actions */}
-        <div className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2 sm:p-3 md:p-4">
           <Link 
             href="/quiz-creator"
-            className="p-4 rounded-lg border transition-colors hover:opacity-80"
+            className="p-2 sm:p-3 md:p-4 rounded-lg border transition-colors hover:opacity-80"
             style={{ backgroundColor: '#047857', borderColor: '#065f46' }}
           >
             <div className="flex items-center space-x-3">
@@ -296,7 +296,7 @@ export default function HomePage() {
           
           <Link 
             href="/resume-builder"
-            className="p-4 rounded-lg border transition-colors hover:opacity-80"
+            className="p-2 sm:p-3 md:p-4 rounded-lg border transition-colors hover:opacity-80"
             style={{ backgroundColor: '#006d77', borderColor: '#005a63' }}
           >
             <div className="flex items-center space-x-3">
@@ -310,7 +310,7 @@ export default function HomePage() {
           
           <Link 
             href="/mock-interview"
-            className="p-4 rounded-lg border transition-colors hover:opacity-80"
+            className="p-2 sm:p-3 md:p-4 rounded-lg border transition-colors hover:opacity-80"
             style={{ backgroundColor: '#7c3aed', borderColor: '#6d28d9' }}
           >
             <div className="flex items-center space-x-3">
@@ -324,7 +324,7 @@ export default function HomePage() {
           
           <Link 
             href="/parent-dashboard"
-            className="p-4 rounded-lg border transition-colors hover:opacity-80"
+            className="p-2 sm:p-3 md:p-4 rounded-lg border transition-colors hover:opacity-80"
             style={{ backgroundColor: '#dc2626', borderColor: '#b91c1c' }}
           >
             <div className="flex items-center space-x-3">
