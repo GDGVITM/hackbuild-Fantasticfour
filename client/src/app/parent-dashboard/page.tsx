@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { 
   Home, 
@@ -13,7 +13,9 @@ import {
   AlertCircle,
   BarChart3,
   Activity,
-  Bell
+  Bell,
+  Star,
+  Zap
 } from 'lucide-react';
 
 interface StudentProgress {
@@ -51,6 +53,52 @@ interface StudentProgress {
     attendanceRate: number;
   };
 }
+
+// Animated Counter Component
+const AnimatedCounter = ({ end, duration = 2000, suffix = "" }: { end: number; duration?: number; suffix?: string }) => {
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    let startTime: number;
+    const animate = (currentTime: number) => {
+      if (!startTime) startTime = currentTime;
+      const progress = Math.min((currentTime - startTime) / duration, 1);
+      setCount(Math.floor(progress * end));
+      if (progress < 1) {
+        requestAnimationFrame(animate);
+      }
+    };
+    requestAnimationFrame(animate);
+  }, [end, duration]);
+
+  return <span>{count}{suffix}</span>;
+};
+
+// Animated Progress Bar Component
+const AnimatedProgressBar = ({ progress, color, delay = 0 }: { progress: number; color: string; delay?: number }) => {
+  const [animatedProgress, setAnimatedProgress] = useState(0);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setAnimatedProgress(progress);
+    }, delay);
+    return () => clearTimeout(timer);
+  }, [progress, delay]);
+
+  return (
+    <div className="w-full rounded-full h-3 overflow-hidden" style={{ backgroundColor: 'rgba(131, 197, 190, 0.2)' }}>
+      <div 
+        className="h-3 rounded-full transition-all duration-1000 ease-out relative overflow-hidden"
+        style={{ 
+          width: `${animatedProgress}%`,
+          backgroundColor: color,
+        }}
+      >
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-30 animate-pulse"></div>
+      </div>
+    </div>
+  );
+};
 
 // Mock data for demonstration
 const mockStudentData: StudentProgress = {
@@ -142,71 +190,163 @@ const mockStudentData: StudentProgress = {
 export default function ParentDashboard() {
   const [activeTab, setActiveTab] = useState<'overview' | 'subjects' | 'activities' | 'progress'>('overview');
   const [selectedStudent] = useState(mockStudentData);
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    setIsLoaded(true);
+  }, []);
 
   const getProgressColor = (progress: number) => {
-    if (progress >= 90) return '#047857';
-    if (progress >= 80) return '#059669';
-    if (progress >= 70) return '#10b981';
-    return '#fbbf24';
+    if (progress >= 90) return '#006d77';
+    if (progress >= 80) return '#83c5be';
+    if (progress >= 70) return '#e29578';
+    return '#ffddd2';
   };
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
-      case 'high': return '#dc2626';
-      case 'medium': return '#ea580c';
-      case 'low': return '#047857';
-      default: return '#047857';
+      case 'high': return '#e29578';
+      case 'medium': return '#ffddd2';
+      case 'low': return '#83c5be';
+      default: return '#83c5be';
     }
   };
 
   const getStatusIcon = (status: string) => {
     switch (status) {
-      case 'completed': return <CheckCircle className="w-4 h-4" style={{ color: '#10b981' }} />;
-      case 'pending': return <Clock className="w-4 h-4" style={{ color: '#fbbf24' }} />;
-      case 'overdue': return <AlertCircle className="w-4 h-4" style={{ color: '#dc2626' }} />;
-      default: return <Clock className="w-4 h-4" style={{ color: '#fbbf24' }} />;
+      case 'completed': return <CheckCircle className="w-4 h-4" style={{ color: '#006d77' }} />;
+      case 'pending': return <Clock className="w-4 h-4" style={{ color: '#e29578' }} />;
+      case 'overdue': return <AlertCircle className="w-4 h-4" style={{ color: '#e29578' }} />;
+      default: return <Clock className="w-4 h-4" style={{ color: '#e29578' }} />;
     }
   };
 
   return (
     <div className="min-h-screen relative overflow-hidden" 
-         style={{ background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #134e4a 100%)' }}>
+         style={{ 
+           backgroundColor: '#edf6f9'
+         }}>
       
-      {/* Decorative background elements */}
+      {/* Enhanced Decorative background elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-80 h-80 rounded-full opacity-20" 
-             style={{ backgroundColor: '#047857' }}></div>
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 rounded-full opacity-20" 
-             style={{ backgroundColor: '#065f46' }}></div>
-        <div className="absolute top-1/3 -left-20 w-40 h-40 rounded-full opacity-15" 
-             style={{ backgroundColor: '#0f766e' }}></div>
-        <div className="absolute top-2/3 -right-20 w-32 h-32 rounded-full opacity-10" 
-             style={{ backgroundColor: '#047857' }}></div>
+        {/* Large gradient orbs */}
+        <div className="absolute -top-40 -right-40 w-96 h-96 rounded-full opacity-20 animate-pulse" 
+             style={{ 
+               background: 'radial-gradient(circle, #006d77 0%, transparent 70%)',
+               animation: 'float 6s ease-in-out infinite'
+             }}></div>
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 rounded-full opacity-15 animate-pulse" 
+             style={{ 
+               background: 'radial-gradient(circle, #83c5be 0%, transparent 70%)',
+               animation: 'float 8s ease-in-out infinite reverse'
+             }}></div>
+        
+        {/* Floating particles */}
+        {[...Array(15)].map((_, i) => (
+          <div
+            key={i}
+            className="absolute w-2 h-2 rounded-full opacity-30"
+            style={{
+              backgroundColor: i % 3 === 0 ? '#006d77' : i % 3 === 1 ? '#83c5be' : '#e29578',
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              animation: `float ${3 + Math.random() * 4}s ease-in-out infinite`,
+              animationDelay: `${Math.random() * 2}s`
+            }}
+          />
+        ))}
+        
+        {/* Mesh gradient overlay */}
+        <div className="absolute inset-0 opacity-30" 
+             style={{
+               backgroundImage: `
+                 radial-gradient(circle at 25% 25%, #83c5be20 0%, transparent 50%),
+                 radial-gradient(circle at 75% 75%, #e2957820 0%, transparent 50%),
+                 radial-gradient(circle at 75% 25%, #006d7720 0%, transparent 50%),
+                 radial-gradient(circle at 25% 75%, #ffddd220 0%, transparent 50%)
+               `
+             }}></div>
       </div>
 
-      {/* Header */}
-      <header className="shadow-sm border-b border-opacity-20 relative z-10" 
-              style={{ backgroundColor: '#1f2937', borderColor: '#374151' }}>
+      {/* Custom animations */}
+      <style jsx>{`
+        @keyframes float {
+          0%, 100% { transform: translateY(0px) rotate(0deg); }
+          50% { transform: translateY(-20px) rotate(5deg); }
+        }
+        @keyframes glow {
+          0%, 100% { box-shadow: 0 0 20px rgba(0, 109, 119, 0.3); }
+          50% { box-shadow: 0 0 40px rgba(0, 109, 119, 0.5); }
+        }
+        @keyframes slideIn {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .card-hover {
+          transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 20px 40px rgba(0, 109, 119, 0.2);
+        }
+        .tab-active {
+          position: relative;
+          overflow: hidden;
+        }
+        .tab-active::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: -100%;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+          animation: shine 2s infinite;
+        }
+        @keyframes shine {
+          0% { left: -100%; }
+          100% { left: 100%; }
+        }
+      `}</style>
+
+      {/* Enhanced Header */}
+      <header className="shadow-xl backdrop-blur-lg border-b relative z-10" 
+              style={{ 
+                backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                borderColor: 'rgba(131, 197, 190, 0.3)',
+                boxShadow: '0 8px 32px rgba(0, 109, 119, 0.1)'
+              }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
+          <div className="flex justify-between items-center h-18">
             <div className="flex items-center space-x-4">
-              <Link href="/" className="text-2xl font-bold" style={{ color: '#10b981' }}>
-                EduMitra
+              <Link href="/" className="text-3xl font-bold tracking-tight flex items-center space-x-2 group" style={{ color: '#006d77' }}>
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 group-hover:scale-110"
+                     style={{ background: 'linear-gradient(135deg, #006d77, #83c5be)' }}>
+                  <Zap className="w-6 h-6 text-white" />
+                </div>
+                <span>EduMitra</span>
               </Link>
               <span className="text-gray-400">|</span>
-              <h1 className="text-xl font-semibold" style={{ color: '#d1fae5' }}>Parent Dashboard</h1>
+              <h1 className="text-xl font-semibold" style={{ color: '#006d77' }}>Parent Dashboard</h1>
             </div>
-            <div className="flex items-center space-x-3">
-              <Link href="/" className="flex items-center space-x-2 transition-colors hover:opacity-80" 
-                    style={{ color: '#10b981' }}>
-                <Home className="w-4 h-4" />
+            <div className="flex items-center space-x-4">
+              <Link href="/" className="flex items-center space-x-2 px-4 py-2 rounded-xl transition-all duration-300 hover:scale-105 hover:shadow-lg group" 
+                    style={{ 
+                      color: '#006d77',
+                      backgroundColor: 'rgba(131, 197, 190, 0.1)',
+                      border: '1px solid rgba(131, 197, 190, 0.3)'
+                    }}>
+                <Home className="w-4 h-4 transition-transform group-hover:scale-110" />
                 <span>Home</span>
               </Link>
-              <button className="relative p-2 rounded-full transition-colors hover:opacity-80"
-                      style={{ backgroundColor: '#374151' }}>
-                <Bell className="w-4 h-4" style={{ color: '#10b981' }} />
-                <span className="absolute -top-1 -right-1 w-3 h-3 rounded-full text-xs flex items-center justify-center text-white"
-                      style={{ backgroundColor: '#f87171' }}>3</span>
+              <button className="relative p-3 rounded-xl transition-all duration-300 hover:scale-110 hover:shadow-lg"
+                      style={{ 
+                        backgroundColor: 'rgba(131, 197, 190, 0.2)',
+                        border: '1px solid rgba(131, 197, 190, 0.3)'
+                      }}>
+                <Bell className="w-5 h-5" style={{ color: '#006d77' }} />
+                <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full text-xs flex items-center justify-center text-white font-bold animate-pulse"
+                      style={{ backgroundColor: '#e29578' }}>3</span>
               </button>
             </div>
           </div>
@@ -214,40 +354,67 @@ export default function ParentDashboard() {
       </header>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 relative z-10">
-        {/* Student Info Header */}
-        <div className="rounded-xl shadow-sm border p-6 mb-6"
-             style={{ backgroundColor: '#1f2937', borderColor: '#374151' }}>
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
-              <div className="w-16 h-16 rounded-full flex items-center justify-center text-2xl"
-                   style={{ backgroundColor: '#374151' }}>
-                <User className="w-8 h-8" style={{ color: '#10b981' }} />
+        {/* Enhanced Student Info Header */}
+        <div className={`rounded-3xl shadow-2xl border p-8 mb-8 card-hover backdrop-blur-lg relative overflow-hidden ${isLoaded ? 'animate-slideIn' : ''}`}
+             style={{ 
+               backgroundColor: 'rgba(255, 255, 255, 0.95)',
+               borderColor: 'rgba(131, 197, 190, 0.3)',
+               animation: isLoaded ? 'slideIn 0.6s ease-out' : 'none'
+             }}>
+          {/* Gradient overlay */}
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-50"></div>
+          
+          <div className="flex items-center justify-between relative z-10">
+            <div className="flex items-center space-x-6">
+              <div className="w-20 h-20 rounded-2xl flex items-center justify-center text-2xl shadow-xl relative overflow-hidden group"
+                   style={{ 
+                     background: 'linear-gradient(135deg, #83c5be, #006d77)',
+                   }}>
+                <User className="w-10 h-10 text-white transition-transform group-hover:scale-110" />
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-0 group-hover:opacity-30 transition-opacity duration-300"></div>
               </div>
               <div>
-                <h2 className="text-2xl font-bold" style={{ color: '#d1fae5' }}>{selectedStudent.name}</h2>
-                <p className="text-lg" style={{ color: '#a7f3d0', opacity: 0.8 }}>{selectedStudent.grade}</p>
+                <h2 className="text-3xl font-bold tracking-tight mb-1" style={{ color: '#006d77' }}>
+                  {selectedStudent.name}
+                </h2>
+                <p className="text-xl flex items-center space-x-2" style={{ color: '#83c5be' }}>
+                  <Star className="w-5 h-5" />
+                  <span>{selectedStudent.grade}</span>
+                </p>
               </div>
             </div>
-            <div className="flex items-center space-x-6">
-              <div className="text-center">
-                <div className="text-2xl font-bold" style={{ color: '#10b981' }}>{selectedStudent.weeklyStats.averageGrade}%</div>
-                <div className="text-sm" style={{ color: '#a7f3d0', opacity: 0.8 }}>Avg Grade</div>
+            <div className="flex items-center space-x-8">
+              <div className="text-center p-4 rounded-2xl shadow-lg transition-all duration-300 hover:scale-105" 
+                   style={{ backgroundColor: 'rgba(131, 197, 190, 0.1)' }}>
+                <div className="text-3xl font-bold mb-1" style={{ color: '#006d77' }}>
+                  <AnimatedCounter end={selectedStudent.weeklyStats.averageGrade} suffix="%" />
+                </div>
+                <div className="text-sm font-medium" style={{ color: '#83c5be' }}>Avg Grade</div>
               </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold" style={{ color: '#10b981' }}>{selectedStudent.weeklyStats.studyHours}h</div>
-                <div className="text-sm" style={{ color: '#a7f3d0', opacity: 0.8 }}>Study Hours</div>
+              <div className="text-center p-4 rounded-2xl shadow-lg transition-all duration-300 hover:scale-105" 
+                   style={{ backgroundColor: 'rgba(131, 197, 190, 0.1)' }}>
+                <div className="text-3xl font-bold mb-1" style={{ color: '#006d77' }}>
+                  <AnimatedCounter end={selectedStudent.weeklyStats.studyHours} suffix="h" />
+                </div>
+                <div className="text-sm font-medium" style={{ color: '#83c5be' }}>Study Hours</div>
               </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold" style={{ color: '#10b981' }}>{selectedStudent.weeklyStats.attendanceRate}%</div>
-                <div className="text-sm" style={{ color: '#a7f3d0', opacity: 0.8 }}>Attendance</div>
+              <div className="text-center p-4 rounded-2xl shadow-lg transition-all duration-300 hover:scale-105" 
+                   style={{ backgroundColor: 'rgba(131, 197, 190, 0.1)' }}>
+                <div className="text-3xl font-bold mb-1" style={{ color: '#006d77' }}>
+                  <AnimatedCounter end={selectedStudent.weeklyStats.attendanceRate} suffix="%" />
+                </div>
+                <div className="text-sm font-medium" style={{ color: '#83c5be' }}>Attendance</div>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Navigation Tabs */}
-        <div className="rounded-xl shadow-sm border mb-6"
-             style={{ backgroundColor: '#1f2937', borderColor: '#374151' }}>
+        {/* Enhanced Navigation Tabs */}
+        <div className="rounded-3xl shadow-xl border mb-8 backdrop-blur-lg overflow-hidden"
+             style={{ 
+               backgroundColor: 'rgba(255, 255, 255, 0.95)',
+               borderColor: 'rgba(131, 197, 190, 0.3)'
+             }}>
           <div className="flex overflow-x-auto">
             {[
               { key: 'overview', label: '📊 Overview', icon: BarChart3 },
@@ -258,61 +425,82 @@ export default function ParentDashboard() {
               <button
                 key={tab.key}
                 onClick={() => setActiveTab(tab.key as 'overview' | 'subjects' | 'activities' | 'progress')}
-                className="flex-1 py-4 px-6 text-center font-medium transition-colors whitespace-nowrap"
+                className={`flex-1 py-6 px-8 text-center font-semibold transition-all duration-300 whitespace-nowrap relative group ${
+                  activeTab === tab.key ? 'tab-active' : ''
+                }`}
                 style={{
-                  backgroundColor: activeTab === tab.key ? '#047857' : 'transparent',
-                  color: activeTab === tab.key ? 'white' : '#10b981'
+                  backgroundColor: activeTab === tab.key ? '#006d77' : 'transparent',
+                  color: activeTab === tab.key ? 'white' : '#006d77',
+                  borderBottom: activeTab === tab.key ? '3px solid #83c5be' : '3px solid transparent'
                 }}
               >
-                <tab.icon className="w-4 h-4 inline mr-2" />
+                <tab.icon className="w-5 h-5 inline mr-3 transition-transform group-hover:scale-110" />
                 {tab.label}
+                {activeTab === tab.key && (
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-10"></div>
+                )}
               </button>
             ))}
           </div>
         </div>
 
-        {/* Tab Content */}
+        {/* Enhanced Tab Content */}
         {activeTab === 'overview' && (
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Quick Stats */}
-            <div className="lg:col-span-1 space-y-6">
+            <div className="lg:col-span-1 space-y-8">
               {/* Weekly Performance */}
-              <div className="rounded-xl shadow-sm border p-6"
-                   style={{ backgroundColor: '#1f2937', borderColor: '#374151' }}>
-                <h3 className="text-lg font-semibold mb-4 flex items-center" style={{ color: '#d1fae5' }}>
-                  <BarChart3 className="w-5 h-5 mr-2" />
+              <div className="rounded-3xl shadow-xl border p-8 card-hover backdrop-blur-lg"
+                   style={{ 
+                     backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                     borderColor: 'rgba(131, 197, 190, 0.3)'
+                   }}>
+                <h3 className="text-xl font-bold mb-6 flex items-center" style={{ color: '#006d77' }}>
+                  <div className="w-8 h-8 rounded-lg mr-3 flex items-center justify-center"
+                       style={{ backgroundColor: 'rgba(131, 197, 190, 0.2)' }}>
+                    <BarChart3 className="w-5 h-5" />
+                  </div>
                   Weekly Performance
                 </h3>
-                <div className="space-y-4">
+                <div className="space-y-6">
                   <div className="flex justify-between items-center">
-                    <span className="text-sm" style={{ color: '#a7f3d0' }}>Assignments Completed</span>
-                    <span className="font-semibold" style={{ color: '#10b981' }}>{selectedStudent.weeklyStats.assignmentsCompleted}/15</span>
+                    <span className="text-sm font-medium" style={{ color: '#83c5be' }}>Assignments Completed</span>
+                    <span className="font-bold text-lg" style={{ color: '#006d77' }}>
+                      <AnimatedCounter end={selectedStudent.weeklyStats.assignmentsCompleted} />/15
+                    </span>
                   </div>
-                  <div className="w-full rounded-full h-2" style={{ backgroundColor: '#374151' }}>
-                    <div className="h-2 rounded-full transition-all duration-300"
-                         style={{ 
-                           width: `${(selectedStudent.weeklyStats.assignmentsCompleted / 15) * 100}%`,
-                           backgroundColor: '#047857'
-                         }}></div>
-                  </div>
+                  <AnimatedProgressBar 
+                    progress={(selectedStudent.weeklyStats.assignmentsCompleted / 15) * 100}
+                    color="#006d77"
+                    delay={300}
+                  />
                 </div>
               </div>
 
               {/* Recent Achievements */}
-              <div className="rounded-xl shadow-sm border p-6"
-                   style={{ backgroundColor: '#1f2937', borderColor: '#374151' }}>
-                <h3 className="text-lg font-semibold mb-4 flex items-center" style={{ color: '#d1fae5' }}>
-                  <Award className="w-5 h-5 mr-2" />
+              <div className="rounded-3xl shadow-xl border p-8 card-hover backdrop-blur-lg"
+                   style={{ 
+                     backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                     borderColor: 'rgba(131, 197, 190, 0.3)'
+                   }}>
+                <h3 className="text-xl font-bold mb-6 flex items-center" style={{ color: '#006d77' }}>
+                  <div className="w-8 h-8 rounded-lg mr-3 flex items-center justify-center"
+                       style={{ backgroundColor: 'rgba(131, 197, 190, 0.2)' }}>
+                    <Award className="w-5 h-5" />
+                  </div>
                   Recent Achievements
                 </h3>
-                <div className="space-y-3">
+                <div className="space-y-4">
                   {selectedStudent.achievements.slice(0, 3).map((achievement, index) => (
-                    <div key={index} className="flex items-center space-x-3 p-3 rounded-lg"
-                         style={{ backgroundColor: '#374151' }}>
-                      <span className="text-2xl">{achievement.icon}</span>
+                    <div key={index} className="flex items-center space-x-4 p-4 rounded-2xl shadow-lg transition-all duration-300 hover:scale-105"
+                         style={{ backgroundColor: '#ffddd2' }}>
+                      <div className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl shadow-md"
+                           style={{ backgroundColor: 'rgba(255, 255, 255, 0.8)' }}>
+                        {achievement.icon}
+                      </div>
                       <div className="flex-1">
-                        <p className="font-medium text-sm" style={{ color: '#d1fae5' }}>{achievement.title}</p>
-                        <p className="text-xs" style={{ color: '#a7f3d0', opacity: 0.7 }}>{achievement.date}</p>
+                        <p className="font-semibold text-sm" style={{ color: '#006d77' }}>{achievement.title}</p>
+                        <p className="text-xs" style={{ color: '#83c5be' }}>{achievement.date}</p>
                       </div>
                     </div>
                   ))}
@@ -321,34 +509,43 @@ export default function ParentDashboard() {
             </div>
 
             {/* Main Content */}
-            <div className="lg:col-span-2 space-y-6">
+            <div className="lg:col-span-2 space-y-8">
               {/* Subject Progress */}
-              <div className="rounded-xl shadow-sm border p-6"
-                   style={{ backgroundColor: '#1f2937', borderColor: '#374151' }}>
-                <h3 className="text-lg font-semibold mb-4 flex items-center" style={{ color: '#d1fae5' }}>
-                  <BookOpen className="w-5 h-5 mr-2" />
+              <div className="rounded-3xl shadow-xl border p-8 card-hover backdrop-blur-lg"
+                   style={{ 
+                     backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                     borderColor: 'rgba(131, 197, 190, 0.3)'
+                   }}>
+                <h3 className="text-xl font-bold mb-6 flex items-center" style={{ color: '#006d77' }}>
+                  <div className="w-8 h-8 rounded-lg mr-3 flex items-center justify-center"
+                       style={{ backgroundColor: 'rgba(131, 197, 190, 0.2)' }}>
+                    <BookOpen className="w-5 h-5" />
+                  </div>
                   Subject Progress
                 </h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {selectedStudent.subjects.map((subject, index) => (
-                    <div key={index} className="p-4 rounded-lg border"
-                         style={{ backgroundColor: '#374151', borderColor: '#4b5563' }}>
-                      <div className="flex justify-between items-center mb-2">
-                        <h4 className="font-medium" style={{ color: '#d1fae5' }}>{subject.name}</h4>
-                        <span className="text-sm font-semibold px-2 py-1 rounded text-white"
+                    <div key={index} className="p-6 rounded-2xl border shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl"
+                         style={{ 
+                           backgroundColor: '#ffddd2',
+                           borderColor: 'rgba(131, 197, 190, 0.3)'
+                         }}>
+                      <div className="flex justify-between items-center mb-4">
+                        <h4 className="font-bold text-lg" style={{ color: '#006d77' }}>{subject.name}</h4>
+                        <span className="text-sm font-bold px-3 py-2 rounded-xl text-white shadow-lg"
                               style={{ backgroundColor: getProgressColor(subject.progress) }}>
                           {subject.grade}
                         </span>
                       </div>
-                      <div className="w-full rounded-full h-2 mb-2" style={{ backgroundColor: '#4b5563' }}>
-                        <div className="h-2 rounded-full transition-all duration-300"
-                             style={{ 
-                               width: `${subject.progress}%`,
-                               backgroundColor: getProgressColor(subject.progress)
-                             }}></div>
+                      <div className="mb-4">
+                        <AnimatedProgressBar 
+                          progress={subject.progress}
+                          color={getProgressColor(subject.progress)}
+                          delay={index * 100}
+                        />
                       </div>
-                      <div className="flex justify-between text-xs" style={{ color: '#a7f3d0', opacity: 0.7 }}>
-                        <span>{subject.progress}% Complete</span>
+                      <div className="flex justify-between text-sm" style={{ color: '#83c5be' }}>
+                        <span className="font-medium">{subject.progress}% Complete</span>
                         <span>{subject.lastActivity}</span>
                       </div>
                     </div>
@@ -357,20 +554,32 @@ export default function ParentDashboard() {
               </div>
 
               {/* Recent Activities */}
-              <div className="rounded-xl shadow-sm border p-6"
-                   style={{ backgroundColor: '#1f2937', borderColor: '#374151' }}>
-                <h3 className="text-lg font-semibold mb-4 flex items-center" style={{ color: '#d1fae5' }}>
-                  <Activity className="w-5 h-5 mr-2" />
+              <div className="rounded-3xl shadow-xl border p-8 card-hover backdrop-blur-lg"
+                   style={{ 
+                     backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                     borderColor: 'rgba(131, 197, 190, 0.3)'
+                   }}>
+                <h3 className="text-xl font-bold mb-6 flex items-center" style={{ color: '#006d77' }}>
+                  <div className="w-8 h-8 rounded-lg mr-3 flex items-center justify-center"
+                       style={{ backgroundColor: 'rgba(131, 197, 190, 0.2)' }}>
+                    <Activity className="w-5 h-5" />
+                  </div>
                   Recent Activities
                 </h3>
-                <div className="space-y-3">
+                <div className="space-y-4">
                   {selectedStudent.recentActivities.map((activity, index) => (
-                    <div key={index} className="flex items-center space-x-3 p-3 rounded-lg border"
-                         style={{ backgroundColor: '#374151', borderColor: '#4b5563' }}>
-                      {getStatusIcon(activity.status)}
+                    <div key={index} className="flex items-center space-x-4 p-4 rounded-2xl border shadow-lg transition-all duration-300 hover:scale-105"
+                         style={{ 
+                           backgroundColor: '#ffddd2',
+                           borderColor: 'rgba(131, 197, 190, 0.3)'
+                         }}>
+                      <div className="w-10 h-10 rounded-xl flex items-center justify-center shadow-md"
+                           style={{ backgroundColor: 'rgba(255, 255, 255, 0.8)' }}>
+                        {getStatusIcon(activity.status)}
+                      </div>
                       <div className="flex-1">
-                        <p className="font-medium text-sm" style={{ color: '#d1fae5' }}>{activity.description}</p>
-                        <p className="text-xs" style={{ color: '#a7f3d0', opacity: 0.7 }}>
+                        <p className="font-semibold text-sm" style={{ color: '#006d77' }}>{activity.description}</p>
+                        <p className="text-xs" style={{ color: '#83c5be' }}>
                           {activity.type} • {activity.date}
                         </p>
                       </div>
@@ -383,33 +592,39 @@ export default function ParentDashboard() {
         )}
 
         {activeTab === 'subjects' && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {selectedStudent.subjects.map((subject, index) => (
-              <div key={index} className="rounded-xl shadow-sm border p-6"
-                   style={{ backgroundColor: '#1f2937', borderColor: '#374151' }}>
-                <div className="flex justify-between items-center mb-4">
-                  <h3 className="text-lg font-semibold" style={{ color: '#d1fae5' }}>{subject.name}</h3>
-                  <span className="text-xl font-bold px-3 py-1 rounded text-white"
+              <div key={index} className="rounded-3xl shadow-xl border p-8 card-hover backdrop-blur-lg"
+                   style={{ 
+                     backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                     borderColor: 'rgba(131, 197, 190, 0.3)',
+                     animation: `slideIn 0.6s ease-out ${index * 0.1}s both`
+                   }}>
+                <div className="flex justify-between items-center mb-6">
+                  <h3 className="text-xl font-bold" style={{ color: '#006d77' }}>{subject.name}</h3>
+                  <span className="text-2xl font-bold px-4 py-2 rounded-2xl text-white shadow-lg"
                         style={{ backgroundColor: getProgressColor(subject.progress) }}>
                     {subject.grade}
                   </span>
                 </div>
-                <div className="space-y-4">
+                <div className="space-y-6">
                   <div>
-                    <div className="flex justify-between text-sm mb-2" style={{ color: '#a7f3d0' }}>
+                    <div className="flex justify-between text-sm mb-3 font-medium" style={{ color: '#83c5be' }}>
                       <span>Progress</span>
                       <span>{subject.progress}%</span>
                     </div>
-                    <div className="w-full rounded-full h-3" style={{ backgroundColor: '#374151' }}>
-                      <div className="h-3 rounded-full transition-all duration-300"
-                           style={{ 
-                             width: `${subject.progress}%`,
-                             backgroundColor: getProgressColor(subject.progress)
-                           }}></div>
-                    </div>
+                    <AnimatedProgressBar 
+                      progress={subject.progress}
+                      color={getProgressColor(subject.progress)}
+                      delay={index * 100}
+                    />
                   </div>
-                  <div className="text-sm" style={{ color: '#a7f3d0', opacity: 0.8 }}>
-                    Last activity: {subject.lastActivity}
+                  <div className="text-sm p-3 rounded-xl shadow-inner" style={{ 
+                    color: '#83c5be', 
+                    backgroundColor: 'rgba(131, 197, 190, 0.1)',
+                    border: '1px solid rgba(131, 197, 190, 0.2)'
+                  }}>
+                    <strong>Last activity:</strong> {subject.lastActivity}
                   </div>
                 </div>
               </div>
@@ -418,19 +633,35 @@ export default function ParentDashboard() {
         )}
 
         {activeTab === 'activities' && (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Recent Activities */}
-            <div className="rounded-xl shadow-sm border p-6"
-                 style={{ backgroundColor: '#1f2937', borderColor: '#374151' }}>
-              <h3 className="text-lg font-semibold mb-4" style={{ color: '#d1fae5' }}>Recent Activities</h3>
-              <div className="space-y-4">
+            <div className="rounded-3xl shadow-xl border p-8 card-hover backdrop-blur-lg"
+                 style={{ 
+                   backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                   borderColor: 'rgba(131, 197, 190, 0.3)'
+                 }}>
+              <h3 className="text-xl font-bold mb-6 flex items-center" style={{ color: '#006d77' }}>
+                <div className="w-8 h-8 rounded-lg mr-3 flex items-center justify-center"
+                     style={{ backgroundColor: 'rgba(131, 197, 190, 0.2)' }}>
+                  <Activity className="w-5 h-5" />
+                </div>
+                Recent Activities
+              </h3>
+              <div className="space-y-5">
                 {selectedStudent.recentActivities.map((activity, index) => (
-                  <div key={index} className="flex items-start space-x-3 p-4 rounded-lg border"
-                       style={{ backgroundColor: '#374151', borderColor: '#4b5563' }}>
-                    {getStatusIcon(activity.status)}
+                  <div key={index} className="flex items-start space-x-4 p-5 rounded-2xl border shadow-lg transition-all duration-300 hover:scale-105"
+                       style={{ 
+                         backgroundColor: '#ffddd2',
+                         borderColor: 'rgba(131, 197, 190, 0.3)',
+                         animation: `slideIn 0.6s ease-out ${index * 0.1}s both`
+                       }}>
+                    <div className="w-12 h-12 rounded-xl flex items-center justify-center shadow-md"
+                         style={{ backgroundColor: 'rgba(255, 255, 255, 0.9)' }}>
+                      {getStatusIcon(activity.status)}
+                    </div>
                     <div className="flex-1">
-                      <p className="font-medium" style={{ color: '#d1fae5' }}>{activity.description}</p>
-                      <p className="text-sm mt-1" style={{ color: '#a7f3d0', opacity: 0.7 }}>
+                      <p className="font-bold text-base" style={{ color: '#006d77' }}>{activity.description}</p>
+                      <p className="text-sm mt-1 font-medium" style={{ color: '#83c5be' }}>
                         {activity.type} • {activity.date}
                       </p>
                     </div>
@@ -440,21 +671,34 @@ export default function ParentDashboard() {
             </div>
 
             {/* Upcoming Deadlines */}
-            <div className="rounded-xl shadow-sm border p-6"
-                 style={{ backgroundColor: '#1f2937', borderColor: '#374151' }}>
-              <h3 className="text-lg font-semibold mb-4" style={{ color: '#d1fae5' }}>Upcoming Deadlines</h3>
-              <div className="space-y-4">
+            <div className="rounded-3xl shadow-xl border p-8 card-hover backdrop-blur-lg"
+                 style={{ 
+                   backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                   borderColor: 'rgba(131, 197, 190, 0.3)'
+                 }}>
+              <h3 className="text-xl font-bold mb-6 flex items-center" style={{ color: '#006d77' }}>
+                <div className="w-8 h-8 rounded-lg mr-3 flex items-center justify-center"
+                     style={{ backgroundColor: 'rgba(131, 197, 190, 0.2)' }}>
+                  <Clock className="w-5 h-5" />
+                </div>
+                Upcoming Deadlines
+              </h3>
+              <div className="space-y-5">
                 {selectedStudent.upcomingDeadlines.map((deadline, index) => (
-                  <div key={index} className="p-4 rounded-lg border"
-                       style={{ backgroundColor: '#374151', borderColor: '#4b5563' }}>
-                    <div className="flex justify-between items-start mb-2">
-                      <h4 className="font-medium" style={{ color: '#d1fae5' }}>{deadline.title}</h4>
-                      <span className="text-xs px-2 py-1 rounded text-white"
+                  <div key={index} className="p-5 rounded-2xl border shadow-lg transition-all duration-300 hover:scale-105"
+                       style={{ 
+                         backgroundColor: '#ffddd2',
+                         borderColor: 'rgba(131, 197, 190, 0.3)',
+                         animation: `slideIn 0.6s ease-out ${index * 0.1 + 0.2}s both`
+                       }}>
+                    <div className="flex justify-between items-start mb-3">
+                      <h4 className="font-bold text-base" style={{ color: '#006d77' }}>{deadline.title}</h4>
+                      <span className="text-xs px-3 py-2 rounded-xl text-white font-bold shadow-lg"
                             style={{ backgroundColor: getPriorityColor(deadline.priority) }}>
                         {deadline.priority.toUpperCase()}
                       </span>
                     </div>
-                    <p className="text-sm" style={{ color: '#a7f3d0', opacity: 0.8 }}>
+                    <p className="text-sm font-medium" style={{ color: '#83c5be' }}>
                       {deadline.subject} • Due: {new Date(deadline.date).toLocaleDateString()}
                     </p>
                   </div>
@@ -465,53 +709,112 @@ export default function ParentDashboard() {
         )}
 
         {activeTab === 'progress' && (
-          <div className="space-y-6">
+          <div className="space-y-8">
             {/* Progress Charts Placeholder */}
-            <div className="rounded-xl shadow-sm border p-6"
-                 style={{ backgroundColor: '#1f2937', borderColor: '#374151' }}>
-              <h3 className="text-lg font-semibold mb-4" style={{ color: '#d1fae5' }}>Academic Progress Over Time</h3>
-              <div className="h-64 flex items-center justify-center border-2 border-dashed rounded-lg"
-                   style={{ borderColor: '#4b5563' }}>
-                <div className="text-center">
-                  <TrendingUp className="w-12 h-12 mx-auto mb-2" style={{ color: '#10b981' }} />
-                  <p style={{ color: '#d1fae5' }}>Progress charts will be displayed here</p>
-                  <p className="text-sm mt-1" style={{ color: '#a7f3d0', opacity: 0.7 }}>
+            <div className="rounded-3xl shadow-xl border p-8 card-hover backdrop-blur-lg"
+                 style={{ 
+                   backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                   borderColor: 'rgba(131, 197, 190, 0.3)'
+                 }}>
+              <h3 className="text-xl font-bold mb-6 flex items-center" style={{ color: '#006d77' }}>
+                <div className="w-8 h-8 rounded-lg mr-3 flex items-center justify-center"
+                     style={{ backgroundColor: 'rgba(131, 197, 190, 0.2)' }}>
+                  <TrendingUp className="w-5 h-5" />
+                </div>
+                Academic Progress Over Time
+              </h3>
+              <div className="h-72 flex items-center justify-center border-2 border-dashed rounded-2xl relative overflow-hidden"
+                   style={{ 
+                     borderColor: '#83c5be', 
+                     backgroundColor: 'rgba(131, 197, 190, 0.05)',
+                   }}>
+                {/* Animated background */}
+                <div className="absolute inset-0 opacity-30">
+                  {[...Array(20)].map((_, i) => (
+                    <div
+                      key={i}
+                      className="absolute w-1 h-1 rounded-full"
+                      style={{
+                        backgroundColor: '#83c5be',
+                        left: `${(i * 5) % 100}%`,
+                        top: `${20 + Math.sin(i) * 20}%`,
+                        animation: `float ${2 + i * 0.1}s ease-in-out infinite`,
+                        animationDelay: `${i * 0.1}s`
+                      }}
+                    />
+                  ))}
+                </div>
+                
+                <div className="text-center z-10">
+                  <div className="w-16 h-16 rounded-2xl mx-auto mb-4 flex items-center justify-center shadow-lg animate-pulse"
+                       style={{ background: 'linear-gradient(135deg, #006d77, #83c5be)' }}>
+                    <TrendingUp className="w-8 h-8 text-white" />
+                  </div>
+                  <p className="text-lg font-bold mb-2" style={{ color: '#006d77' }}>Progress charts will be displayed here</p>
+                  <p className="text-sm font-medium" style={{ color: '#83c5be' }}>
                     Integration with analytics coming soon
                   </p>
                 </div>
               </div>
             </div>
 
-            {/* Detailed Statistics */}
+            {/* Enhanced Detailed Statistics */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              <div className="rounded-xl shadow-sm border p-6 text-center"
-                   style={{ backgroundColor: '#1f2937', borderColor: '#374151' }}>
-                <div className="text-3xl font-bold mb-2" style={{ color: '#10b981' }}>
-                  {selectedStudent.weeklyStats.studyHours}
+              {[
+                {
+                  value: selectedStudent.weeklyStats.studyHours,
+                  label: "Study Hours This Week",
+                  icon: Clock,
+                  color: "#006d77",
+                  suffix: ""
+                },
+                {
+                  value: selectedStudent.weeklyStats.assignmentsCompleted,
+                  label: "Assignments Completed",
+                  icon: CheckCircle,
+                  color: "#83c5be",
+                  suffix: ""
+                },
+                {
+                  value: selectedStudent.weeklyStats.averageGrade,
+                  label: "Average Grade",
+                  icon: TrendingUp,
+                  color: "#006d77",
+                  suffix: "%"
+                },
+                {
+                  value: selectedStudent.weeklyStats.attendanceRate,
+                  label: "Attendance Rate",
+                  icon: User,
+                  color: "#83c5be",
+                  suffix: "%"
+                }
+              ].map((stat, index) => (
+                <div key={index} 
+                     className="rounded-3xl shadow-xl border p-8 text-center card-hover backdrop-blur-lg relative overflow-hidden"
+                     style={{ 
+                       backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                       borderColor: 'rgba(131, 197, 190, 0.3)',
+                       animation: `slideIn 0.6s ease-out ${index * 0.1}s both`
+                     }}>
+                  {/* Animated background gradient */}
+                  <div className="absolute inset-0 opacity-10"
+                       style={{
+                         background: `linear-gradient(135deg, ${stat.color}20, transparent)`
+                       }}></div>
+                  
+                  <div className="relative z-10">
+                    <div className="w-16 h-16 rounded-2xl mx-auto mb-4 flex items-center justify-center shadow-lg"
+                         style={{ backgroundColor: `${stat.color}20` }}>
+                      <stat.icon className="w-8 h-8" style={{ color: stat.color }} />
+                    </div>
+                    <div className="text-4xl font-bold mb-2" style={{ color: stat.color }}>
+                      <AnimatedCounter end={stat.value} suffix={stat.suffix} duration={1500} />
+                    </div>
+                    <div className="text-sm font-medium" style={{ color: '#83c5be' }}>{stat.label}</div>
+                  </div>
                 </div>
-                <div className="text-sm" style={{ color: '#a7f3d0', opacity: 0.8 }}>Study Hours This Week</div>
-              </div>
-              <div className="rounded-xl shadow-sm border p-6 text-center"
-                   style={{ backgroundColor: '#1f2937', borderColor: '#374151' }}>
-                <div className="text-3xl font-bold mb-2" style={{ color: '#10b981' }}>
-                  {selectedStudent.weeklyStats.assignmentsCompleted}
-                </div>
-                <div className="text-sm" style={{ color: '#a7f3d0', opacity: 0.8 }}>Assignments Completed</div>
-              </div>
-              <div className="rounded-xl shadow-sm border p-6 text-center"
-                   style={{ backgroundColor: '#1f2937', borderColor: '#374151' }}>
-                <div className="text-3xl font-bold mb-2" style={{ color: '#10b981' }}>
-                  {selectedStudent.weeklyStats.averageGrade}%
-                </div>
-                <div className="text-sm" style={{ color: '#a7f3d0', opacity: 0.8 }}>Average Grade</div>
-              </div>
-              <div className="rounded-xl shadow-sm border p-6 text-center"
-                   style={{ backgroundColor: '#1f2937', borderColor: '#374151' }}>
-                <div className="text-3xl font-bold mb-2" style={{ color: '#10b981' }}>
-                  {selectedStudent.weeklyStats.attendanceRate}%
-                </div>
-                <div className="text-sm" style={{ color: '#a7f3d0', opacity: 0.8 }}>Attendance Rate</div>
-              </div>
+              ))}
             </div>
           </div>
         )}

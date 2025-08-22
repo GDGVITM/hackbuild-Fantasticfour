@@ -18,7 +18,7 @@ export default function ATSPage() {
     formData.append("jd", jd);
 
     try {
-      const res = await fetch("http://localhost:8000/ats/score", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/ats/score`, {
         method: "POST",
         body: formData,
       });
@@ -31,7 +31,7 @@ export default function ATSPage() {
     }
   };
 
-  const handleDrag = (e) => {
+  const handleDrag = (e:  React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     e.stopPropagation();
     if (e.type === "dragenter" || e.type === "dragover") {
@@ -41,7 +41,7 @@ export default function ATSPage() {
     }
   };
 
-  const handleDrop = (e) => {
+  const handleDrop = (e:  React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     e.stopPropagation();
     setDragActive(false);
@@ -54,13 +54,13 @@ export default function ATSPage() {
     }
   };
 
-  const getScoreColor = (score) => {
+  const getScoreColor = (score: number) => {
     if (score >= 80) return "text-[#006D77]";
     if (score >= 60) return "text-[#E29578]";
     return "text-red-500";
   };
 
-  const getScoreBg = (score) => {
+  const getScoreBg = (score: number) => {
     if (score >= 80) return "bg-[#006D77]";
     if (score >= 60) return "bg-[#E29578]";
     return "bg-red-500";

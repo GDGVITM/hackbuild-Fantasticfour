@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { Send, Bot, User, Loader2, MessageSquare, Home } from 'lucide-react';
+import { Send, Bot, User, Loader2, MessageSquare, Home, Trophy, Target, Zap, Clock } from 'lucide-react';
 
 interface Message {
   id: string;
@@ -142,56 +142,53 @@ export default function MockInterviewPage() {
   };
 
   return (
-    <div className="min-h-screen relative overflow-hidden" 
-         style={{ background: 'linear-gradient(135deg, #edf6f9 0%, #83c5be 50%, #006d77 100%)' }}>
-      
-      {/* Decorative background elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-80 h-80 rounded-full opacity-20" 
-             style={{ backgroundColor: '#ffddd2' }}></div>
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 rounded-full opacity-20" 
-             style={{ backgroundColor: '#e29578' }}></div>
-        <div className="absolute top-1/3 -left-20 w-40 h-40 rounded-full opacity-15" 
-             style={{ backgroundColor: '#83c5be' }}></div>
-        <div className="absolute top-2/3 -right-20 w-32 h-32 rounded-full opacity-10" 
-             style={{ backgroundColor: '#ffddd2' }}></div>
+    <div className="min-h-screen bg-gradient-to-br from-[#edf6f9] via-[#edf6f9] to-[#ffddd2]/20 relative overflow-hidden">
+      {/* Enhanced Animated Background - Matching Landing Page */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-[#83c5be]/10 to-[#006d77]/5 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-tr from-[#ffddd2]/20 to-[#e29578]/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-r from-[#83c5be]/5 to-[#006d77]/5 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '4s' }}></div>
       </div>
 
-      {/* Header */}
-      <header className="shadow-sm border-b border-opacity-20 relative z-10" 
-              style={{ backgroundColor: '#ffddd2', borderColor: '#83c5be' }}>
+      {/* Premium Header */}
+      <header className="bg-white/80 backdrop-blur-xl shadow-lg border-b border-white/20 relative z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
+          <div className="flex justify-between items-center h-20">
             <div className="flex items-center space-x-4">
-              <Link href="/" className="text-2xl font-bold" style={{ color: '#006d77' }}>
-                EduMitra
+              <Link href="/" className="group flex items-center space-x-3 hover:scale-105 transition-all duration-300">
+                <div className="w-10 h-10 bg-gradient-to-br from-[#006d77] to-[#83c5be] rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-110">
+                  <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                  </svg>
+                </div>
+                <span className="text-2xl font-bold bg-gradient-to-r from-[#006d77] to-[#83c5be] bg-clip-text text-transparent">EduMitra</span>
               </Link>
-              <span className="text-gray-400">|</span>
-              <h1 className="text-xl font-semibold" style={{ color: '#006d77' }}>Mock Interview Bot</h1>
+              <div className="hidden sm:block w-px h-6 bg-gray-300"></div>
+              <div className="flex items-center space-x-2">
+                <div className="w-8 h-8 bg-gradient-to-r from-[#e29578] to-[#ffddd2] rounded-lg flex items-center justify-center">
+                  <Bot className="w-4 h-4 text-white" />
+                </div>
+                <h1 className="text-xl font-bold bg-gradient-to-r from-[#006d77] to-[#83c5be] bg-clip-text text-transparent">AI Interview Coach</h1>
+              </div>
             </div>
             <div className="flex items-center space-x-3">
-              <Link href="/" className="flex items-center space-x-2 transition-colors hover:opacity-80" 
-                    style={{ color: '#006d77' }}>
-                <Home className="w-4 h-4" />
-                <span>Home</span>
+              <Link href="/" className="group flex items-center space-x-2 px-4 py-2 rounded-2xl bg-gradient-to-r from-white/80 to-gray-50/80 backdrop-blur-sm border border-gray-200/50 hover:shadow-md transition-all duration-300 hover:scale-105">
+                <Home className="w-4 h-4 text-[#006d77]" />
+                <span className="font-medium bg-gradient-to-r from-[#006d77] to-[#83c5be] bg-clip-text text-transparent">Home</span>
               </Link>
               <button
                 onClick={() => setShowJson(!showJson)}
-                className={`px-3 py-1 rounded-full text-xs font-medium transition-all duration-300 border-0 ${
+                className={`px-4 py-2 rounded-2xl text-sm font-semibold transition-all duration-300 hover:scale-105 ${
                   showJson 
-                    ? 'text-white shadow-md' 
-                    : 'text-white hover:shadow-md'
+                    ? 'bg-gradient-to-r from-[#006d77] to-[#83c5be] text-white shadow-lg' 
+                    : 'bg-gradient-to-r from-white/80 to-gray-50/80 backdrop-blur-sm border border-gray-200/50 bg-gradient-to-r from-[#83c5be] to-[#006d77] bg-clip-text text-transparent hover:shadow-md'
                 }`}
-                style={{ 
-                  backgroundColor: showJson ? '#006d77' : '#83c5be'
-                }}
               >
                 {showJson ? 'Hide JSON' : 'Show JSON'}
               </button>
               <button
                 onClick={clearChat}
-                className="px-3 py-1 rounded-full text-xs font-medium text-white transition-all duration-300 hover:shadow-md border-0"
-                style={{ backgroundColor: '#e29578' }}
+                className="px-4 py-2 rounded-2xl text-sm font-semibold text-white bg-gradient-to-r from-[#e29578] to-[#ffddd2] hover:shadow-lg transition-all duration-300 hover:scale-105"
               >
                 Clear Chat
               </button>
@@ -200,56 +197,63 @@ export default function MockInterviewPage() {
         </div>
       </header>
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Chat Interface */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Enhanced Chat Interface */}
           <div className="lg:col-span-2">
-            <div className="rounded-xl shadow-2xl border-0 flex flex-col" 
-                 style={{ height: '600px', backgroundColor: '#ffddd2' }}>
-              {/* Chat Header */}
-              <div className="flex items-center justify-between p-4 border-b border-opacity-20"
-                   style={{ borderColor: '#83c5be' }}>
-                <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 rounded-full flex items-center justify-center"
-                       style={{ backgroundColor: '#83c5be' }}>
-                    <Bot className="w-5 h-5" style={{ color: '#006d77' }} />
+            <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 flex flex-col hover:shadow-3xl transition-all duration-300" style={{ height: '700px' }}>
+              {/* Premium Chat Header */}
+              <div className="flex items-center justify-between p-6 border-b border-gray-100/50 bg-gradient-to-r from-white/90 to-gray-50/90 backdrop-blur-sm rounded-t-3xl">
+                <div className="flex items-center space-x-4">
+                  <div className="relative">
+                    <div className="w-12 h-12 bg-gradient-to-br from-[#83c5be] to-[#006d77] rounded-2xl flex items-center justify-center shadow-lg">
+                      <Bot className="w-6 h-6 text-white" />
+                    </div>
+                    <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-400 rounded-full border-2 border-white"></div>
                   </div>
                   <div>
-                    <h3 className="font-semibold" style={{ color: '#006d77' }}>AI Interview Coach</h3>
-                    <p className="text-sm opacity-75" style={{ color: '#006d77' }}>Practice your interview skills</p>
+                    <h3 className="text-lg font-bold bg-gradient-to-r from-[#006d77] to-[#83c5be] bg-clip-text text-transparent">AI Interview Coach</h3>
+                    <p className="text-sm bg-gradient-to-r from-gray-600 to-gray-800 bg-clip-text text-transparent">Your personal career mentor</p>
                   </div>
                 </div>
-                <div className="flex items-center space-x-2">
-                  <div className="w-2 h-2 rounded-full" style={{ backgroundColor: '#e29578' }}></div>
-                  <span className="text-xs opacity-75" style={{ color: '#006d77' }}>Online</span>
+                <div className="flex items-center space-x-3">
+                  <div className="flex items-center space-x-2 bg-green-50 px-3 py-1 rounded-full">
+                    <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                    <span className="text-xs font-medium text-green-600">Online</span>
+                  </div>
+                  <div className="text-xs bg-gradient-to-r from-gray-500 to-gray-700 bg-clip-text text-transparent font-medium">
+                    {messages.filter(m => m.type === 'user').length} responses
+                  </div>
                 </div>
               </div>
 
-              {/* Messages */}
-              <div className="flex-1 overflow-y-auto p-4 space-y-4" style={{ backgroundColor: '#edf6f9' }}>
+              {/* Enhanced Messages */}
+              <div className="flex-1 overflow-y-auto p-6 space-y-6 bg-gradient-to-b from-[#edf6f9]/50 to-white/50">
                 {messages.map((message) => (
                   <div
                     key={message.id}
-                    className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
+                    className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'} animate-in slide-in-from-bottom-2 duration-300`}
                   >
-                    <div className={`flex items-start space-x-2 max-w-[70%] ${message.type === 'user' ? 'flex-row-reverse space-x-reverse' : ''}`}>
-                      <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0`}
-                           style={{
-                             backgroundColor: message.type === 'user' ? '#006d77' : '#83c5be'
-                           }}>
+                    <div className={`flex items-start space-x-3 max-w-[80%] ${message.type === 'user' ? 'flex-row-reverse space-x-reverse' : ''}`}>
+                      <div className={`w-10 h-10 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg ${
+                        message.type === 'user' 
+                          ? 'bg-gradient-to-br from-[#006d77] to-[#83c5be]' 
+                          : 'bg-gradient-to-br from-[#83c5be] to-[#e29578]'
+                      }`}>
                         {message.type === 'user' ? (
-                          <User className="w-4 h-4 text-white" />
+                          <User className="w-5 h-5 text-white" />
                         ) : (
-                          <Bot className="w-4 h-4" style={{ color: '#006d77' }} />
+                          <Bot className="w-5 h-5 text-white" />
                         )}
                       </div>
-                      <div className={`rounded-lg p-3`}
-                           style={{
-                             backgroundColor: message.type === 'user' ? '#006d77' : '#ffddd2',
-                             color: message.type === 'user' ? 'white' : '#006d77'
-                           }}>
-                        <p className="text-sm">{message.content}</p>
-                        <p className="text-xs mt-1 opacity-70">
+                      <div className={`relative rounded-2xl p-4 shadow-sm border ${
+                        message.type === 'user' 
+                          ? 'bg-gradient-to-br from-[#006d77] to-[#83c5be] text-white border-[#006d77]/20' 
+                          : 'bg-white/90 backdrop-blur-sm border-gray-200/50 text-gray-800'
+                      }`}>
+                        <div className="absolute top-3 left-0 w-0 h-0 border-l-[8px] border-l-transparent border-r-[8px] border-r-transparent border-b-[8px] border-b-white/90 transform -translate-x-2"></div>
+                        <p className="text-sm leading-relaxed">{message.content}</p>
+                        <p className={`text-xs mt-2 ${message.type === 'user' ? 'text-white/70' : 'text-gray-500'}`}>
                           {message.timestamp.toLocaleTimeString()}
                         </p>
                       </div>
@@ -258,16 +262,20 @@ export default function MockInterviewPage() {
                 ))}
                 
                 {isLoading && (
-                  <div className="flex justify-start">
-                    <div className="flex items-start space-x-2">
-                      <div className="w-8 h-8 rounded-full flex items-center justify-center"
-                           style={{ backgroundColor: '#83c5be' }}>
-                        <Bot className="w-4 h-4" style={{ color: '#006d77' }} />
+                  <div className="flex justify-start animate-in slide-in-from-bottom-2 duration-300">
+                    <div className="flex items-start space-x-3">
+                      <div className="w-10 h-10 bg-gradient-to-br from-[#83c5be] to-[#e29578] rounded-2xl flex items-center justify-center shadow-lg">
+                        <Bot className="w-5 h-5 text-white" />
                       </div>
-                      <div className="rounded-lg p-3" style={{ backgroundColor: '#ffddd2' }}>
-                        <div className="flex items-center space-x-2">
-                          <Loader2 className="w-4 h-4 animate-spin" style={{ color: '#006d77' }} />
-                          <span className="text-sm" style={{ color: '#006d77' }}>AI is thinking...</span>
+                      <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-4 shadow-sm border border-gray-200/50">
+                        <div className="flex items-center space-x-3">
+                          <Loader2 className="w-4 h-4 animate-spin text-[#006d77]" />
+                          <span className="text-sm text-gray-700">AI is analyzing your response...</span>
+                          <div className="flex space-x-1">
+                            <div className="w-2 h-2 bg-[#83c5be] rounded-full animate-bounce"></div>
+                            <div className="w-2 h-2 bg-[#83c5be] rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                            <div className="w-2 h-2 bg-[#83c5be] rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -275,141 +283,160 @@ export default function MockInterviewPage() {
                 )}
               </div>
 
-              {/* Input Area */}
-              <div className="p-4 border-t border-opacity-20" style={{ borderColor: '#83c5be' }}>
-                <div className="flex space-x-3">
-                  <textarea
-                    value={inputText}
-                    onChange={(e) => setInputText(e.target.value)}
-                    onKeyPress={handleKeyPress}
-                    placeholder="Type your answer here... (Press Enter to send)"
-                    className="flex-1 resize-none border rounded-lg px-3 py-2 focus:ring-2 text-sm"
-                    style={{ 
-                      borderColor: '#83c5be',
-                      backgroundColor: '#edf6f9',
-                      color: '#006d77'
-                    }}
-                    rows={2}
-                    disabled={isLoading}
-                  />
+              {/* Enhanced Input Area */}
+              <div className="p-6 border-t border-gray-100/50 bg-gradient-to-r from-white/90 to-gray-50/90 backdrop-blur-sm rounded-b-3xl">
+                <div className="flex space-x-4">
+                  <div className="flex-1 relative">
+                    <textarea
+                      value={inputText}
+                      onChange={(e) => setInputText(e.target.value)}
+                      onKeyPress={handleKeyPress}
+                      placeholder="Share your thoughts and experiences... (Press Enter to send)"
+                      className="w-full resize-none border-2 rounded-2xl px-4 py-3 pr-12 focus:ring-2 focus:ring-[#006d77]/20 focus:border-[#006d77] text-sm bg-white/80 backdrop-blur-sm border-gray-200/50 text-gray-800 placeholder-gray-500 transition-all duration-300"
+                      rows={3}
+                      disabled={isLoading}
+                    />
+                    <div className="absolute bottom-3 right-3 text-xs text-gray-400">
+                      {inputText.length}/500
+                    </div>
+                  </div>
                   <button
                     onClick={handleSendMessage}
                     disabled={!inputText.trim() || isLoading}
-                    className="text-white p-2 rounded-lg transition-colors flex items-center justify-center disabled:opacity-50"
-                    style={{ backgroundColor: '#006d77' }}
+                    className="group bg-gradient-to-r from-[#006d77] to-[#83c5be] text-white p-4 rounded-2xl transition-all duration-300 flex items-center justify-center disabled:opacity-50 hover:shadow-lg hover:scale-105 disabled:hover:scale-100"
                   >
-                    <Send className="w-4 h-4" />
+                    <Send className="w-5 h-5 group-hover:translate-x-0.5 transition-transform duration-200" />
                   </button>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Sidebar */}
+          {/* Enhanced Sidebar */}
           <div className="space-y-6">
-            {/* Instructions */}
-            <div className="rounded-xl shadow-sm border p-6"
-                 style={{ backgroundColor: '#ffddd2', borderColor: '#83c5be' }}>
-              <div className="flex items-center space-x-2 mb-4">
-                <MessageSquare className="w-5 h-5" style={{ color: '#006d77' }} />
-                <h3 className="font-semibold" style={{ color: '#006d77' }}>How to Use</h3>
+            {/* Premium Instructions */}
+            <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-xl border border-white/20 p-6 hover:shadow-2xl transition-all duration-300">
+              <div className="flex items-center space-x-3 mb-6">
+                <div className="w-10 h-10 bg-gradient-to-br from-[#e29578] to-[#ffddd2] rounded-2xl flex items-center justify-center shadow-lg">
+                  <MessageSquare className="w-5 h-5 text-white" />
+                </div>
+                <h3 className="text-lg font-bold bg-gradient-to-r from-[#006d77] to-[#83c5be] bg-clip-text text-transparent">Interview Tips</h3>
               </div>
-              <ul className="text-sm space-y-2" style={{ color: '#006d77' }}>
-                <li>• Answer the bot&apos;s questions naturally</li>
-                <li>• Take your time to think through responses</li>
-                <li>• Use the STAR method for behavioral questions</li>
-                <li>• Check the JSON response for detailed feedback</li>
-                <li>• Practice multiple rounds for better results</li>
-              </ul>
+              <div className="space-y-4">
+                {[
+                  { icon: Target, text: "Answer questions naturally and authentically" },
+                  { icon: Clock, text: "Take your time to think through responses" },
+                  { icon: Zap, text: "Use the STAR method for behavioral questions" },
+                  { icon: Trophy, text: "Check JSON feedback for detailed insights" }
+                ].map((tip, index) => (
+                  <div key={index} className="flex items-start space-x-3 p-3 rounded-xl bg-gradient-to-r from-[#edf6f9]/50 to-white/50 border border-gray-100/50">
+                    <tip.icon className="w-4 h-4 text-[#83c5be] mt-0.5 flex-shrink-0" />
+                    <span className="text-sm text-gray-700 leading-relaxed">{tip.text}</span>
+                  </div>
+                ))}
+              </div>
             </div>
 
-            {/* JSON Response Display */}
+            {/* Enhanced JSON Response Display */}
             {showJson && lastAIResponse && (
-              <div className="rounded-xl shadow-sm border p-6"
-                   style={{ backgroundColor: '#ffddd2', borderColor: '#83c5be' }}>
-                <h3 className="font-semibold mb-4" style={{ color: '#006d77' }}>Latest AI Response (JSON)</h3>
-                <div className="rounded-lg p-4" style={{ backgroundColor: '#edf6f9' }}>
-                  <pre className="text-xs whitespace-pre-wrap overflow-x-auto" style={{ color: '#006d77' }}>
+              <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-xl border border-white/20 p-6 hover:shadow-2xl transition-all duration-300">
+                <h3 className="text-lg font-bold bg-gradient-to-r from-[#006d77] to-[#83c5be] bg-clip-text text-transparent mb-4">AI Response Data</h3>
+                <div className="bg-gradient-to-br from-[#edf6f9] to-white rounded-2xl p-4 border border-gray-100/50">
+                  <pre className="text-xs whitespace-pre-wrap overflow-x-auto text-gray-800 font-mono">
                     {JSON.stringify(lastAIResponse, null, 2)}
                   </pre>
                 </div>
               </div>
             )}
 
-            {/* Feedback Display */}
+            {/* Enhanced Feedback Display */}
             {lastAIResponse && (
-              <div className="rounded-xl shadow-sm border p-6"
-                   style={{ backgroundColor: '#ffddd2', borderColor: '#83c5be' }}>
-                <h3 className="font-semibold mb-4" style={{ color: '#006d77' }}>Latest Feedback</h3>
+              <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-xl border border-white/20 p-6 hover:shadow-2xl transition-all duration-300">
+                <h3 className="text-lg font-bold bg-gradient-to-r from-[#006d77] to-[#83c5be] bg-clip-text text-transparent mb-6">Performance Feedback</h3>
                 
                 {lastAIResponse.score && (
-                  <div className="mb-4">
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-sm font-medium" style={{ color: '#006d77' }}>Score</span>
-                      <span className="text-lg font-bold" style={{ color: '#006d77' }}>{lastAIResponse.score}/10</span>
+                  <div className="mb-6">
+                    <div className="flex items-center justify-between mb-3">
+                      <span className="text-sm font-semibold bg-gradient-to-r from-[#006d77] to-[#83c5be] bg-clip-text text-transparent">Response Score</span>
+                      <div className="flex items-center space-x-2">
+                        <span className="text-2xl font-bold bg-gradient-to-r from-[#006d77] to-[#83c5be] bg-clip-text text-transparent">{lastAIResponse.score}</span>
+                        <span className="text-sm text-gray-500">/10</span>
+                      </div>
                     </div>
-                    <div className="w-full rounded-full h-2" style={{ backgroundColor: '#edf6f9' }}>
+                    <div className="relative w-full bg-gray-200 rounded-full h-3 overflow-hidden">
                       <div 
-                        className="h-2 rounded-full transition-all duration-300"
-                        style={{ 
-                          width: `${(lastAIResponse.score / 10) * 100}%`,
-                          backgroundColor: '#006d77'
-                        }}
-                      ></div>
+                        className="absolute top-0 left-0 h-full bg-gradient-to-r from-[#006d77] to-[#83c5be] rounded-full transition-all duration-1000 ease-out shadow-sm"
+                        style={{ width: `${(lastAIResponse.score / 10) * 100}%` }}
+                      >
+                        <div className="absolute inset-0 bg-white/20 animate-pulse"></div>
+                      </div>
+                    </div>
+                    <div className="flex justify-between text-xs text-gray-500 mt-1">
+                      <span>Needs Work</span>
+                      <span>Excellent</span>
                     </div>
                   </div>
                 )}
 
                 {lastAIResponse.feedback && (
-                  <div className="mb-4">
-                    <h4 className="text-sm font-medium mb-2" style={{ color: '#006d77' }}>Feedback</h4>
-                    <p className="text-sm p-3 rounded-lg" 
-                       style={{ 
-                         color: '#006d77', 
-                         backgroundColor: '#edf6f9' 
-                       }}>
-                      {lastAIResponse.feedback}
-                    </p>
+                  <div className="mb-6">
+                    <h4 className="text-sm font-semibold bg-gradient-to-r from-[#006d77] to-[#83c5be] bg-clip-text text-transparent mb-3">Detailed Feedback</h4>
+                    <div className="p-4 rounded-2xl bg-gradient-to-br from-[#edf6f9]/50 to-white/50 border border-gray-100/50">
+                      <p className="text-sm text-gray-700 leading-relaxed">{lastAIResponse.feedback}</p>
+                    </div>
                   </div>
                 )}
 
                 {lastAIResponse.suggestions && (
                   <div>
-                    <h4 className="text-sm font-medium mb-2" style={{ color: '#006d77' }}>Suggestions</h4>
-                    <ul className="text-sm space-y-1" style={{ color: '#006d77' }}>
+                    <h4 className="text-sm font-semibold bg-gradient-to-r from-[#006d77] to-[#83c5be] bg-clip-text text-transparent mb-3">Improvement Suggestions</h4>
+                    <div className="space-y-2">
                       {lastAIResponse.suggestions.map((suggestion, index) => (
-                        <li key={index} className="flex items-start space-x-2">
-                          <span className="mt-0.5" style={{ color: '#e29578' }}>•</span>
-                          <span>{suggestion}</span>
-                        </li>
+                        <div key={index} className="flex items-start space-x-3 p-3 rounded-xl bg-gradient-to-r from-[#ffddd2]/30 to-white/50 border border-[#e29578]/20">
+                          <div className="w-1.5 h-1.5 bg-[#e29578] rounded-full mt-2 flex-shrink-0"></div>
+                          <span className="text-sm text-gray-700 leading-relaxed">{suggestion}</span>
+                        </div>
                       ))}
-                    </ul>
+                    </div>
                   </div>
                 )}
               </div>
             )}
 
-            {/* Stats */}
-            <div className="rounded-xl shadow-sm border p-6"
-                 style={{ backgroundColor: '#ffddd2', borderColor: '#83c5be' }}>
-              <h3 className="font-semibold mb-4" style={{ color: '#006d77' }}>Session Stats</h3>
-              <div className="space-y-3">
-                <div className="flex justify-between items-center">
-                  <span className="text-sm" style={{ color: '#006d77' }}>Messages</span>
-                  <span className="font-medium" style={{ color: '#006d77' }}>{messages.filter(m => m.type === 'user').length}</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-sm" style={{ color: '#006d77' }}>Session Time</span>
-                  <span className="font-medium" style={{ color: '#006d77' }}>
-                    {Math.floor((Date.now() - messages[0].timestamp.getTime()) / 60000)}m
-                  </span>
-                </div>
-                {lastAIResponse?.score && (
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm" style={{ color: '#006d77' }}>Latest Score</span>
-                    <span className="font-medium" style={{ color: '#006d77' }}>{lastAIResponse.score}/10</span>
+            {/* Enhanced Stats */}
+            <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-xl border border-white/20 p-6 hover:shadow-2xl transition-all duration-300">
+              <h3 className="text-lg font-bold bg-gradient-to-r from-[#006d77] to-[#83c5be] bg-clip-text text-transparent mb-6">Session Analytics</h3>
+              <div className="space-y-4">
+                {[
+                  {
+                    label: "Responses Given",
+                    value: messages.filter(m => m.type === 'user').length,
+                    icon: MessageSquare,
+                    color: "from-[#006d77] to-[#83c5be]"
+                  },
+                  {
+                    label: "Session Duration",
+                    value: `${Math.floor((Date.now() - messages[0].timestamp.getTime()) / 60000)}m`,
+                    icon: Clock,
+                    color: "from-[#83c5be] to-[#e29578]"
+                  },
+                  {
+                    label: "Latest Score",
+                    value: lastAIResponse?.score ? `${lastAIResponse.score}/10` : 'N/A',
+                    icon: Trophy,
+                    color: "from-[#e29578] to-[#ffddd2]"
+                  }
+                ].map((stat, index) => (
+                  <div key={index} className="flex items-center justify-between p-4 rounded-2xl bg-gradient-to-r from-[#edf6f9]/30 to-white/50 border border-gray-100/50">
+                    <div className="flex items-center space-x-3">
+                      <div className={`w-8 h-8 bg-gradient-to-r ${stat.color} rounded-lg flex items-center justify-center shadow-sm`}>
+                        <stat.icon className="w-4 h-4 text-white" />
+                      </div>
+                      <span className="text-sm font-medium text-gray-700">{stat.label}</span>
+                    </div>
+                    <span className="text-lg font-bold bg-gradient-to-r from-[#006d77] to-[#83c5be] bg-clip-text text-transparent">{stat.value}</span>
                   </div>
-                )}
+                ))}
               </div>
             </div>
           </div>
