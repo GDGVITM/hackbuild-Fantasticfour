@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import React, { useState } from "react";
 import { Upload, FileText, Target, CheckCircle, AlertCircle, Zap } from "lucide-react";
@@ -57,13 +56,11 @@ export default function ATSPage() {
   };
 
   const getScoreColor = (score: number) => {
-  const getScoreColor = (score: number) => {
     if (score >= 80) return "text-[#006D77]";
     if (score >= 60) return "text-[#E29578]";
     return "text-red-500";
   };
 
-  const getScoreBg = (score: number) => {
   const getScoreBg = (score: number) => {
     if (score >= 80) return "bg-[#006D77]";
     if (score >= 60) return "bg-[#E29578]";
@@ -72,7 +69,7 @@ export default function ATSPage() {
 
   return (
     <div className="min-h-screen bg-[#EDF6F9] p-4 sm:p-6 lg:p-8">
-            {/* Background Pattern */}
+      {/* Background Pattern */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-[#83C5BE]/10 rounded-full blur-3xl"></div>
         <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-[#FFDDD2]/20 rounded-full blur-3xl"></div>
@@ -268,6 +265,4 @@ export default function ATSPage() {
       </div>
     </div>
   );
-  }
-}
 }
