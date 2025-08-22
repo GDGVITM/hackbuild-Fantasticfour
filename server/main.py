@@ -11,6 +11,7 @@ from routes.quizRoute import router as quiz_router
 from routes.userSubjectRoute import router as user_subject_router
 from routes.branchRoute import router as branch_router
 from routes.subjectRoute import router as subject_router
+from routes.classroomRoute import router as classroom_router
 
 load_dotenv()
 app = FastAPI()
@@ -33,6 +34,7 @@ app.include_router(quiz_router, prefix="/quiz")
 app.include_router(user_subject_router, prefix="/user-subject")
 app.include_router(branch_router, prefix="/branch")
 app.include_router(subject_router, prefix="/subject")
+app.include_router(classroom_router, prefix="/classroom")
 
 if __name__ == "__main__":
     import uvicorn
