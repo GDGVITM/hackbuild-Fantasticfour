@@ -28,7 +28,7 @@ export default function RootLayout({
   const csp = [
     "default-src 'self'",
     "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://apis.google.com https://accounts.google.com https://www.gstatic.com",
-    "connect-src 'self' https://classroom.googleapis.com https://accounts.google.com https://oauth2.googleapis.com https://content-classroom.googleapis.com",
+    "connect-src 'self' https://classroom.googleapis.com https://accounts.google.com https://oauth2.googleapis.com https://content-classroom.googleapis.com https://fantasticfour.onrender.com",
     "frame-src 'self' https://accounts.google.com https://content-classroom.googleapis.com",
     "style-src 'self' 'unsafe-inline'",
     "img-src 'self' data: https:",
