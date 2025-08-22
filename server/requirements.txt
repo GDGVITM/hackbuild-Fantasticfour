@@ -69,7 +69,6 @@ pytest-mock==3.14.1
 python-dateutil==2.9.0.post0
 python-dotenv==1.1.0
 python-jose==3.4.0
-python-multipart==0.0.9
 python-multipart==0.0.20
 PyYAML==6.0.2
 realtime==2.4.3
