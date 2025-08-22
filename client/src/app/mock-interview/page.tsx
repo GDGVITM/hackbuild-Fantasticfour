@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { Send, Bot, User, Loader2, MessageSquare, Home } from 'lucide-react';
+import { getMockInterviewResponse } from '@/utlis/mock-interview/get-mock-interview-response';
+import { mockInterviewResponse } from '@/utlis/mock-interview/type';
 
 interface Message {
   id: string;
@@ -13,67 +15,18 @@ interface Message {
 
 interface AIResponse {
   response: string;
-  feedback?: string;
   score?: number;
-  suggestions?: string[];
+  memory?: string[];
 }
 
-// Dummy AI function that simulates mock interview responses
-const mockInterviewAI = async (userInput: string): Promise<AIResponse> => {
-  // Simulate API delay
-  await new Promise(resolve => setTimeout(resolve, 1000));
-  
-  const responses = [
-    {
-      response: "That's a great start! Can you elaborate on your experience with teamwork and how you handle conflicts in a team setting?",
-      feedback: "Good opening, but try to be more specific about your achievements.",
-      score: 7,
-      suggestions: ["Use STAR method", "Include quantifiable results", "Be more confident"]
-    },
-    {
-      response: "Interesting! Now tell me about a challenging project you worked on and how you overcame obstacles.",
-      feedback: "Nice technical explanation. Consider adding more details about the impact.",
-      score: 8,
-      suggestions: ["Mention specific technologies", "Explain the business value", "Discuss lessons learned"]
-    },
-    {
-      response: "I see you have strong problem-solving skills. What motivates you in your work, and where do you see yourself in 5 years?",
-      feedback: "Good self-reflection. Try to connect your goals with the company's mission.",
-      score: 6,
-      suggestions: ["Research the company values", "Be more specific about career goals", "Show enthusiasm"]
-    },
-    {
-      response: "Excellent communication! Let's discuss a time when you had to learn something completely new. How did you approach it?",
-      feedback: "Great example of adaptability. Could use more details about the learning process.",
-      score: 9,
-      suggestions: ["Mention specific learning strategies", "Highlight time management", "Show continuous improvement mindset"]
-    },
-    {
-      response: "Thank you for that detailed answer. Finally, do you have any questions about our company or the role?",
-      feedback: "Always prepare thoughtful questions. It shows genuine interest.",
-      score: 8,
-      suggestions: ["Ask about team dynamics", "Inquire about growth opportunities", "Show you've researched the company"]
-    }
-  ];
-  
-  // Simple logic to vary responses based on input length and content
-  let responseIndex = 0;
-  if (userInput.length > 100) responseIndex = 1;
-  if (userInput.toLowerCase().includes('project') || userInput.toLowerCase().includes('challenge')) responseIndex = 2;
-  if (userInput.toLowerCase().includes('goal') || userInput.toLowerCase().includes('future')) responseIndex = 3;
-  if (userInput.toLowerCase().includes('learn') || userInput.toLowerCase().includes('new')) responseIndex = 4;
-  
-  responseIndex = Math.min(responseIndex, responses.length - 1);
-  
-  return responses[responseIndex];
-};
-
 export default function MockInterviewPage() {
+  const maxScore = 25;
+  
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
       type: 'bot',
-      content: "Hello! I'm your AI Interview Coach. I'll help you practice for your upcoming interviews. Let's start with a simple question: Tell me about yourself and why you're interested in this position.",
+      content: "Hello! I'm your AI Interview Coach. I'll help you practice for your upcoming interviews. Let's start with a simple question: Tell me about yourself",
       timestamp: new Date()
     }
   ]);
@@ -81,6 +34,14 @@ export default function MockInterviewPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [showJson, setShowJson] = useState(false);
   const [lastAIResponse, setLastAIResponse] = useState<AIResponse | null>(null);
+  const [previousResponse, setPreviousResponse] = useState<mockInterviewResponse>(
+    {
+      score: Math.floor(maxScore / 2),
+      memory: [],
+      response: messages[0].content
+    }
+  );
+  const [interviewType, setInterviewType] = useState('Software engineering interview for a tech company position.');
 
   const handleSendMessage = async () => {
     if (!inputText.trim() || isLoading) return;
@@ -93,12 +54,30 @@ export default function MockInterviewPage() {
     };
 
     setMessages(prev => [...prev, userMessage]);
+    const currentInput = inputText;
     setInputText('');
     setIsLoading(true);
 
     try {
-      const aiResponse = await mockInterviewAI(inputText);
-      setLastAIResponse(aiResponse);
+      const aiResponse = await getMockInterviewResponse(
+        currentInput,
+        previousResponse,
+        "", // custom instructions
+        interviewType,
+        maxScore // out of marks
+      );
+      
+      // Update previous response for context
+      setPreviousResponse(aiResponse);
+      
+      // Convert to AIResponse format for UI
+      const uiResponse: AIResponse = {
+        response: aiResponse.response,
+        score: aiResponse.score,
+        memory: aiResponse.memory
+      };
+      
+      setLastAIResponse(uiResponse);
 
       const botMessage: Message = {
         id: (Date.now() + 1).toString(),
@@ -130,125 +109,111 @@ export default function MockInterviewPage() {
   };
 
   const clearChat = () => {
+    const initialMessage = "Hello! I'm your AI Interview Coach. I'll help you practice for your upcoming interviews. Let's start with a simple question: Tell me about yourself and why you're interested in this position.";
+    
     setMessages([
       {
         id: '1',
         type: 'bot',
-        content: "Hello! I'm your AI Interview Coach. I'll help you practice for your upcoming interviews. Let's start with a simple question: Tell me about yourself and why you're interested in this position.",
+        content: initialMessage,
         timestamp: new Date()
       }
     ]);
     setLastAIResponse(null);
+    setPreviousResponse({
+      score: 0,
+      memory: [],
+      response: initialMessage
+    });
   };
 
   return (
-    <div className="min-h-screen relative overflow-hidden" 
-         style={{ background: 'linear-gradient(135deg, #edf6f9 0%, #83c5be 50%, #006d77 100%)' }}>
-      
-      {/* Decorative background elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-80 h-80 rounded-full opacity-20" 
-             style={{ backgroundColor: '#ffddd2' }}></div>
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 rounded-full opacity-20" 
-             style={{ backgroundColor: '#e29578' }}></div>
-        <div className="absolute top-1/3 -left-20 w-40 h-40 rounded-full opacity-15" 
-             style={{ backgroundColor: '#83c5be' }}></div>
-        <div className="absolute top-2/3 -right-20 w-32 h-32 rounded-full opacity-10" 
-             style={{ backgroundColor: '#ffddd2' }}></div>
-      </div>
-
+    <div className="min-h-screen bg-[#edf6f9]">
       {/* Header */}
-      <header className="shadow-sm border-b border-opacity-20 relative z-10" 
-              style={{ backgroundColor: '#ffddd2', borderColor: '#83c5be' }}>
+      <header className="bg-white/95 backdrop-blur-sm border-b border-gray-200 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            <div className="flex items-center space-x-4">
-              <Link href="/" className="text-2xl font-bold" style={{ color: '#006d77' }}>
+            <div className="flex items-center space-x-2 sm:space-x-4">
+              <Link href="/" className="text-xl sm:text-2xl font-bold text-[#006d77] hover:opacity-80 transition-colors">
                 EduMitra
               </Link>
-              <span className="text-gray-400">|</span>
-              <h1 className="text-xl font-semibold" style={{ color: '#006d77' }}>Mock Interview Bot</h1>
+              <span className="text-gray-400 hidden sm:inline">|</span>
+              <h1 className="text-sm sm:text-xl font-semibold text-[#006d77] truncate">Mock Interview Bot</h1>
             </div>
-            <div className="flex items-center space-x-3">
-              <Link href="/" className="flex items-center space-x-2 transition-colors hover:opacity-80" 
-                    style={{ color: '#006d77' }}>
+            <div className="flex items-center space-x-2 sm:space-x-3">
+              <Link href="/" className="flex items-center space-x-1 sm:space-x-2 text-[#006d77] hover:opacity-80 transition-colors" >
                 <Home className="w-4 h-4" />
-                <span>Home</span>
+                <span className="hidden sm:inline text-sm">Home</span>
               </Link>
               <button
                 onClick={() => setShowJson(!showJson)}
-                className={`px-3 py-1 rounded-full text-xs font-medium transition-all duration-300 border-0 ${
+                className={`px-2 sm:px-3 py-1 rounded-lg text-xs font-medium transition-all duration-300 border-0 ${
                   showJson 
-                    ? 'text-white shadow-md' 
-                    : 'text-white hover:shadow-md'
+                    ? 'text-white bg-[#006d77] shadow-md' 
+                    : 'text-white bg-[#83c5be] hover:shadow-md'
                 }`}
-                style={{ 
-                  backgroundColor: showJson ? '#006d77' : '#83c5be'
-                }}
               >
-                {showJson ? 'Hide JSON' : 'Show JSON'}
+                {showJson ? 'Hide' : 'Show'} <span className="hidden sm:inline">JSON</span>
               </button>
               <button
                 onClick={clearChat}
-                className="px-3 py-1 rounded-full text-xs font-medium text-white transition-all duration-300 hover:shadow-md border-0"
-                style={{ backgroundColor: '#e29578' }}
+                className="px-2 sm:px-3 py-1 rounded-lg text-xs font-medium text-white bg-[#e29578] hover:opacity-90 transition-all duration-300 border-0"
               >
-                Clear Chat
+                Clear
               </button>
             </div>
           </div>
         </div>
       </header>
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6">
           {/* Chat Interface */}
-          <div className="lg:col-span-2">
-            <div className="rounded-xl shadow-2xl border-0 flex flex-col" 
-                 style={{ height: '600px', backgroundColor: '#ffddd2' }}>
+          <div className="lg:col-span-2 order-2 lg:order-1">
+            <div className="bg-white rounded-xl shadow-lg border border-gray-200 flex flex-col" 
+                 style={{ height: '70vh', minHeight: '500px' }}>
               {/* Chat Header */}
-              <div className="flex items-center justify-between p-4 border-b border-opacity-20"
-                   style={{ borderColor: '#83c5be' }}>
+              <div className="flex items-center justify-between p-3 sm:p-4 border-b border-gray-200">
                 <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 rounded-full flex items-center justify-center"
-                       style={{ backgroundColor: '#83c5be' }}>
-                    <Bot className="w-5 h-5" style={{ color: '#006d77' }} />
+                  <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-[#ffddd2] flex items-center justify-center">
+                    <Bot className="w-4 h-4 sm:w-5 sm:h-5 text-[#006d77]" />
                   </div>
                   <div>
-                    <h3 className="font-semibold" style={{ color: '#006d77' }}>AI Interview Coach</h3>
-                    <p className="text-sm opacity-75" style={{ color: '#006d77' }}>Practice your interview skills</p>
+                    <h3 className="font-semibold text-sm sm:text-base text-[#006d77]">AI Interview Coach</h3>
+                    <p className="text-xs sm:text-sm text-gray-600">Practice your interview skills</p>
                   </div>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <div className="w-2 h-2 rounded-full" style={{ backgroundColor: '#e29578' }}></div>
-                  <span className="text-xs opacity-75" style={{ color: '#006d77' }}>Online</span>
+                  <div className="w-2 h-2 rounded-full bg-[#e29578]"></div>
+                  <span className="text-xs text-gray-600 hidden sm:inline">Online</span>
                 </div>
               </div>
 
               {/* Messages */}
-              <div className="flex-1 overflow-y-auto p-4 space-y-4" style={{ backgroundColor: '#edf6f9' }}>
+              <div className="flex-1 overflow-y-auto p-3 sm:p-4 space-y-3 sm:space-y-4 bg-gray-50">
                 {messages.map((message) => (
                   <div
                     key={message.id}
                     className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
                   >
-                    <div className={`flex items-start space-x-2 max-w-[70%] ${message.type === 'user' ? 'flex-row-reverse space-x-reverse' : ''}`}>
-                      <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0`}
+                    <div className={`flex items-start space-x-2 max-w-[85%] sm:max-w-[70%] ${message.type === 'user' ? 'flex-row-reverse space-x-reverse' : ''}`}>
+                      <div className={`w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center flex-shrink-0`}
                            style={{
-                             backgroundColor: message.type === 'user' ? '#006d77' : '#83c5be'
+                             backgroundColor: message.type === 'user' ? '#006d77' : '#ffddd2'
                            }}>
                         {message.type === 'user' ? (
-                          <User className="w-4 h-4 text-white" />
+                          <User className="w-3 h-3 sm:w-4 sm:h-4 text-white" />
                         ) : (
-                          <Bot className="w-4 h-4" style={{ color: '#006d77' }} />
+                          <Bot className="w-3 h-3 sm:w-4 sm:h-4 text-[#006d77]" />
                         )}
                       </div>
-                      <div className={`rounded-lg p-3`}
+                      <div className={`rounded-lg p-2 sm:p-3`}
                            style={{
-                             backgroundColor: message.type === 'user' ? '#006d77' : '#ffddd2',
-                             color: message.type === 'user' ? 'white' : '#006d77'
+                             backgroundColor: message.type === 'user' ? '#006d77' : 'white',
+                             color: message.type === 'user' ? 'white' : '#374151',
+                             border: message.type === 'bot' ? '1px solid #e5e7eb' : 'none'
                            }}>
-                        <p className="text-sm">{message.content}</p>
+                        <p className="text-xs sm:text-sm leading-relaxed">{message.content}</p>
                         <p className="text-xs mt-1 opacity-70">
                           {message.timestamp.toLocaleTimeString()}
                         </p>
@@ -260,14 +225,13 @@ export default function MockInterviewPage() {
                 {isLoading && (
                   <div className="flex justify-start">
                     <div className="flex items-start space-x-2">
-                      <div className="w-8 h-8 rounded-full flex items-center justify-center"
-                           style={{ backgroundColor: '#83c5be' }}>
-                        <Bot className="w-4 h-4" style={{ color: '#006d77' }} />
+                      <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-[#ffddd2] flex items-center justify-center">
+                        <Bot className="w-3 h-3 sm:w-4 sm:h-4 text-[#006d77]" />
                       </div>
-                      <div className="rounded-lg p-3" style={{ backgroundColor: '#ffddd2' }}>
+                      <div className="bg-white border border-gray-200 rounded-lg p-2 sm:p-3">
                         <div className="flex items-center space-x-2">
-                          <Loader2 className="w-4 h-4 animate-spin" style={{ color: '#006d77' }} />
-                          <span className="text-sm" style={{ color: '#006d77' }}>AI is thinking...</span>
+                          <Loader2 className="w-3 h-3 sm:w-4 sm:h-4 animate-spin text-[#006d77]" />
+                          <span className="text-xs sm:text-sm text-gray-600">AI is thinking...</span>
                         </div>
                       </div>
                     </div>
@@ -276,27 +240,21 @@ export default function MockInterviewPage() {
               </div>
 
               {/* Input Area */}
-              <div className="p-4 border-t border-opacity-20" style={{ borderColor: '#83c5be' }}>
-                <div className="flex space-x-3">
+              <div className="p-3 sm:p-4 border-t border-gray-200 bg-white">
+                <div className="flex space-x-2 sm:space-x-3">
                   <textarea
                     value={inputText}
                     onChange={(e) => setInputText(e.target.value)}
                     onKeyPress={handleKeyPress}
                     placeholder="Type your answer here... (Press Enter to send)"
-                    className="flex-1 resize-none border rounded-lg px-3 py-2 focus:ring-2 text-sm"
-                    style={{ 
-                      borderColor: '#83c5be',
-                      backgroundColor: '#edf6f9',
-                      color: '#006d77'
-                    }}
+                    className="flex-1 resize-none border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-[#006d77] focus:border-transparent text-xs sm:text-sm bg-white text-gray-900 placeholder-gray-500"
                     rows={2}
                     disabled={isLoading}
                   />
                   <button
                     onClick={handleSendMessage}
                     disabled={!inputText.trim() || isLoading}
-                    className="text-white p-2 rounded-lg transition-colors flex items-center justify-center disabled:opacity-50"
-                    style={{ backgroundColor: '#006d77' }}
+                    className="bg-[#006d77] text-white p-2 rounded-lg hover:opacity-90 transition-colors flex items-center justify-center disabled:opacity-50 flex-shrink-0"
                   >
                     <Send className="w-4 h-4" />
                   </button>
@@ -306,112 +264,91 @@ export default function MockInterviewPage() {
           </div>
 
           {/* Sidebar */}
-          <div className="space-y-6">
-            {/* Instructions */}
-            <div className="rounded-xl shadow-sm border p-6"
-                 style={{ backgroundColor: '#ffddd2', borderColor: '#83c5be' }}>
-              <div className="flex items-center space-x-2 mb-4">
-                <MessageSquare className="w-5 h-5" style={{ color: '#006d77' }} />
-                <h3 className="font-semibold" style={{ color: '#006d77' }}>How to Use</h3>
-              </div>
-              <ul className="text-sm space-y-2" style={{ color: '#006d77' }}>
-                <li>• Answer the bot&apos;s questions naturally</li>
-                <li>• Take your time to think through responses</li>
-                <li>• Use the STAR method for behavioral questions</li>
-                <li>• Check the JSON response for detailed feedback</li>
-                <li>• Practice multiple rounds for better results</li>
-              </ul>
+          <div className="space-y-4 lg:space-y-6 order-1 lg:order-2">
+            {/* Interview Type Selector */}
+            <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-4 lg:p-6">
+              <h3 className="font-semibold mb-3 lg:mb-4 text-[#006d77] text-sm lg:text-base">Interview Type</h3>
+              <select
+                value={interviewType}
+                onChange={(e) => setInterviewType(e.target.value)}
+                className="w-full p-2 lg:p-3 border border-gray-300 rounded-lg text-xs lg:text-sm bg-white text-gray-900 focus:ring-2 focus:ring-[#006d77] focus:border-transparent"
+                disabled={isLoading}
+              >
+                <option value="Software engineering interview for a tech company position.">Software Engineering</option>
+                <option value="Data science interview for a tech company position.">Data Science</option>
+                <option value="Product manager interview for a tech company position.">Product Management</option>
+                <option value="Frontend developer interview for a tech company position.">Frontend Development</option>
+                <option value="Backend developer interview for a tech company position.">Backend Development</option>
+                <option value="DevOps engineer interview for a tech company position.">DevOps Engineering</option>
+                <option value="UI/UX designer interview for a design company position.">UI/UX Design</option>
+                <option value="Business analyst interview for a consulting company position.">Business Analysis</option>
+                <option value="Marketing manager interview for a marketing company position.">Marketing</option>
+                <option value="General behavioral interview for any company position.">General/Behavioral</option>
+              </select>
             </div>
 
-            {/* JSON Response Display */}
+            {/* Score & Stats Combined */}
+            <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-4 lg:p-6">
+              <h3 className="font-semibold mb-3 lg:mb-4 text-[#006d77] text-sm lg:text-base">Performance</h3>
+              
+              <div className="mb-4">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-xs lg:text-sm font-medium text-gray-700">Latest Score</span>
+                  <span className="text-lg font-bold text-[#006d77]">{lastAIResponse?.score || 0}/{maxScore}</span>
+                </div>
+                <div className="w-full bg-gray-200 rounded-full h-3 mb-4">
+                  <div 
+                    className="h-3 rounded-full transition-all duration-500 bg-gradient-to-r from-[#006d77] to-[#83c5be]"
+                    style={{ 
+                      width: `${((lastAIResponse?.score || 0) / maxScore) * 100}%`
+                    }}
+                  ></div>
+                </div>
+              </div>
+
+              <div className="space-y-2 pt-3 border-t border-gray-200">
+                <div className="flex justify-between items-center">
+                  <span className="text-xs lg:text-sm text-gray-700">Messages</span>
+                  <span className="font-medium text-gray-900">{messages.filter(m => m.type === 'user').length}</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-xs lg:text-sm text-gray-700">Session Time</span>
+                  <span className="font-medium text-gray-900">
+                    {Math.floor((Date.now() - messages[0].timestamp.getTime()) / 60000)}m
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Instructions - Simplified */}
+            <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-4 lg:p-6">
+              <div className="flex items-center space-x-2 mb-3 lg:mb-4">
+                <MessageSquare className="w-4 h-4 lg:w-5 lg:h-5 text-[#006d77]" />
+                <h3 className="font-semibold text-[#006d77] text-sm lg:text-base">Quick Tips</h3>
+              </div>
+              <ul className="text-xs lg:text-sm space-y-1 lg:space-y-2 text-gray-700">
+                <li>• Use the STAR method for behavioral questions</li>
+                <li>• Take your time to think through responses</li>
+                <li>• Practice multiple rounds for improvement</li>
+              </ul>
+              <div className="mt-3 lg:mt-4 pt-3 border-t border-gray-200">
+                <p className="text-xs text-gray-500">
+                  🤖 Powered by Google Gemini AI
+                </p>
+              </div>
+            </div>
+
+            {/* JSON Response Display - Only when toggled */}
             {showJson && lastAIResponse && (
-              <div className="rounded-xl shadow-sm border p-6"
-                   style={{ backgroundColor: '#ffddd2', borderColor: '#83c5be' }}>
-                <h3 className="font-semibold mb-4" style={{ color: '#006d77' }}>Latest AI Response (JSON)</h3>
-                <div className="rounded-lg p-4" style={{ backgroundColor: '#edf6f9' }}>
-                  <pre className="text-xs whitespace-pre-wrap overflow-x-auto" style={{ color: '#006d77' }}>
+              <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-4 lg:p-6">
+                <h3 className="font-semibold mb-3 lg:mb-4 text-[#006d77] text-sm lg:text-base">AI Response Data</h3>
+                <div className="bg-gray-50 rounded-lg p-3 lg:p-4 border">
+                  <pre className="text-xs whitespace-pre-wrap overflow-x-auto text-gray-800">
                     {JSON.stringify(lastAIResponse, null, 2)}
                   </pre>
                 </div>
               </div>
             )}
-
-            {/* Feedback Display */}
-            {lastAIResponse && (
-              <div className="rounded-xl shadow-sm border p-6"
-                   style={{ backgroundColor: '#ffddd2', borderColor: '#83c5be' }}>
-                <h3 className="font-semibold mb-4" style={{ color: '#006d77' }}>Latest Feedback</h3>
-                
-                {lastAIResponse.score && (
-                  <div className="mb-4">
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-sm font-medium" style={{ color: '#006d77' }}>Score</span>
-                      <span className="text-lg font-bold" style={{ color: '#006d77' }}>{lastAIResponse.score}/10</span>
-                    </div>
-                    <div className="w-full rounded-full h-2" style={{ backgroundColor: '#edf6f9' }}>
-                      <div 
-                        className="h-2 rounded-full transition-all duration-300"
-                        style={{ 
-                          width: `${(lastAIResponse.score / 10) * 100}%`,
-                          backgroundColor: '#006d77'
-                        }}
-                      ></div>
-                    </div>
-                  </div>
-                )}
-
-                {lastAIResponse.feedback && (
-                  <div className="mb-4">
-                    <h4 className="text-sm font-medium mb-2" style={{ color: '#006d77' }}>Feedback</h4>
-                    <p className="text-sm p-3 rounded-lg" 
-                       style={{ 
-                         color: '#006d77', 
-                         backgroundColor: '#edf6f9' 
-                       }}>
-                      {lastAIResponse.feedback}
-                    </p>
-                  </div>
-                )}
-
-                {lastAIResponse.suggestions && (
-                  <div>
-                    <h4 className="text-sm font-medium mb-2" style={{ color: '#006d77' }}>Suggestions</h4>
-                    <ul className="text-sm space-y-1" style={{ color: '#006d77' }}>
-                      {lastAIResponse.suggestions.map((suggestion, index) => (
-                        <li key={index} className="flex items-start space-x-2">
-                          <span className="mt-0.5" style={{ color: '#e29578' }}>•</span>
-                          <span>{suggestion}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-              </div>
-            )}
-
-            {/* Stats */}
-            <div className="rounded-xl shadow-sm border p-6"
-                 style={{ backgroundColor: '#ffddd2', borderColor: '#83c5be' }}>
-              <h3 className="font-semibold mb-4" style={{ color: '#006d77' }}>Session Stats</h3>
-              <div className="space-y-3">
-                <div className="flex justify-between items-center">
-                  <span className="text-sm" style={{ color: '#006d77' }}>Messages</span>
-                  <span className="font-medium" style={{ color: '#006d77' }}>{messages.filter(m => m.type === 'user').length}</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-sm" style={{ color: '#006d77' }}>Session Time</span>
-                  <span className="font-medium" style={{ color: '#006d77' }}>
-                    {Math.floor((Date.now() - messages[0].timestamp.getTime()) / 60000)}m
-                  </span>
-                </div>
-                {lastAIResponse?.score && (
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm" style={{ color: '#006d77' }}>Latest Score</span>
-                    <span className="font-medium" style={{ color: '#006d77' }}>{lastAIResponse.score}/10</span>
-                  </div>
-                )}
-              </div>
-            </div>
           </div>
         </div>
       </div>
