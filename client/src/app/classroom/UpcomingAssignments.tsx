@@ -3,24 +3,18 @@ import { Card, CardContent } from "@/components/ui/card";
 import { format } from "date-fns";
 import { Clock, BookOpen, Calendar } from "lucide-react";
 
-declare global {
-  interface Window {
-    gapi: any;
-  }
-}
-
 interface Assignment {
   course: string;
   title: string;
-  due: Date;
+  due: string; // Changed from Date to string since it comes from API
   description?: string;
 }
 
 interface UpcomingAssignmentsProps {
-  gapi: any;
+  accessToken: string | null; // Changed from gapi to accessToken
 }
 
-export default function UpcomingAssignments({ gapi }: UpcomingAssignmentsProps) {
+export default function UpcomingAssignments({ accessToken }: UpcomingAssignmentsProps) {
   const [assignments, setAssignments] = useState<Assignment[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -31,49 +25,31 @@ export default function UpcomingAssignments({ gapi }: UpcomingAssignmentsProps) 
         setLoading(true);
         setError(null);
         
-        const coursesResp = await gapi.client.classroom.courses.list({
-          courseStates: ['ACTIVE']
-        });
-        const courses = coursesResp.result.courses || [];
-
-        let allAssignments: Assignment[] = [];
-
-        for (let course of courses) {
-          try {
-            const cwResp = await gapi.client.classroom.courses.courseWork.list({
-              courseId: course.id,
-            });
-            const courseWork = cwResp.result.courseWork || [];
-
-            for (let work of courseWork) {
-              if (work.dueDate) {
-                const due = new Date(
-                  work.dueDate.year,
-                  work.dueDate.month - 1,
-                  work.dueDate.day,
-                  work.dueTime?.hours || 23,
-                  work.dueTime?.minutes || 59
-                );
-                
-                // Only include future assignments
-                if (due >= new Date()) {
-                  allAssignments.push({
-                    course: course.name,
-                    title: work.title,
-                    due,
-                    description: work.description || '',
-                  });
-                }
-              }
-            }
-          } catch (courseError) {
-            console.warn(`Error fetching assignments for course ${course.name}:`, courseError);
-          }
+        if (!accessToken) {
+          setError("No access token available");
+          setLoading(false);
+          return;
         }
 
-        // Sort by due date (earliest first)
-        allAssignments.sort((a, b) => a.due.getTime() - b.due.getTime());
-        setAssignments(allAssignments);
+        const response = await fetch('https://fantasticfour.onrender.com/classroom/assignments', {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${accessToken}`,
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        
+        if (data.error) {
+          setError(data.error);
+        } else {
+          setAssignments(data.assignments || []);
+        }
       } catch (err) {
         console.error("Error fetching assignments:", err);
         setError("Failed to fetch assignments from Google Classroom");
@@ -82,14 +58,15 @@ export default function UpcomingAssignments({ gapi }: UpcomingAssignmentsProps) 
       }
     }
 
-    if (gapi) {
+    if (accessToken) {
       fetchAssignments();
     }
-  }, [gapi]);
+  }, [accessToken]);
 
-  const getDaysUntilDue = (dueDate: Date) => {
+  const getDaysUntilDue = (dueDate: string) => {
     const now = new Date();
-    const diffTime = dueDate.getTime() - now.getTime();
+    const due = new Date(dueDate);
+    const diffTime = due.getTime() - now.getTime();
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     return diffDays;
   };
@@ -165,9 +142,9 @@ export default function UpcomingAssignments({ gapi }: UpcomingAssignmentsProps) 
               
               <div className="flex items-center text-sm text-gray-500">
                 <Calendar className="w-4 h-4 mr-1" />
-                <span className="mr-3">{format(assignment.due, "MMM dd, yyyy")}</span>
+                <span className="mr-3">{format(new Date(assignment.due), "MMM dd, yyyy")}</span>
                 <Clock className="w-4 h-4 mr-1" />
-                <span>{format(assignment.due, "hh:mm a")}</span>
+                <span>{format(new Date(assignment.due), "hh:mm a")}</span>
               </div>
             </CardContent>
           </Card>

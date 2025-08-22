@@ -79,7 +79,8 @@ export default function MockInterviewPage() {
     {
       score: Math.floor(maxScore / 2),
       memory: [],
-      response: messages[0].content
+      response: messages[0].content,
+      feedback: ''
     }
   );
   const [interviewType, setInterviewType] = useState('Software engineering interview for a tech company position.');
@@ -205,11 +206,11 @@ export default function MockInterviewPage() {
         timestamp: new Date()
       }
     ]);
-    setLastAIResponse(null);
     setPreviousResponse({
       score: 0,
       memory: [],
-      response: initialMessage
+      response: initialMessage,
+      feedback: ''
     });
   };
 

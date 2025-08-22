@@ -15,7 +15,6 @@ const CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || "YOUR_CLIENT_ID.ap
 const SCOPES = "https://www.googleapis.com/auth/classroom.coursework.me.readonly https://www.googleapis.com/auth/classroom.courses.readonly";
 
 export default function App() {
-  const [gapiLoaded, setGapiLoaded] = useState(false);
   const [gisLoaded, setGisLoaded] = useState(false);
   const [isSignedIn, setIsSignedIn] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -25,20 +24,12 @@ export default function App() {
   // Check if scripts are loaded with a timeout
   useEffect(() => {
     const checkScriptsLoaded = () => {
-      const gapiReady = typeof window !== 'undefined' && window.gapi;
       const gisReady = typeof window !== 'undefined' && window.google?.accounts?.oauth2;
       
-      console.log('Checking scripts:', { gapiReady, gisReady });
-      
-      if (gapiReady && !gapiLoaded) {
-        initializeGapi();
-      }
+      console.log('Checking scripts:', { gisReady });
       
       if (gisReady) {
         setGisLoaded(true);
-      }
-      
-      if (gapiLoaded && gisReady) {
         setLoading(false);
       }
     };
@@ -62,31 +53,7 @@ export default function App() {
       clearInterval(interval);
       clearTimeout(timeout);
     };
-  }, [gapiLoaded, loading]);
-
-  const initializeGapi = async () => {
-    try {
-      window.gapi.load("client", async () => {
-        try {
-          await window.gapi.client.init({
-            discoveryDocs: [
-              "https://classroom.googleapis.com/$discovery/rest?version=v1",
-            ],
-          });
-          console.log('GAPI initialized successfully');
-          setGapiLoaded(true);
-        } catch (err) {
-          console.error("Error initializing GAPI client:", err);
-          setError("Failed to initialize Google Classroom API");
-          setLoading(false);
-        }
-      });
-    } catch (err) {
-      console.error("Error loading GAPI:", err);
-      setError("Failed to load Google API");
-      setLoading(false);
-    }
-  };
+  }, [loading]);
 
   const handleLogin = () => {
     try {
@@ -103,11 +70,6 @@ export default function App() {
           setAccessToken(response.access_token);
           setIsSignedIn(true);
           setError(null);
-          
-          // Set the access token for gapi client
-          window.gapi.client.setToken({
-            access_token: response.access_token
-          });
         },
       });
       
@@ -123,7 +85,6 @@ export default function App() {
       if (accessToken) {
         window.google.accounts.oauth2.revoke(accessToken);
       }
-      window.gapi.client.setToken(null);
       setAccessToken(null);
       setIsSignedIn(false);
     } catch (err) {
@@ -133,10 +94,6 @@ export default function App() {
 
   return (
     <>
-      <Script 
-        src="https://apis.google.com/js/api.js" 
-        strategy="afterInteractive"
-      />
       <Script 
         src="https://accounts.google.com/gsi/client" 
         strategy="afterInteractive"
@@ -188,7 +145,7 @@ export default function App() {
                   Logout
                 </button>
               </div>
-              <UpcomingAssignments gapi={window.gapi} />
+              <UpcomingAssignments accessToken={accessToken} />
             </div>
           )}
         </div>
