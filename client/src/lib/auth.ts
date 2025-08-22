@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+// import jwt from 'jsonwebtoken';
 // Lightweight auth + offline queue utilities for Capacitor + web
 // Provides storage abstraction and a simple pending-action queue flushed when online.
 

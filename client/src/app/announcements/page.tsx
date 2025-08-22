@@ -277,9 +277,9 @@ export default function AnnouncementsPage() {
                   </div>
                   <div className="absolute -top-1 -right-1 w-4 h-4 bg-gradient-to-br from-[#ffddd2] to-[#e29578] rounded-full border-2 border-white shadow-lg animate-pulse"></div>
                 </div>
-                <a href="/" className="text-2xl sm:text-3xl font-black text-white hover:text-[#ffddd2] transition-colors cursor-pointer">
+                <Link href="/" className="text-2xl sm:text-3xl font-black text-white hover:text-[#ffddd2] transition-colors cursor-pointer">
                   EduMitra
-                </a>
+                </Link>
               </div>
               
               <div className="hidden sm:flex items-center space-x-4">
@@ -296,13 +296,13 @@ export default function AnnouncementsPage() {
 
             {/* Enhanced Right Section */}
             <div className="flex flex-wrap items-center gap-3">
-              <a
+              <Link
                 href="/"
                 className="group flex items-center space-x-2 text-white/90 hover:text-white transition-all duration-300 px-4 py-2 rounded-xl bg-white/10 backdrop-blur-xl border border-white/20 hover:bg-white/20 hover:scale-105"
               >
                 <Home className="w-4 h-4 group-hover:rotate-12 transition-transform duration-300" />
                 <span className="font-medium">Home</span>
-              </a>
+              </Link>
               
               <div className="flex items-center gap-2 bg-white/20 backdrop-blur-xl border border-white/30 px-4 py-2 rounded-xl shadow-lg">
                 <div className="relative">

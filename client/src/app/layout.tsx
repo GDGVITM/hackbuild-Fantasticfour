@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import BackButtonHandler from './BackButtonHandler';
 import Script from "next/script";
+import ClientLayout from "@/app/language-settings/ClientLayout";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,9 +30,11 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <BackButtonHandler />
-        {children}
-        <Script src="https://apis.google.com/js/api.js" strategy="beforeInteractive" />
+        <ClientLayout>
+          <BackButtonHandler />
+          {children}
+          <Script src="https://apis.google.com/js/api.js" strategy="beforeInteractive" />
+        </ClientLayout>
       </body>
     </html>
   );
