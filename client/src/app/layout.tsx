@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import BackButtonHandler from './BackButtonHandler';
+import Script from "next/script";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,6 +31,7 @@ export default function RootLayout({
       >
         <BackButtonHandler />
         {children}
+        <Script src="https://apis.google.com/js/api.js" strategy="beforeInteractive" />
       </body>
     </html>
   );

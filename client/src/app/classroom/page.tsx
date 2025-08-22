@@ -1,5 +1,10 @@
 "use client";
 
+declare global {
+  interface Window {
+    gapi: any;
+  }
+}
 
 import { useEffect, useState } from "react";
 import UpcomingAssignments from "./UpcomingAssignments";

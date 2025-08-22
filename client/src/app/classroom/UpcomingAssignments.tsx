@@ -1,6 +1,14 @@
+
+
 import { useEffect, useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { format } from "date-fns";
+declare global {
+  interface Window {
+    gapi: any;
+  }
+}
+
 
 export default function UpcomingAssignments({ gapi }) {
   const [assignments, setAssignments] = useState([]);
