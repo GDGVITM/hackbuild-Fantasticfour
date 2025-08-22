@@ -56,6 +56,8 @@ interface AIResponse {
   response: string;
   score?: number;
   memory?: string[];
+  feedback?: string;
+  suggestions?: string[];
 }
 
 export default function MockInterviewPage() {
