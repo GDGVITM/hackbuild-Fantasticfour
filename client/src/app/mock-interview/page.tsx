@@ -387,6 +387,16 @@ export default function MockInterviewPage() {
 
           {/* Enhanced Sidebar */}
           <div className="space-y-6">
+            {/* 3D Teacher Model Preview */}
+            <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-xl border border-white/20 p-4 hover:shadow-2xl transition-all duration-300">
+              <div className="flex items-center justify-between mb-3">
+                <h3 className="text-lg font-bold bg-gradient-to-r from-[#006d77] to-[#83c5be] bg-clip-text text-transparent">Coach Preview</h3>
+              </div>
+              <div className="w-full h-72 rounded-2xl overflow-hidden bg-gradient-to-br from-gray-800 via-gray-900 to-black">
+                {/* TeacherModel is a client component that renders the Three.js Canvas */}
+                <TeacherModel />
+              </div>
+            </div>
             {/* Premium Instructions */}
             <div className="bg-white/80 backdrop-blur-xl rounded-xl sm:rounded-2xl md:rounded-3xl shadow-xl border border-white/20 p-3 sm:p-4 md:p-6 hover:shadow-2xl transition-all duration-300">
               <div className="flex items-center space-x-3 mb-3 sm:mb-4 md:mb-6">

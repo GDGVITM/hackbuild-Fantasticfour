@@ -565,6 +565,8 @@ import { ResumeData, SectionType } from './types';
 import { sampleResumeData } from './sampleData';
 import ResumeForm from './ResumeForm';
 import ResumePreview from './ResumePreview';
+import dynamic from 'next/dynamic';
+const PreviewButtonWithModal = dynamic(() => import('./PreviewButtonWithModal'), { ssr: false });
 import { downloadPDF } from './utils';
 import { 
   FileText, 
