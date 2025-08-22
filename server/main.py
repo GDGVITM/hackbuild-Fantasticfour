@@ -7,7 +7,10 @@ from routes.authRoute import router as auth_router
 from routes.liveblocksRoute import router as liveblocks_router
 from routes.atsRoute import router as ats_router 
 from routes.genaiRoute import router as genai_router
-
+from routes.quizRoute import router as quiz_router
+from routes.userSubjectRoute import router as user_subject_router
+from routes.branchRoute import router as branch_router
+from routes.subjectRoute import router as subject_router
 
 load_dotenv()
 app = FastAPI()
@@ -26,6 +29,10 @@ app.include_router(auth_router, prefix="/auth")
 app.include_router(liveblocks_router, prefix="/liveblocks")
 app.include_router(ats_router, prefix="/ats")
 app.include_router(genai_router, prefix="/genai")
+app.include_router(quiz_router, prefix="/quiz")
+app.include_router(user_subject_router, prefix="/user-subject")
+app.include_router(branch_router, prefix="/branch")
+app.include_router(subject_router, prefix="/subject")
 
 if __name__ == "__main__":
     import uvicorn
