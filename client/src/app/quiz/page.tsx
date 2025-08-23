@@ -399,11 +399,11 @@ export default function AssessmentPage() {
             </p>
             <div className="space-y-2">
               <Button 
-                onClick={() => window.location.href = '/roadmap#demo=true'}
+                onClick={() => window.location.href = '/quiz-creator'}
                 className="w-full bg-gradient-to-r from-teal-600 to-teal-700 hover:from-teal-700 hover:to-teal-800 text-white backdrop-blur-sm py-3"
               >
                 <BookOpen className="w-4 h-4 mr-2" />
-                Go to Roadmap
+                Create Quiz
               </Button>
               <Button 
                 onClick={() => window.location.href = '/quiz#demo=true'}
