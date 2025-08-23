@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import auth from '../../lib/auth';
+import auth, { getStoredUsername } from '../../lib/auth';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 const YEARS = ['1st Year', '2nd Year', '3rd Year', '4th Year', '5th Year', 'Other'];
@@ -21,9 +21,17 @@ export default function SignupPage() {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [namePlaceholder, setNamePlaceholder] = useState('John Doe');
 
   useEffect(() => {
     auth.initAuthQueue();
+    const loadUserData = async () => {
+      const username = await getStoredUsername();
+      if (username) {
+        setNamePlaceholder(username);
+      }
+    };
+    loadUserData();
   }, []);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -154,7 +162,7 @@ export default function SignupPage() {
                         required
                         value={formData.name}
                         onChange={handleChange}
-                        placeholder="John Doe"
+                        placeholder={namePlaceholder}
                         className="block w-full pl-12 pr-4 py-4 border border-gray-200 rounded-lg sm:rounded-xl md:rounded-2xlshadow-sm placeholder-gray-400 bg-gray-50/50 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-[#006d77]/20 focus:border-[#006d77] focus:bg-white transition-all duration-300 text-base text-gray-800"
                       />
                     </div>
