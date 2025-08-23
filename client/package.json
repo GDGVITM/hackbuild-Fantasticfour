@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@capacitor-community/text-to-speech": "^6.0.0",
+    "@capacitor-firebase/authentication": "^7.3.0",
     "@capacitor/android": "^7.4.3",
     "@capacitor/app": "^7.0.2",
     "@capacitor/camera": "^7.0.2",
@@ -19,6 +20,7 @@
     "@capacitor/preferences": "^7.0.2",
     "@capacitor/push-notifications": "^7.0.2",
     "@capacitor/screen-reader": "^7.0.2",
+    "@capgo/capacitor-social-login": "^7.9.0",
     "@google/genai": "^1.15.0",
     "@liveblocks/client": "^3.3.4",
     "@liveblocks/react": "^3.3.4",

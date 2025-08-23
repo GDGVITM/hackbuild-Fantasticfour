@@ -2,91 +2,108 @@
 
 declare global {
   interface Window {
-    gapi: any;
     google: any;
   }
 }
 
 import { useEffect, useState } from "react";
 import UpcomingAssignments from "./UpcomingAssignments";
-import Script from "next/script";
-
-const CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || "YOUR_CLIENT_ID.apps.googleusercontent.com";
-const SCOPES = "https://www.googleapis.com/auth/classroom.coursework.me.readonly https://www.googleapis.com/auth/classroom.courses.readonly";
+import { 
+  isNativePlatform, 
+  initializeGoogleAuth, 
+  signInToGoogle, 
+  signOutFromGoogle, 
+  refreshGoogleToken 
+} from './googleAuthUtils';
 
 export default function App() {
-  const [gisLoaded, setGisLoaded] = useState(false);
   const [isSignedIn, setIsSignedIn] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [accessToken, setAccessToken] = useState<string | null>(null);
+  const [isNative, setIsNative] = useState(false);
 
-  // Check if scripts are loaded with a timeout
   useEffect(() => {
-    const checkScriptsLoaded = () => {
-      const gisReady = typeof window !== 'undefined' && window.google?.accounts?.oauth2;
-      
-      console.log('Checking scripts:', { gisReady });
-      
-      if (gisReady) {
-        setGisLoaded(true);
-        setLoading(false);
-      }
-    };
-
-    // Check immediately
-    checkScriptsLoaded();
-    
-    // Set up interval to check periodically
-    const interval = setInterval(checkScriptsLoaded, 500);
-    
-    // Timeout after 10 seconds
-    const timeout = setTimeout(() => {
-      clearInterval(interval);
-      if (loading) {
-        setError("Failed to load Google APIs - please refresh the page");
-        setLoading(false);
-      }
-    }, 10000);
-
-    return () => {
-      clearInterval(interval);
-      clearTimeout(timeout);
-    };
-  }, [loading]);
-
-  const handleLogin = () => {
-    try {
-      const tokenClient = window.google.accounts.oauth2.initTokenClient({
-        client_id: CLIENT_ID,
-        scope: SCOPES,
-        callback: (response: any) => {
-          if (response.error) {
-            console.error("Token request failed:", response.error);
-            setError("Failed to sign in to Google Classroom");
+    const initializeAuth = async () => {
+      try {
+        setIsNative(isNativePlatform());
+        
+        if (isNativePlatform()) {
+          // Initialize for native platform
+          const initialized = await initializeGoogleAuth();
+          if (!initialized) {
+            setError("Failed to initialize Google Auth");
+            setLoading(false);
             return;
           }
           
-          setAccessToken(response.access_token);
-          setIsSignedIn(true);
-          setError(null);
-        },
-      });
-      
-      tokenClient.requestAccessToken();
+          // Check if already signed in
+          const refreshResult = await refreshGoogleToken();
+          if (refreshResult.success && refreshResult.accessToken) {
+            setAccessToken(refreshResult.accessToken);
+            setIsSignedIn(true);
+          }
+        } else {
+          // Web platform - check if Google APIs are loaded
+          const checkGoogleAPI = () => {
+            if (typeof window !== 'undefined' && window.google?.accounts?.oauth2) {
+              return true;
+            }
+            return false;
+          };
+
+          // Wait for Google APIs to load
+          let attempts = 0;
+          const maxAttempts = 20;
+          const checkInterval = setInterval(() => {
+            attempts++;
+            if (checkGoogleAPI() || attempts >= maxAttempts) {
+              clearInterval(checkInterval);
+              if (!checkGoogleAPI()) {
+                setError("Failed to load Google APIs - please refresh the page");
+              }
+              setLoading(false);
+              return;
+            }
+          }, 500);
+        }
+        
+        setLoading(false);
+      } catch (err) {
+        console.error("Auth initialization failed:", err);
+        setError("Failed to initialize authentication");
+        setLoading(false);
+      }
+    };
+
+    initializeAuth();
+  }, []);
+
+  const handleLogin = async () => {
+    try {
+      const result = await signInToGoogle();
+      if (result.success && result.accessToken) {
+        setAccessToken(result.accessToken);
+        setIsSignedIn(true);
+        setError(null);
+      } else {
+        setError(result.error || "Failed to sign in to Google Classroom");
+      }
     } catch (err) {
       console.error("Login failed:", err);
       setError("Failed to sign in to Google Classroom");
     }
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     try {
-      if (accessToken) {
-        window.google.accounts.oauth2.revoke(accessToken);
+      const result = await signOutFromGoogle();
+      if (result.success) {
+        setAccessToken(null);
+        setIsSignedIn(false);
+      } else {
+        console.error("Logout failed:", result.error);
       }
-      setAccessToken(null);
-      setIsSignedIn(false);
     } catch (err) {
       console.error("Logout failed:", err);
     }
@@ -94,10 +111,13 @@ export default function App() {
 
   return (
     <>
-      <Script 
-        src="https://accounts.google.com/gsi/client" 
-        strategy="afterInteractive"
-      />
+      {!isNative && (
+        <script 
+          src="https://accounts.google.com/gsi/client" 
+          async 
+          defer
+        />
+      )}
       <div className="min-h-screen bg-gray-50 p-3 sm:p-4 md:p-6">
         <div className="max-w-6xl mx-auto">
           <div className="mb-8">
@@ -123,7 +143,7 @@ export default function App() {
             </div>
           ) : !isSignedIn ? (
             <div className="text-center py-12">
-              <div className="bg-white rounded-lg sm:rounded-xl md:rounded-2xlshadow-lg p-4 sm:p-6 md:p-8 max-w-md mx-auto">
+              <div className="bg-white rounded-lg sm:rounded-xl md:rounded-2xl shadow-lg p-4 sm:p-6 md:p-8 max-w-md mx-auto">
                 <h2 className="text-xl font-semibold text-gray-800 mb-2 sm:mb-3 md:mb-4">Sign in to Google Classroom</h2>
                 <p className="text-gray-600 mb-3 sm:mb-4 md:mb-6">Connect your Google account to view your assignments and courses</p>
                 <button
