@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { format } from 'date-fns';
 import { SAMPLE_TIMETABLE, DAYS } from '@/lib/timetableData';
+import { getStoredUsername } from '@/lib/auth';
 
 // --- AI Summary Data ---
 const AI_SUMMARY_DATA = {
@@ -211,6 +212,22 @@ export default function DashboardPage() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('overview');
   const [timetableDate, setTimetableDate] = useState(new Date());
+  const [username, setUsername] = useState<string | null>(null);
+
+  useEffect(() => {
+    let mounted = true;
+    (async () => {
+      try {
+        const u = await getStoredUsername();
+        if (mounted) setUsername(u);
+      } catch {
+        // ignore
+      }
+    })();
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
   const sidebarItems = [
     { href: "#", icon: OverviewIcon, label: "Overview", tab: "overview", count: null },
@@ -429,7 +446,7 @@ export default function DashboardPage() {
               <div className="absolute -bottom-0.5 -right-0.5 sm:-bottom-1 sm:-right-1 w-3 h-3 sm:w-4 sm:h-4 bg-green-400 rounded-full border-2 border-[#006d77]"></div>
             </div>
             <div className="flex-1 min-w-0">
-              <p className="font-semibold text-white truncate text-sm sm:text-base">Prathamesh Sankhe</p>
+              <p className="font-semibold text-white truncate text-sm sm:text-base">{username ?? ''}</p>
               <p className="text-xs text-white/70">Computer Science • Year 3</p>
               <div className="flex items-center mt-1 text-xs text-white/60">
                 <div className="w-2 h-2 bg-green-400 rounded-full mr-1"></div>
