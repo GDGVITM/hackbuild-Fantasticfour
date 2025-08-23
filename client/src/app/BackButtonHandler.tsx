@@ -10,33 +10,39 @@ export default function BackButtonHandler() {
   const router = useRouter();
   const pathname = usePathname();
   const initialPathRef = useRef(pathname);
+  const currentPathRef = useRef(pathname);
   // Use a ref to store the listener handle
   const listenerRef = useRef<PluginListenerHandle | null>(null);
 
+  // Keep the current pathname in a ref so the single listener reads the latest value
   useEffect(() => {
-    // Define an async function to set up the listener
+    currentPathRef.current = pathname;
+  }, [pathname]);
+
+  // Register the backButton listener once on mount. The listener reads currentPathRef
+  useEffect(() => {
     const setupListener = async () => {
-      // Await the promise to get the listener handle
       const listenerHandle = await CapacitorApp.addListener("backButton", () => {
-        if (window.history.length <= 1 || pathname === initialPathRef.current) {
+        const currentPath = currentPathRef.current;
+        if (window.history.length <= 1 || currentPath === initialPathRef.current) {
           CapacitorApp.exitApp();
         } else {
           router.back();
         }
       });
-      // Store the handle in the ref so we can access it later for cleanup
+
       listenerRef.current = listenerHandle;
     };
 
     setupListener();
 
     return () => {
-      // Check if the handle exists before trying to remove the listener
       if (listenerRef.current) {
         listenerRef.current.remove();
+        listenerRef.current = null;
       }
     };
-  }, [router, pathname]);
+  }, []);
 
   return null;
 }
