@@ -230,10 +230,10 @@ export default function DashboardPage() {
   }, []);
 
   const sidebarItems = [
-    { href: "#", icon: OverviewIcon, label: "Overview", tab: "overview", count: null },
-    { href: "#", icon: CoursesIcon, label: "My Courses", tab: "courses", count: 5 },
-    { href: "#", icon: AIIcon, label: "AI Summary", tab: "ai-summary", count: null },
-    { href: "#", icon: CareerIcon, label: "Career Prep", tab: "career", count: 3 },
+    { href: "/dashboard", icon: OverviewIcon, label: "Overview", tab: "overview", count: null },
+    { href: "/CourseRegistration", icon: CoursesIcon, label: "My Courses", tab: "courses", count: 5 },
+    { href: "/career-resources", icon: CareerIcon, label: "Career Prep", tab: "career", count: 3 },
+    { href: "/quiz", icon: LogoutIcon, label: "My Quizzes", tab: "quiz", count: null },
     { href: "#", icon: SettingsIcon, label: "Settings", tab: "settings", count: null },
   ];
   
@@ -460,35 +460,35 @@ export default function DashboardPage() {
         <nav className="mt-2 px-3 sm:px-4">
           <div className="space-y-1 sm:space-y-2">
             {sidebarItems.map((item, index) => (
-              <button
-                key={index}
-                onClick={() => setActiveTab(item.tab)}
-                className={`w-full flex items-center px-3 sm:px-4 py-3 sm:py-4 text-sm font-medium rounded-xl sm:rounded-2xl transition-all duration-300 group relative overflow-hidden ${
-                  activeTab === item.tab
-                    ? 'bg-gradient-to-r from-[#83c5be] to-[#83c5be]/80 text-[#006d77] shadow-lg transform scale-[1.02]'
-                    : 'hover:bg-white/10 hover:transform hover:translate-x-1 sm:hover:translate-x-2'
-                }`}
-              >
-                {activeTab === item.tab && (
-                  <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent"></div>
-                )}
-                <div className="relative z-10 flex items-center w-full">
-                  <item.icon />
-                  <span className="ml-3 flex-1">{item.label}</span>
-                  {item.count && (
-                    <span className={`text-xs px-2 py-1 rounded-full ${
-                      activeTab === item.tab 
-                        ? 'bg-[#006d77]/20 text-[#006d77]' 
-                        : 'bg-white/20 text-white'
-                    }`}>
-                      {item.count}
-                    </span>
-                  )}
+              <Link key={index} href={item.href}>
+                <div
+                  className={`w-full flex items-center px-3 sm:px-4 py-3 sm:py-4 text-sm font-medium rounded-xl sm:rounded-2xl transition-all duration-300 group relative overflow-hidden cursor-pointer ${
+                    activeTab === item.tab
+                      ? 'bg-gradient-to-r from-[#83c5be] to-[#83c5be]/80 text-[#006d77] shadow-lg transform scale-[1.02]'
+                      : 'hover:bg-white/10 hover:transform hover:translate-x-1 sm:hover:translate-x-2'
+                  }`}
+                >
                   {activeTab === item.tab && (
-                    <div className="ml-2 w-2 h-2 bg-[#006d77] rounded-full animate-pulse"></div>
+                    <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent"></div>
                   )}
+                  <div className="relative z-10 flex items-center w-full">
+                    <item.icon />
+                    <span className="ml-3 flex-1">{item.label}</span>
+                    {item.count && (
+                      <span className={`text-xs px-2 py-1 rounded-full ${
+                        activeTab === item.tab 
+                          ? 'bg-[#006d77]/20 text-[#006d77]' 
+                          : 'bg-white/20 text-white'
+                      }`}>
+                        {item.count}
+                      </span>
+                    )}
+                    {activeTab === item.tab && (
+                      <div className="ml-2 w-2 h-2 bg-[#006d77] rounded-full animate-pulse"></div>
+                    )}
+                  </div>
                 </div>
-              </button>
+              </Link>
             ))}
           </div>
         </nav>
