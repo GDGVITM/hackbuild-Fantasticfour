@@ -5,6 +5,93 @@ import Link from 'next/link';
 import { format } from 'date-fns';
 import { SAMPLE_TIMETABLE, DAYS } from '@/lib/timetableData';
 
+// --- AI Summary Data ---
+const AI_SUMMARY_DATA = {
+  overallPerformance: {
+    gpa: 3.7,
+    attendanceRate: 94.2,
+    academicStanding: "Good Standing",
+    improvementAreas: ["Time management", "Study consistency", "Test anxiety"],
+    strengths: ["Strong analytical skills", "Creative problem solving", "Collaborative teamwork"]
+  },
+  weeklyInsights: [
+    {
+      metric: "Study Hours",
+      value: "28hrs",
+      trend: "up",
+      insight: "You're spending more time studying - great progress!"
+    },
+    {
+      metric: "Assignment Scores", 
+      value: "85%",
+      trend: "stable",
+      insight: "Consistent performance with room for improvement in research depth"
+    },
+    {
+      metric: "Quiz Performance",
+      value: "B+",
+      trend: "up", 
+      insight: "Your quiz scores are improving - keep up the momentum!"
+    },
+    {
+      metric: "Participation Rate",
+      value: "68%",
+      trend: "down",
+      insight: "Try to engage more actively in class discussions"
+    }
+  ],
+  recommendations: [
+    "Create a structured study schedule to improve consistency",
+    "Join study groups for subjects you find challenging", 
+    "Use active learning techniques like flashcards and practice tests",
+    "Visit professor office hours for personalized guidance",
+    "Consider stress management techniques for test preparation"
+  ],
+  upcomingChallenges: [
+    "Midterm exams in Mathematics and Physics next week",
+    "Research project proposal due in 10 days",
+    "Group presentation scheduled for next Friday",
+    "Scholarship application deadline approaching"
+  ],
+  goalTracking: [
+    {
+      goal: "Raise GPA to 3.8",
+      progress: 75,
+      targetDate: "End of semester"
+    },
+    {
+      goal: "Complete all assignments on time",
+      progress: 60,
+      targetDate: "Ongoing"
+    },
+    {
+      goal: "Improve test scores by 10%",
+      progress: 40,
+      targetDate: "Next month"
+    }
+  ],
+  subjectBreakdown: [
+    {
+      subject: "Mathematics",
+      grade: "A-",
+      trend: "stable",
+      nextAssignment: "Calculus Problem Set - Due Friday"
+    },
+    {
+      subject: "Physics", 
+      grade: "B+",
+      trend: "up",
+      nextAssignment: "Lab Report - Due Tuesday"
+    },
+    {
+      subject: "Computer Science",
+      grade: "A",
+      trend: "up", 
+      nextAssignment: "Programming Project - Due Next Week"
+    }
+  ]
+};
+
 // --- Premium Icon Components ---
 const OverviewIcon = () => (
   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -91,6 +178,35 @@ const UpdateIcon = () => (
   </svg>
 );
 
+const AIIcon = () => (
+  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+  </svg>
+);
+
+// --- Trend Icon Component ---
+const TrendIcon = ({ trend }: { trend: string }) => (
+  <div className={`flex items-center space-x-1 text-xs ${
+    trend === 'up' ? 'text-green-600' : trend === 'down' ? 'text-red-500' : 'text-gray-500'
+  }`}>
+    {trend === 'up' && (
+      <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+      </svg>
+    )}
+    {trend === 'down' && (
+      <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 17H5m0 0V9m0 8l8-8 4 4 6-6" />
+      </svg>
+    )}
+    {trend === 'stable' && (
+      <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 12h14" />
+      </svg>
+    )}
+  </div>
+);
+
 export default function DashboardPage() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('overview');
@@ -99,6 +215,7 @@ export default function DashboardPage() {
   const sidebarItems = [
     { href: "#", icon: OverviewIcon, label: "Overview", tab: "overview", count: null },
     { href: "#", icon: CoursesIcon, label: "My Courses", tab: "courses", count: 5 },
+    { href: "#", icon: AIIcon, label: "AI Summary", tab: "ai-summary", count: null },
     { href: "#", icon: CareerIcon, label: "Career Prep", tab: "career", count: 3 },
     { href: "#", icon: SettingsIcon, label: "Settings", tab: "settings", count: null },
   ];
@@ -108,6 +225,7 @@ export default function DashboardPage() {
     { label: "Courses", icon: CoursesIcon, tab: "courses" },
     { label: "Lectures", icon: ClockIcon, tab: "lectures" },
     { label: "Career", icon: CareerIcon, tab: "career" },
+    { label: "AI Summary", icon: AIIcon, tab: "ai-summary" },
   ];
 
   const goToPreviousDay = () => {
@@ -128,6 +246,154 @@ export default function DashboardPage() {
   
   const dayOfWeek = DAYS[timetableDate.getDay()];
   const lecturesForSelectedDate = SAMPLE_TIMETABLE[dayOfWeek] || [];
+
+  // --- AI Summary Content ---
+  const renderAISummary = () => (
+    <div className="space-y-6">
+      {/* Overall Performance Card */}
+      <div className="bg-white/70 backdrop-blur-xl p-6 rounded-3xl border border-white/50 shadow-xl">
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center space-x-3">
+            <AIIcon />
+            <h2 className="text-2xl font-bold text-gray-800">AI Academic Analysis</h2>
+          </div>
+          <div className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium">
+            {AI_SUMMARY_DATA.overallPerformance.academicStanding}
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+          <div className="text-center p-4 bg-gradient-to-br from-[#006d77]/10 to-[#006d77]/5 rounded-2xl">
+            <p className="text-3xl font-bold text-[#006d77]">{AI_SUMMARY_DATA.overallPerformance.gpa}</p>
+            <p className="text-sm text-gray-600">Current GPA</p>
+          </div>
+          <div className="text-center p-4 bg-gradient-to-br from-[#83c5be]/10 to-[#83c5be]/5 rounded-2xl">
+            <p className="text-3xl font-bold text-[#006d77]">{AI_SUMMARY_DATA.overallPerformance.attendanceRate}%</p>
+            <p className="text-sm text-gray-600">Attendance Rate</p>
+          </div>
+          <div className="text-center p-4 bg-gradient-to-br from-[#e29578]/10 to-[#ffddd2]/20 rounded-2xl">
+            <p className="text-3xl font-bold text-[#006d77]">{AI_SUMMARY_DATA.goalTracking.length}</p>
+            <p className="text-sm text-gray-600">Active Goals</p>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <h3 className="font-semibold text-gray-800 mb-3">💪 Your Strengths</h3>
+            <ul className="space-y-2">
+              {AI_SUMMARY_DATA.overallPerformance.strengths.map((strength, index) => (
+                <li key={index} className="flex items-center space-x-2 text-sm text-gray-600">
+                  <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                  <span>{strength}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <h3 className="font-semibold text-gray-800 mb-3">🎯 Improvement Areas</h3>
+            <ul className="space-y-2">
+              {AI_SUMMARY_DATA.overallPerformance.improvementAreas.map((area, index) => (
+                <li key={index} className="flex items-center space-x-2 text-sm text-gray-600">
+                  <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
+                  <span>{area}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      {/* Weekly Insights */}
+      <div className="bg-white/70 backdrop-blur-xl p-6 rounded-3xl border border-white/50 shadow-xl">
+        <h3 className="text-xl font-bold text-gray-800 mb-6">📊 Weekly Performance Insights</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {AI_SUMMARY_DATA.weeklyInsights.map((insight, index) => (
+            <div key={index} className="p-4 bg-gray-50/70 rounded-2xl border border-gray-100">
+              <div className="flex items-center justify-between mb-2">
+                <h4 className="font-semibold text-gray-800">{insight.metric}</h4>
+                <div className="flex items-center space-x-2">
+                  <span className="text-lg font-bold text-[#006d77]">{insight.value}</span>
+                  <TrendIcon trend={insight.trend} />
+                </div>
+              </div>
+              <p className="text-sm text-gray-600">{insight.insight}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Subject Breakdown */}
+      <div className="bg-white/70 backdrop-blur-xl p-6 rounded-3xl border border-white/50 shadow-xl">
+        <h3 className="text-xl font-bold text-gray-800 mb-6">📖 Subject Performance</h3>
+        <div className="space-y-4">
+          {AI_SUMMARY_DATA.subjectBreakdown.map((subject, index) => (
+            <div key={index} className="flex items-center justify-between p-4 bg-gray-50/70 rounded-2xl border border-gray-100">
+              <div className="flex-1">
+                <h4 className="font-semibold text-gray-800">{subject.subject}</h4>
+                <p className="text-sm text-gray-600">{subject.nextAssignment}</p>
+              </div>
+              <div className="flex items-center space-x-4">
+                <div className="text-center">
+                  <p className="text-lg font-bold text-[#006d77]">{subject.grade}</p>
+                  <TrendIcon trend={subject.trend} />
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Goal Tracking */}
+      <div className="bg-white/70 backdrop-blur-xl p-6 rounded-3xl border border-white/50 shadow-xl">
+        <h3 className="text-xl font-bold text-gray-800 mb-6">🎯 Goal Progress</h3>
+        <div className="space-y-4">
+          {AI_SUMMARY_DATA.goalTracking.map((goal, index) => (
+            <div key={index} className="p-4 bg-gray-50/70 rounded-2xl border border-gray-100">
+              <div className="flex items-center justify-between mb-2">
+                <h4 className="font-semibold text-gray-800">{goal.goal}</h4>
+                <span className="text-sm text-gray-600">{goal.targetDate}</span>
+              </div>
+              <div className="relative w-full bg-gray-200 rounded-full h-3">
+                <div
+                  className="bg-gradient-to-r from-[#006d77] to-[#83c5be] h-3 rounded-full transition-all duration-1000"
+                  style={{ width: `${goal.progress}%` }}
+                ></div>
+              </div>
+              <p className="text-sm text-gray-600 mt-1">{goal.progress}% Complete</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* AI Recommendations */}
+      <div className="bg-white/70 backdrop-blur-xl p-6 rounded-3xl border border-white/50 shadow-xl">
+        <h3 className="text-xl font-bold text-gray-800 mb-6">💡 AI Recommendations</h3>
+        <div className="space-y-3">
+          {AI_SUMMARY_DATA.recommendations.map((recommendation, index) => (
+            <div key={index} className="flex items-start space-x-3 p-3 bg-gradient-to-r from-[#006d77]/5 to-[#83c5be]/5 rounded-xl">
+              <div className="w-6 h-6 bg-[#006d77] rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
+                {index + 1}
+              </div>
+              <p className="text-sm text-gray-700">{recommendation}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Upcoming Challenges */}
+      <div className="bg-white/70 backdrop-blur-xl p-6 rounded-3xl border border-white/50 shadow-xl">
+        <h3 className="text-xl font-bold text-gray-800 mb-6">⚡ Upcoming Challenges</h3>
+        <div className="space-y-3">
+          {AI_SUMMARY_DATA.upcomingChallenges.map((challenge, index) => (
+            <div key={index} className="flex items-center space-x-3 p-3 bg-orange-50 rounded-xl border border-orange-100">
+              <div className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center text-white text-xs">⚠️</div>
+              <p className="text-sm text-gray-700">{challenge}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
 
   return (
     <div className="min-h-screen flex bg-gradient-to-br from-[#edf6f9] via-[#edf6f9] to-[#ffddd2]/20 relative overflow-hidden">
@@ -257,9 +523,11 @@ export default function DashboardPage() {
             <div className="flex-1 min-w-0">
               <div className="flex items-center space-x-1 sm:space-x-2">
                 <h1 className="text-base sm:text-xl lg:text-lg sm:text-xl md:text-2xl truncate font-bold bg-gradient-to-r from-[#006d77] to-[#83c5be] bg-clip-text text-transparent">
-                  Hi, Alex! 
+                  {activeTab === 'ai-summary' ? 'AI Academic Summary' : 'Hi, Prathamesh!'} 
                 </h1>
-                <span className="text-lg sm:text-lg sm:text-xl md:text-2xl">🌟</span>
+                <span className="text-lg sm:text-lg sm:text-xl md:text-2xl">
+                  {activeTab === 'ai-summary' ? '🤖' : '🌟'}
+                </span>
               </div>
             </div>
           </div>
@@ -317,157 +585,157 @@ export default function DashboardPage() {
         </header>
 
         <main className="flex-1 p-2 sm:p-2 sm:p-3 md:p-4 md:p-3 sm:p-4 md:p-6 lg:p-4 sm:p-6 md:p-8 overflow-auto">
-          {/* --- Premium Quick Stats with Timetable Viewer --- */}
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-3 sm:p-4 md:p-6 mb-3 sm:mb-3 sm:mb-4 md:mb-6 md:mb-8">
-            {[
-              { 
-              title: "Overall Attendance", 
-              value: "92%", 
-              color: "text-[#006d77]", 
-              bgColor: "from-[#006d77]/10 to-[#006d77]/5", 
-              icon: "📊",
-              trend: "up"
-              },
-              { 
-              title: "Courses Enrolled", 
-              value: "5", 
-              color: "text-[#006d77]", 
-              bgColor: "from-[#83c5be]/10 to-[#83c5be]/5", 
-              icon: "📚",
-              trend: "up"
-              },
-              { 
-              title: "Upcoming Deadlines", 
-              value: "12 Days", 
-              color: "text-[#006d77]", 
-              bgColor: "from-[#e29578]/10 to-[#ffddd2]/20", 
-              icon: "📅",
-              trend: "up"
-              },
-            ].map((stat, index) => (
-              <div
-              key={index}
-              className={`relative p-2 sm:p-2 sm:p-3 md:p-4 md:p-3 sm:p-4 md:p-6 bg-gradient-to-br ${stat.bgColor} backdrop-blur-sm rounded-lg sm:rounded-2xl md:rounded-3xl border border-white/50 hover:shadow-xl transition-all duration-500 hover:-translate-y-1 sm:hover:-translate-y-2 group overflow-hidden ${
-                // Make the 3rd card span two columns on small/mobile sizes for symmetry,
-                // revert to single column on large screens.
-                index === 2 ? 'col-span-2 lg:col-span-1' : 'col-span-1'
-              }`}
-              >
-              <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              
-              <div className="relative z-10">
-                <div className="flex items-center justify-between mb-2 sm:mb-2 sm:mb-3 md:mb-4">
-                <span className="text-xl sm:text-xl sm:text-2xl md:text-3xl transform group-hover:scale-110 transition-transform duration-300">{stat.icon}</span>
-                <div className="flex items-center space-x-1">
-                 
-                </div>
-                </div>
-                
-                <h3 className="text-xs sm:text-sm font-medium text-gray-600 mb-1 sm:mb-2">{stat.title}</h3>
-                <p className={`text-xl sm:text-xl sm:text-2xl md:text-3xl font-bold ${stat.color} mb-1`}>{stat.value}</p>
-              </div>
-
-              {/* Decorative Elements */}
-              <div className="absolute top-0 right-0 w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-bl from-white/10 to-transparent rounded-full -mr-8 sm:-mr-10 -mt-8 sm:-mt-10"></div>
-              <div className="absolute bottom-0 left-0 w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-tr from-white/5 to-transparent rounded-full -ml-6 sm:-ml-8 -mb-3 sm:mb-4 md:mb-6 sm:-mb-8"></div>
-              </div>
-            ))}
-
-            
-            </div>
-
-          {/* --- Enhanced Main Dashboard Sections --- */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 sm:p-4 md:p-6 sm:gap-2 sm:gap-3 md:gap-4 sm:p-6 md:p-8">
-            
-            <div className="col-span-1 lg:col-span-2 bg-white/70 backdrop-blur-xl p-2 sm:p-2 sm:p-3 md:p-4 md:p-3 sm:p-4 md:p-6 rounded-lg sm:rounded-2xl md:rounded-3xl border border-white/50 shadow-xl">
-              <div className="flex items-center justify-between mb-2 sm:mb-2 sm:mb-3 md:mb-4">
-              <div className="flex items-center space-x-2">
-                <ClockIcon className="w-5 h-5 text-gray-600" />
-                <h3 className="text-sm sm:text-base font-bold text-gray-800">Today's Lectures</h3>
-              </div>
-              </div>
-              <div className="flex items-center justify-between mb-2 sm:mb-3 md:mb-4">
-              <button onClick={goToPreviousDay} className="p-1 rounded-full text-gray-600 hover:bg-gray-100 transition-all duration-200">
-                <PrevIcon />
-              </button>
-              <div className="text-center">
-                <p className="text-sm sm:text-lg font-bold text-gray-800">{format(timetableDate, 'EEE, MMM d')}</p>
-              </div>
-              <button onClick={goToNextDay} className="p-1 rounded-full text-gray-600 hover:bg-gray-100 transition-all duration-200">
-                <NextIcon />
-              </button>
-              </div>
-              <div className="space-y-3 h-48 overflow-y-auto">
-              {lecturesForSelectedDate.length > 0 ? (
-                lecturesForSelectedDate.map((lecture, index) => (
-                <div key={index} className="p-3 bg-gray-50/70 backdrop-blur-sm rounded-xl border border-gray-100">
-                  <p className="text-xs font-semibold text-gray-800">{lecture.subject}</p>
-                  <p className="text-[10px] text-gray-600">{lecture.room} • {lecture.time}</p>
-                </div>
-                ))
-              ) : (
-                <div className="text-center py-4 text-gray-500 text-sm">
-                <p>No lectures today.</p>
-                </div>
-              )}
-              </div>
-
-              <Link
-              href="/timetable"
-              className="w-full mt-4 inline-flex items-center justify-center px-4 py-2 bg-[#006d77] text-white rounded-xl sm:rounded-2xl font-medium hover:bg-[#004f56] transition-all duration-200"
-              >
-              View Full Timetable
-              </Link>
-            </div>
-            
-
-            {/* Premium Career Progress */}
-            <div className="bg-white/70 backdrop-blur-xl p-2 sm:p-2 sm:p-3 md:p-4 md:p-3 sm:p-4 md:p-6 rounded-lg sm:rounded-2xl md:rounded-3xl border border-white/50 shadow-xl w-full flex flex-col">
-              <div className="mb-2 sm:mb-3 md:mb-4 sm:mb-8">
-                <h2 className="text-lg sm:text-lg sm:text-xl md:text-2xl font-bold text-gray-800 mb-1">Career Prep Progress</h2>
-                <p className="text-xs sm:text-sm text-gray-500">Building your professional future</p>
-              </div>
-
-              <div className="space-y-3 sm:space-y-6 w-full">
+          {activeTab === 'ai-summary' ? (
+            renderAISummary()
+          ) : (
+            <>
+              {/* --- Premium Quick Stats with Timetable Viewer --- */}
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-3 sm:p-4 md:p-6 mb-3 sm:mb-3 sm:mb-4 md:mb-6 md:mb-8">
                 {[
-                  { label: "Resume Completion", progress: 75, color: "from-[#006d77] to-[#004f56]", bgColor: "bg-[#006d77]/10" },
-                  { label: "Mock Interviews", progress: 40, color: "from-[#83c5be] to-[#006d77]", bgColor: "bg-[#83c5be]/10" },
-                  { label: "Skills Assessment", progress: 90, color: "from-[#e29578] to-[#83c5be]", bgColor: "bg-[#e29578]/10" },
-                ].map((item, index) => (
-                  <div key={index} className={`p-3 sm:p-2 sm:p-3 md:p-4 rounded-xl sm:rounded-2xl ${item.bgColor} border border-white/50 w-full`}>
-                    <div className="flex items-center justify-between mb-2 sm:mb-3">
-                      <label className="text-sm font-semibold text-gray-700 truncate">{item.label}</label>
-                      <span className="text-sm sm:text-lg font-bold text-gray-800">{item.progress}%</span>
+                  { 
+                  title: "Overall Attendance", 
+                  value: "92%", 
+                  color: "text-[#006d77]", 
+                  bgColor: "from-[#006d77]/10 to-[#006d77]/5", 
+                  icon: "📊",
+                  trend: "up"
+                  },
+                  { 
+                  title: "Courses Enrolled", 
+                  value: "5", 
+                  color: "text-[#006d77]", 
+                  bgColor: "from-[#83c5be]/10 to-[#83c5be]/5", 
+                  icon: "📚",
+                  trend: "up"
+                  },
+                  { 
+                  title: "Upcoming Deadlines", 
+                  value: "12 Days", 
+                  color: "text-[#006d77]", 
+                  bgColor: "from-[#e29578]/10 to-[#ffddd2]/20", 
+                  icon: "📅",
+                  trend: "up"
+                  },
+                ].map((stat, index) => (
+                  <div
+                  key={index}
+                  className={`relative p-2 sm:p-2 sm:p-3 md:p-4 md:p-3 sm:p-4 md:p-6 bg-gradient-to-br ${stat.bgColor} backdrop-blur-sm rounded-lg sm:rounded-2xl md:rounded-3xl border border-white/50 hover:shadow-xl transition-all duration-500 hover:-translate-y-1 sm:hover:-translate-y-2 group overflow-hidden ${
+                    index === 2 ? 'col-span-2 lg:col-span-1' : 'col-span-1'
+                  }`}
+                  >
+                  <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  
+                  <div className="relative z-10">
+                    <div className="flex items-center justify-between mb-2 sm:mb-2 sm:mb-3 md:mb-4">
+                    <span className="text-xl sm:text-xl sm:text-2xl md:text-3xl transform group-hover:scale-110 transition-transform duration-300">{stat.icon}</span>
+                    <div className="flex items-center space-x-1">
+                     
                     </div>
-                    <div className="relative w-full bg-gray-200/50 rounded-full h-2 sm:h-3 overflow-hidden">
-                      <div
-                        className={`bg-gradient-to-r ${item.color} h-2 sm:h-3 rounded-full transition-all duration-1000 ease-out relative overflow-hidden shadow-sm`}
-                        style={{ width: `${item.progress}%` }}
-                      >
-                        <div className="absolute inset-0 bg-gradient-to-r from-white/30 to-transparent pointer-events-none"></div>
-                        <div className="absolute inset-0 bg-white/20 animate-pulse pointer-events-none"></div>
-                      </div>
                     </div>
+                    
+                    <h3 className="text-xs sm:text-sm font-medium text-gray-600 mb-1 sm:mb-2">{stat.title}</h3>
+                    <p className={`text-xl sm:text-xl sm:text-2xl md:text-3xl font-bold ${stat.color} mb-1`}>{stat.value}</p>
+                  </div>
+
+                  <div className="absolute top-0 right-0 w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-bl from-white/10 to-transparent rounded-full -mr-8 sm:-mr-10 -mt-8 sm:-mt-10"></div>
+                  <div className="absolute bottom-0 left-0 w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-tr from-white/5 to-transparent rounded-full -ml-6 sm:-ml-8 -mb-3 sm:mb-4 md:mb-6 sm:-mb-8"></div>
                   </div>
                 ))}
               </div>
 
-              {/* Call to Action */}
-              <div className="mt-4 sm:mt-6 p-2 sm:p-2 sm:p-3 md:p-4 md:p-3 sm:p-4 md:p-6 bg-gradient-to-r from-[#006d77]/10 to-[#83c5be]/10 rounded-xl sm:rounded-2xl border border-[#83c5be]/20 w-full">
-                <p className="text-sm text-gray-600 mb-3 sm:mb-2 sm:mb-3 md:mb-4 text-center">Ready to boost your career prep?</p>
-                <Link href="/career-resources">
-                  <button className="w-full bg-gradient-to-r from-[#006d77] to-[#004f56] text-white py-2 sm:py-3 px-4 rounded-xl sm:rounded-2xl font-semibold hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 text-sm sm:text-base">
-                    Explore Career Resources
+              {/* --- Enhanced Main Dashboard Sections --- */}
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 sm:p-4 md:p-6 sm:gap-2 sm:gap-3 md:gap-4 sm:p-6 md:p-8">
+                
+                <div className="col-span-1 lg:col-span-2 bg-white/70 backdrop-blur-xl p-2 sm:p-2 sm:p-3 md:p-4 md:p-3 sm:p-4 md:p-6 rounded-lg sm:rounded-2xl md:rounded-3xl border border-white/50 shadow-xl">
+                  <div className="flex items-center justify-between mb-2 sm:mb-2 sm:mb-3 md:mb-4">
+                  <div className="flex items-center space-x-2">
+                    <ClockIcon className="w-5 h-5 text-gray-600" />
+                    <h3 className="text-sm sm:text-base font-bold text-gray-800">Today's Lectures</h3>
+                  </div>
+                  </div>
+                  <div className="flex items-center justify-between mb-2 sm:mb-3 md:mb-4">
+                  <button onClick={goToPreviousDay} className="p-1 rounded-full text-gray-600 hover:bg-gray-100 transition-all duration-200">
+                    <PrevIcon />
                   </button>
-                </Link>
+                  <div className="text-center">
+                    <p className="text-sm sm:text-lg font-bold text-gray-800">{format(timetableDate, 'EEE, MMM d')}</p>
+                  </div>
+                  <button onClick={goToNextDay} className="p-1 rounded-full text-gray-600 hover:bg-gray-100 transition-all duration-200">
+                    <NextIcon />
+                  </button>
+                  </div>
+                  <div className="space-y-3 h-48 overflow-y-auto">
+                  {lecturesForSelectedDate.length > 0 ? (
+                    lecturesForSelectedDate.map((lecture, index) => (
+                    <div key={index} className="p-3 bg-gray-50/70 backdrop-blur-sm rounded-xl border border-gray-100">
+                      <p className="text-xs font-semibold text-gray-800">{lecture.subject}</p>
+                      <p className="text-[10px] text-gray-600">{lecture.room} • {lecture.time}</p>
+                    </div>
+                    ))
+                  ) : (
+                    <div className="text-center py-4 text-gray-500 text-sm">
+                    <p>No lectures today.</p>
+                    </div>
+                  )}
+                  </div>
+
+                  <Link
+                  href="/timetable"
+                  className="w-full mt-4 inline-flex items-center justify-center px-4 py-2 bg-[#006d77] text-white rounded-xl sm:rounded-2xl font-medium hover:bg-[#004f56] transition-all duration-200"
+                  >
+                  View Full Timetable
+                  </Link>
+                </div>
+                
+                {/* Premium Career Progress */}
+                <div className="bg-white/70 backdrop-blur-xl p-2 sm:p-2 sm:p-3 md:p-4 md:p-3 sm:p-4 md:p-6 rounded-lg sm:rounded-2xl md:rounded-3xl border border-white/50 shadow-xl w-full flex flex-col">
+                  <div className="mb-2 sm:mb-3 md:mb-4 sm:mb-8">
+                    <h2 className="text-lg sm:text-lg sm:text-xl md:text-2xl font-bold text-gray-800 mb-1">Career Prep Progress</h2>
+                    <p className="text-xs sm:text-sm text-gray-500">Building your professional future</p>
+                  </div>
+
+                  <div className="space-y-3 sm:space-y-6 w-full">
+                    {[
+                      { label: "Resume Completion", progress: 75, color: "from-[#006d77] to-[#004f56]", bgColor: "bg-[#006d77]/10" },
+                      { label: "Mock Interviews", progress: 40, color: "from-[#83c5be] to-[#006d77]", bgColor: "bg-[#83c5be]/10" },
+                      { label: "Skills Assessment", progress: 90, color: "from-[#e29578] to-[#83c5be]", bgColor: "bg-[#e29578]/10" },
+                    ].map((item, index) => (
+                      <div key={index} className={`p-3 sm:p-2 sm:p-3 md:p-4 rounded-xl sm:rounded-2xl ${item.bgColor} border border-white/50 w-full`}>
+                        <div className="flex items-center justify-between mb-2 sm:mb-3">
+                          <label className="text-sm font-semibold text-gray-700 truncate">{item.label}</label>
+                          <span className="text-sm sm:text-lg font-bold text-gray-800">{item.progress}%</span>
+                        </div>
+                        <div className="relative w-full bg-gray-200/50 rounded-full h-2 sm:h-3 overflow-hidden">
+                          <div
+                            className={`bg-gradient-to-r ${item.color} h-2 sm:h-3 rounded-full transition-all duration-1000 ease-out relative overflow-hidden shadow-sm`}
+                            style={{ width: `${item.progress}%` }}
+                          >
+                            <div className="absolute inset-0 bg-gradient-to-r from-white/30 to-transparent pointer-events-none"></div>
+                            <div className="absolute inset-0 bg-white/20 animate-pulse pointer-events-none"></div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Call to Action */}
+                  <div className="mt-4 sm:mt-6 p-2 sm:p-2 sm:p-3 md:p-4 md:p-3 sm:p-4 md:p-6 bg-gradient-to-r from-[#006d77]/10 to-[#83c5be]/10 rounded-xl sm:rounded-2xl border border-[#83c5be]/20 w-full">
+                    <p className="text-sm text-gray-600 mb-3 sm:mb-2 sm:mb-3 md:mb-4 text-center">Ready to boost your career prep?</p>
+                    <Link href="/career-resources">
+                      <button className="w-full bg-gradient-to-r from-[#006d77] to-[#004f56] text-white py-2 sm:py-3 px-4 rounded-xl sm:rounded-2xl font-semibold hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 text-sm sm:text-base">
+                        Explore Career Resources
+                      </button>
+                    </Link>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
+            </>
+          )}
         </main>
       </div>
 
       {/* --- Mobile Bottom Navigation --- */}
-      {/* <div className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-white/90 backdrop-blur-xl shadow-2xl rounded-t-3xl border-t border-gray-100">
+      <div className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-white/90 backdrop-blur-xl shadow-2xl rounded-t-3xl border-t border-gray-100">
         <div className="flex justify-around items-center h-16 sm:h-20 py-2">
           {bottomNavItems.map((item, index) => (
             <button
@@ -480,7 +748,7 @@ export default function DashboardPage() {
             </button>
           ))}
         </div>
-      </div> */}
+      </div>
 
       {/* Enhanced Overlay for mobile */}
       {sidebarOpen && (
