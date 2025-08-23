@@ -1,4 +1,4 @@
-# 📱 StudySphere
+# 📱 EduMitra
 
 <div align="center">
 
