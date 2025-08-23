@@ -29,7 +29,9 @@ export async function getATSScore(resumeText: string, jobDescription: string) {
   - The feedback should be detailed and cover various aspects of the resume, including strengths and areas for improvement
   - The suggestions should be actionable and specific, providing clear guidance on how to enhance the resume
   - Assume that the resume is not good enough unless it perfectly matches the job description
-  - Don't put too much unnecessary content in your response, keep it concise and to the point. Like don't say Good job, your answer was correct or "That's a great answer!" or "That's a great overview". Just say next question (This is important to maintain professionalism and keep the interview on track)`;
+  - Don't put too much unnecessary content in your response, keep it concise and to the point. Like don't say Good job, your answer was correct or "That's a great answer!" or "That's a great overview". Just say next question (This is important to maintain professionalism and keep the interview on track)
+  - Be brutal and judge honestly
+  - Don't give multiple of 5 or 10 scores like 70, 80, 90, just give exact scores like 73, 87, 91`;
 
   const fullPrompt = `
   You are an ATS (Applicant Tracking System) bot that evaluates resumes based on a given job description. Your task is to analyze the resume, compare it with the job description, and provide a score along with feedback and suggestions for improvement.
