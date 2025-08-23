@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 from routes.authRoute import router as auth_router
 from routes.liveblocksRoute import router as liveblocks_router
 # from routes.atsRoute import router as ats_router 
-from routes.extract import router as extract_router
+from routes.atsRoute import router as extract_router
 from routes.genaiRoute import router as genai_router
 from routes.quizRoute import router as quiz_router
 from routes.userSubjectRoute import router as user_subject_router
