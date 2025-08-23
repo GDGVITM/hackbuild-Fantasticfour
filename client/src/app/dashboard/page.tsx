@@ -185,6 +185,12 @@ const AIIcon = () => (
   </svg>
 );
 
+const ClassroomIcon = () => (
+  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+  </svg>
+);
+
 // --- Trend Icon Component ---
 const TrendIcon = ({ trend }: { trend: string }) => (
   <div className={`flex items-center space-x-1 text-xs ${
@@ -212,26 +218,24 @@ export default function DashboardPage() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('overview');
   const [timetableDate, setTimetableDate] = useState(new Date());
-  const [username, setUsername] = useState<string | null>(null);
+  const [username, setUsername] = useState<string | null>('Student');
+  const [userInitials, setUserInitials] = useState('S');
 
   useEffect(() => {
-    let mounted = true;
-    (async () => {
-      try {
-        const u = await getStoredUsername();
-        if (mounted) setUsername(u);
-      } catch {
-        // ignore
+    const loadUserData = async () => {
+      const username = await getStoredUsername();
+      if (username) {
+        setUsername(username);
+        setUserInitials(username.charAt(0).toUpperCase());
       }
-    })();
-    return () => {
-      mounted = false;
     };
+    loadUserData();
   }, []);
 
   const sidebarItems = [
     { href: "/dashboard", icon: OverviewIcon, label: "Overview", tab: "overview", count: null },
     { href: "/CourseRegistration", icon: CoursesIcon, label: "My Courses", tab: "courses", count: 5 },
+    { href: "/classroom", icon: ClassroomIcon, label: "Classroom", tab: "classroom", count: null },
     { href: "/career-resources", icon: CareerIcon, label: "Career Prep", tab: "career", count: 3 },
     { href: "/quiz", icon: LogoutIcon, label: "My Quizzes", tab: "quiz", count: null },
     { href: "#", icon: SettingsIcon, label: "Settings", tab: "settings", count: null },
@@ -441,7 +445,7 @@ export default function DashboardPage() {
           <div className="flex items-center space-x-3">
             <div className="relative">
               <div className="w-10 h-10 sm:w-12 sm:h-12 bg-[#e29578] rounded-full flex items-center justify-center text-white font-bold text-base sm:text-lg shadow-lg">
-                P
+                {userInitials}
               </div>
               <div className="absolute -bottom-0.5 -right-0.5 sm:-bottom-1 sm:-right-1 w-3 h-3 sm:w-4 sm:h-4 bg-green-400 rounded-full border-2 border-[#006d77]"></div>
             </div>
@@ -540,7 +544,7 @@ export default function DashboardPage() {
             <div className="flex-1 min-w-0">
               <div className="flex items-center space-x-1 sm:space-x-2">
                 <h1 className="text-base sm:text-xl lg:text-lg sm:text-xl md:text-2xl truncate font-bold bg-gradient-to-r from-[#006d77] to-[#83c5be] bg-clip-text text-transparent">
-                  {activeTab === 'ai-summary' ? 'AI Academic Summary' : 'Hi, Prathamesh!'} 
+                  {activeTab === 'ai-summary' ? 'AI Academic Summary' : `Hi, ${username}!`} 
                 </h1>
                 <span className="text-lg sm:text-lg sm:text-xl md:text-2xl">
                   {activeTab === 'ai-summary' ? '🤖' : '🌟'}
@@ -585,14 +589,14 @@ export default function DashboardPage() {
             <Link href="/dashboard/profile">
             <div className="flex items-center space-x-2 sm:space-x-2 sm:space-x-3 md:space-x-4 bg-white/80 backdrop-blur-sm rounded-xl sm:rounded-2xl p-2 border border-gray-200/50 hover:shadow-md transition-all duration-300">
               <div className="text-right hidden sm:block">
-                <p className="text-sm font-semibold text-gray-800">Prathamesh Sankhe</p>
+                <p className="text-sm font-semibold text-gray-800">{username}</p>
                 <div className="text-xs text-gray-500 flex items-center">
                   <span>Computer Science</span>
                 </div>
               </div>
               <div className="relative">
                 <div className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 rounded-xl sm:rounded-2xl bg-[#e29578] flex items-center justify-center text-white font-bold text-sm sm:text-base lg:text-lg shadow-lg ring-2 ring-white">
-                  P
+                  {userInitials}
                 </div>
                 <div className="absolute -bottom-0.5 -right-0.5 sm:-bottom-1 sm:-right-1 w-3 h-3 sm:w-4 sm:h-4 bg-green-500 rounded-full border-2 border-white"></div>
               </div>

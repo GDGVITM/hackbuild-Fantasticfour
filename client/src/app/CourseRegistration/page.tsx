@@ -1,8 +1,10 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { GraduationCap, BookOpen, User, CheckCircle, Award } from "lucide-react";
+import { getStoredUsername } from "@/lib/auth";
 
 const dummyStudent = {
   id: "S12345",
@@ -15,8 +17,19 @@ const dummyStudent = {
 };
 
 export default function CourseRegistrationPage() {
+  const [studentName, setStudentName] = useState("Student");
+
+  useEffect(() => {
+    const loadUserData = async () => {
+      const username = await getStoredUsername();
+      if (username) {
+        setStudentName(username);
+      }
+    };
+    loadUserData();
+  }, []);
+
   const handleRegisterAll = () => {
-    // For now, just log to console
     console.log("Registered for all courses:", dummyStudent.courses);
     alert(`Successfully registered for ${dummyStudent.courses.length} courses!`);
   };
@@ -58,12 +71,12 @@ export default function CourseRegistrationPage() {
           {/* Student Info Section */}
           <div className="flex items-center mb-8 p-2 sm:p-3 md:p-4 rounded-lg" 
                style={{ backgroundColor: '#edf6f9' }}>
-            <div className="p-3 rounded-full mr-4" style={{ backgroundColor: '#83c5be' }}>
-              <User className="w-6 h-6" style={{ color: '#006d77' }} />
+            <div className="w-16 h-16 bg-gradient-to-br from-[#006d77] to-[#83c5be] rounded-full flex items-center justify-center text-white font-bold text-xl">
+              {studentName.charAt(0).toUpperCase()}
             </div>
             <div>
               <h2 className="text-lg sm:text-xl md:text-2xl font-bold" style={{ color: '#006d77' }}>
-                {dummyStudent.name}
+                {studentName}
               </h2>
               <p className="text-lg opacity-75" style={{ color: '#006d77' }}>
                 Student ID: {dummyStudent.id}
