@@ -22,6 +22,7 @@ const routes: { path: string; label: string }[] = [
     { path: "/classroom", label: "Classroom" },
     { path: "/language-settings", label: "Language Settings" },
     { path: "/timetable", label: "Timetable" },
+    { path: "/parent-dashboard", label: "Parent Dashboard" }
 
 ];
 
