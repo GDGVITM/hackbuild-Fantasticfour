@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 // Enhanced color palette with better contrast
 const COLORS = {
@@ -304,9 +305,20 @@ export default function TeacherDashboard() {
   }, []);
 
   const handleClassClick = (classItem: TeacherClass) => {
-    // router.push(`/attendance/${classItem.id}?subject=${classItem.subject}&class=${classItem.className}`);
-    router.push('/attendance');
-  };
+  // Enhanced routing with query parameters
+  const params = new URLSearchParams({
+    subject: classItem.subject,
+    class: classItem.className,
+    room: classItem.room,
+    time: classItem.time,
+    day: classItem.day,
+    studentCount: classItem.studentCount.toString(),
+    type: classItem.type
+  });
+  
+  router.push(`/teacher-dashboard/attendance/${classItem.id}?${params.toString()}`);
+};
+
 
   const getClassTypeStyle = (type: string) => {
     switch (type) {
@@ -363,7 +375,7 @@ export default function TeacherDashboard() {
 
   const sidebarItems = [
     { key: 'timetable', icon: TimetableIcon, label: 'Timetable', active: activeTab === 'timetable', count: TEACHER_CLASSES.length },
-    { key: 'attendance', icon: AttendanceIcon, label: 'Attendance', active: activeTab === 'attendance', count: null },
+    // { key: 'attendance', icon: AttendanceIcon, label: 'Attendance', active: activeTab === 'attendance', count: null },
     { key: 'announcements', icon: AnnouncementsIcon, label: 'Announcements', active: activeTab === 'announcements', count: ANNOUNCEMENTS.filter(a => !a.isRead).length },
     { key: 'community', icon: CommunityIcon, label: 'Community', active: activeTab === 'community', count: null },
     { key: 'quizzes', icon: QuizzesIcon, label: 'Quizzes', active: activeTab === 'quizzes', count: QUIZZES.filter(q => q.status === 'active').length },
@@ -442,7 +454,21 @@ export default function TeacherDashboard() {
               <button
                 key={index}
                 onClick={() => {
-                  setActiveTab(item.key as TabType);
+                  // if (item.key === 'timetable') {
+                  //   router.push('/timetable');
+                  if (item.key === 'announcements') {
+                    router.push('/announcements');
+                  } else if (item.key === 'community') {
+                    router.push('/community');
+                  // } else if (item.key === 'attendance') {
+                  //   router.push('/attendance');
+                  // } else if (item.key === 'quizzes') {
+                  //   router.push('/quiz-creator');
+                  // } else if (item.key === 'ai-summary') {
+                  //   router.push('/ai-summary');
+                  } else {
+                      setActiveTab(item.key as TabType);
+                  }
                   setSidebarOpen(false);
                 }}
                 className={`flex items-center px-3 sm:px-4 py-3 sm:py-4 text-sm font-medium rounded-xl sm:rounded-lg sm:rounded-xl md:rounded-2xltransition-all duration-300 group relative overflow-hidden w-full ${
@@ -914,13 +940,22 @@ export default function TeacherDashboard() {
                         Manage important school announcements
                       </p>
                     </div>
-                    <button
+                    {/* <button
                       onClick={() => setShowAddAnnouncement(true)}
                       className="px-4 py-2 rounded-xl sm:rounded-lg sm:rounded-xl md:rounded-2xlfont-medium text-white hover:shadow-lg transition-all duration-200 text-sm sm:text-base"
                       style={{ backgroundColor: COLORS.primary }}
                     >
                       + Add New
-                    </button>
+                    </button> */}
+                    <Link href="/announcements">
+                    <button
+                   
+                    className="px-4 py-2 rounded-xl sm:rounded-lg sm:rounded-xl md:rounded-2xl font-medium text-white hover:shadow-lg transition-all duration-200 text-sm sm:text-base"
+                    style={{ backgroundColor: COLORS.primary }}
+                  >
+                    + Add New
+                  </button>
+                  </Link>
                   </div>
 
                   <div className="space-y-2 sm:space-y-3 md:space-y-2 sm:space-y-3 md:space-y-4">
@@ -1258,7 +1293,7 @@ export default function TeacherDashboard() {
                       </p>
                     </div>
                     <button
-                      onClick={() => setShowAddQuiz(true)}
+                      onClick={() => router.push('/quiz-creator')}
                       className="px-4 py-2 rounded-xl sm:rounded-lg sm:rounded-xl md:rounded-2xlfont-medium text-white hover:shadow-lg transition-all duration-200 text-sm sm:text-base"
                       style={{ backgroundColor: COLORS.primary }}
                     >
@@ -1267,7 +1302,7 @@ export default function TeacherDashboard() {
                   </div>
 
                   <div className="space-y-2 sm:space-y-3 md:space-y-2 sm:space-y-3 md:space-y-4">
-                    {QUIZZES.map((quiz) => {
+                    {/* {QUIZZES.map((quiz) => {
                       const statusStyle = getQuizStatusStyle(quiz.status);
                       return (
                         <div
@@ -1344,7 +1379,90 @@ export default function TeacherDashboard() {
                           </div>
                         </div>
                       );
-                    })}
+                    })} */}
+
+                    {QUIZZES.map((quiz) => {
+  const statusStyle = getQuizStatusStyle(quiz.status);
+  return (
+    <div
+      key={quiz.id}
+      onClick={() => router.push(`/quiz`)}
+      className="group relative p-2 sm:p-2 sm:p-3 md:p-4 md:p-3 sm:p-4 md:p-6 rounded-xl sm:rounded-lg sm:rounded-xl md:rounded-2xlborder border-gray-100/50 hover:shadow-lg transition-all duration-300 overflow-hidden cursor-pointer"
+      style={{ background: `linear-gradient(135deg, ${COLORS.white} 0%, ${COLORS.secondary}30 100%)` }}
+    >
+      {/* Keep all your existing quiz card content exactly the same */}
+      <div className="absolute inset-0 bg-gradient-to-r opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+        style={{ background: `linear-gradient(135deg, ${COLORS.primaryLight}10 0%, transparent 100%)` }}
+      ></div>
+      
+      <div className="relative z-10">
+        <div className="flex items-start justify-between mb-3">
+          <div>
+            <h3 className="font-bold text-lg mb-1"
+              style={{ color: COLORS.primary }}
+            >
+              {quiz.title}
+            </h3>
+            <p className="text-sm font-medium"
+              style={{ color: COLORS.darkGray }}
+            >
+              {quiz.subject}
+            </p>
+          </div>
+          <span className="text-xs font-bold px-3 py-1 rounded-full"
+            style={statusStyle}
+          >
+            {quiz.status.toUpperCase()}
+          </span>
+        </div>
+        
+        {/* Rest of your existing quiz card content */}
+        <div className="grid grid-cols-2 gap-2 sm:p-3 md:p-4 mb-2 sm:mb-3 md:mb-4">
+          <div>
+            <div className="text-lg font-black"
+              style={{ color: COLORS.coral }}
+            >
+              {quiz.totalQuestions}
+            </div>
+            <div className="text-xs font-medium"
+              style={{ color: COLORS.darkGray }}
+            >
+              Questions
+            </div>
+          </div>
+          <div>
+            <div className="text-lg font-black"
+              style={{ color: COLORS.success }}
+            >
+              {quiz.duration}m
+            </div>
+            <div className="text-xs font-medium"
+              style={{ color: COLORS.darkGray }}
+            >
+              Duration
+            </div>
+          </div>
+        </div>
+        
+        <div className="flex items-center justify-between">
+          <span className="text-sm font-medium"
+            style={{ color: COLORS.darkGray }}
+          >
+            📅 Due: {new Date(quiz.dueDate).toLocaleDateString()}
+          </span>
+          {quiz.status === 'active' && (
+            <span className="text-sm px-2 py-1 rounded-full font-medium"
+              style={{ backgroundColor: `${COLORS.success}20`, color: COLORS.success }}
+            >
+              {quiz.submissionCount} submissions
+            </span>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+})}
+
                   </div>
                 </div>
               )}
@@ -1524,7 +1642,7 @@ export default function TeacherDashboard() {
               >
                 Cancel
               </button>
-              <button
+              {/* <button
                 onClick={() => {
                   setShowAddQuiz(false);
                   setNewQuiz({ title: '', subject: '', dueDate: '', totalQuestions: '', duration: '' });
@@ -1533,6 +1651,16 @@ export default function TeacherDashboard() {
                 style={{ backgroundColor: COLORS.coral }}
               >
                 Create
+              </button> */}
+              <button
+                onClick={() => {
+                  // Redirect to quiz creator instead of showing modal
+                  router.push('/quiz-creator');
+                }}
+                className="px-4 py-2 rounded-xl sm:rounded-lg sm:rounded-xl md:rounded-2xl font-medium text-white hover:shadow-lg transition-all duration-200 text-sm sm:text-base"
+                style={{ backgroundColor: COLORS.primary }}
+              >
+                + New Quiz
               </button>
             </div>
           </div>
